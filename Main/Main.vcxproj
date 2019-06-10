@@ -113,13 +113,11 @@
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Main.ino">
-      <FileType>CppCode</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Common.h" />
     <ClInclude Include="FaultHandler.h" />
     <ClInclude Include="Host.h" />
+    <ClInclude Include="MovementOptions.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Visual.h" />
     <ClInclude Include="__vm\.Main.vsarduino.h" />
   </ItemGroup>
@@ -127,6 +125,9 @@
     <ClCompile Include="FaultHandler.cpp" />
     <ClCompile Include="Host.cpp" />
     <ClCompile Include="Visual.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Main.ino" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
