@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{7ee71771-a191-49a8-bd53-81e6deecdc83}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="__vm\.Main.vsarduino.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Host.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="FaultHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Visual.h">
+      <Filter>source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Main.ino" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Host.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="FaultHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Visual.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

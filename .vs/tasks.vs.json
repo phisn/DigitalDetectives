@@ -1,0 +1,20 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-DigitalDetectives",
+      "appliesTo": "/",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-DigitalDetectives",
+      "appliesTo": "/",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-Main",
+      "appliesTo": "Main/",
+      "type": "launch"
+    }
+  ]
+}
