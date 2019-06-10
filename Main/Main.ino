@@ -1,12 +1,9 @@
-#include <dummy.h>
+#include "Common.h"
+
 #include "Host.h"
 #include "Visual.h"
 
-#ifdef __INTELLISENSE__
-#include "FastLED/FastLED.h"
-#else
-#include "FastLED.h"
-#endif
+#include INCL_ARDU("FastLED/FastLED.h", "FastLED.h")
 
 #define ANZAHL_LEDS 1
 #define LED_PIN D8

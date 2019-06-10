@@ -27,12 +27,6 @@
     <ClInclude Include="__vm\.Main.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FaultHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,15 +39,21 @@
     <ClInclude Include="Visual.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FaultHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FaultHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Host.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Visual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FaultHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

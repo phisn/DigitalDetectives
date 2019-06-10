@@ -1,11 +1,8 @@
+#include "Common.h"
 #include "Host.h"
 #include "FaultHandler.h"
 
-#ifdef __INTELLISENSE__
-#include <ESP8266WiFi/src/ESP8266WiFi.h>
-#else
-#include <ESP8266WiFi.h>
-#endif
+#include INCL_ARDU(<ESP8266WiFi/src/ESP8266WiFi.h>, <ESP8266WiFi.h>)
 
 namespace Host
 {
