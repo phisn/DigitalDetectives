@@ -29,12 +29,16 @@ namespace Host
 				NETWORK_HIDE_SSID,
 				NETWORK_MAX_CONN))
 		{
-			FaultHandler::RebootDevice(
+			FaultHandler::Log("Wlan Failed");
+			/*FaultHandler::RebootDevice(
 				""
 //				FPSTR(str)
-			);
+			);*/
 		}
-
+		else
+		{
+			FaultHandler::Log("Wlan Started");
+		}
 
 	}
 
