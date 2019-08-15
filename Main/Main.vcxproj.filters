@@ -21,8 +21,61 @@
     <ClInclude Include="__vm\.Main.vsarduino.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Device\DeviceManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\FailureHandler.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\FaultHandler.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\MapManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\MemoryManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\NetworkManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\OutputManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\StatusLED.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="EspInclude.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Device\DeviceManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\FailureHandler.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\FaultHandler.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\MapManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\MemoryManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\NetworkManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\OutputManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\StatusLED.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
