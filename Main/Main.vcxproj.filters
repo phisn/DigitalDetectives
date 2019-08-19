@@ -13,11 +13,14 @@
     <Filter Include="Game">
       <UniqueIdentifier>{c78ce698-0768-4ddb-a835-29c185a9e31c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Docs">
+      <UniqueIdentifier>{dc25479a-165c-4b28-b7e8-f1b11e987963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Architecture">
+      <UniqueIdentifier>{12a17a49-882c-4ab9-8388-f20f8cdd65d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Common.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="__vm\.Main.vsarduino.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -45,8 +48,50 @@
     <ClInclude Include="Device\StatusLED.h">
       <Filter>Device</Filter>
     </ClInclude>
-    <ClInclude Include="EspInclude.h">
+    <ClInclude Include="Common\Common.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EspInclude.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BoardManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameAccess.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameData.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Settings.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameMap.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\StaticGameData.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\Interface.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\InterfaceManager.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\Request.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\RequestHandler.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\SerialInterface.h">
+      <Filter>Communication</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,5 +122,46 @@
     <ClCompile Include="Device\StatusLED.cpp">
       <Filter>Device</Filter>
     </ClCompile>
+    <ClCompile Include="Game\BoardManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameAccess.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\InterfaceManager.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\RequestHandler.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\SerialInterface.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Docs\SY_Map.png">
+      <Filter>Docs</Filter>
+    </Image>
+    <Image Include="..\Architecture\Overall_Progress.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Architecture\Game_Layer.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Architecture\Device_Layer_Detail.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Architecture\Device_Layer.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Architecture\Communication_Layer.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Architecture\Combined_Layers.jpeg">
+      <Filter>Architecture</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -113,7 +113,13 @@
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="Common.h" />
+    <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\EspInclude.h" />
+    <ClInclude Include="Communication\Interface.h" />
+    <ClInclude Include="Communication\InterfaceManager.h" />
+    <ClInclude Include="Communication\Request.h" />
+    <ClInclude Include="Communication\RequestHandler.h" />
+    <ClInclude Include="Communication\SerialInterface.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\FailureHandler.h" />
     <ClInclude Include="Device\FaultHandler.h" />
@@ -122,13 +128,23 @@
     <ClInclude Include="Device\NetworkManager.h" />
     <ClInclude Include="Device\OutputManager.h" />
     <ClInclude Include="Device\StatusLED.h" />
-    <ClInclude Include="EspInclude.h" />
+    <ClInclude Include="Game\BoardManager.h" />
+    <ClInclude Include="Game\GameAccess.h" />
+    <ClInclude Include="Game\GameData.h" />
+    <ClInclude Include="Game\GameManager.h" />
+    <ClInclude Include="Game\GameMap.h" />
+    <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\Settings.h" />
+    <ClInclude Include="Game\StaticGameData.h" />
     <ClInclude Include="__vm\.Main.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Communication\InterfaceManager.cpp" />
+    <ClCompile Include="Communication\RequestHandler.cpp" />
+    <ClCompile Include="Communication\SerialInterface.cpp" />
     <ClCompile Include="Device\DeviceManager.cpp" />
     <ClCompile Include="Device\FailureHandler.cpp" />
     <ClCompile Include="Device\FaultHandler.cpp" />
@@ -137,6 +153,18 @@
     <ClCompile Include="Device\NetworkManager.cpp" />
     <ClCompile Include="Device\OutputManager.cpp" />
     <ClCompile Include="Device\StatusLED.cpp" />
+    <ClCompile Include="Game\BoardManager.cpp" />
+    <ClCompile Include="Game\GameAccess.cpp" />
+    <ClCompile Include="Game\GameManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Architecture\Combined_Layers.jpeg" />
+    <Image Include="..\Architecture\Communication_Layer.jpeg" />
+    <Image Include="..\Architecture\Device_Layer.jpeg" />
+    <Image Include="..\Architecture\Device_Layer_Detail.jpeg" />
+    <Image Include="..\Architecture\Game_Layer.jpeg" />
+    <Image Include="..\Architecture\Overall_Progress.jpeg" />
+    <Image Include="..\Docs\SY_Map.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
