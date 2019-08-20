@@ -1,7 +1,12 @@
 #pragma once
 
+#include <Communication/InterfaceManager.h>
+#include <Communication/RequestHandler.h>
+
 #include <Device/MapManager.h>
 #include <Device/NetworkManager.h>
+
+#include <Game/GameAccess.h>
 
 namespace Device::Manager
 {

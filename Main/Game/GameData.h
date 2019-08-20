@@ -7,11 +7,15 @@ RESOURCE_BEGIN
 
 namespace Game
 {
-	struct Data
+	// Implementation in GameManager.cpp
+	// GameManager has the only acces to
+	// change GameData
+	const struct Data
 	{
-		Player player;
+		Player player[6];
 		Settings settings;
-	};
+
+	}& GetData();
 }
 
 RESOURCE_END
