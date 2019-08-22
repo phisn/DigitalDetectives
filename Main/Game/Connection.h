@@ -10,12 +10,12 @@ namespace Game
 	{
 		enum Type : unsigned char
 		{
-			TAXI,
-			BUS,
-			UNDERGROUND,
-			FERRY
+			TAXI = 0,
+			BUS = 1,
+			UNDERGROUND = 2,
+			FERRY = 3
 
-		} type : 3;
+		} type : 2;
 
 		unsigned char isFerry : 1;
 	};
@@ -30,14 +30,30 @@ namespace Game
 
 	namespace Path
 	{
-		struct FindOptionsResult
+		struct FindOptionsSpecificResult
 		{
 			unsigned char station[14];
 			unsigned char stationCount;
 
-		} FindOptions(
-			const int stationId,
+		} FindOptionsSpecific(
+			const unsigned char stationId,
 			const Station::Type type);
+
+		struct FindOptionsResult
+		{
+			unsigned char taxiStations[1];
+			unsigned char busStations[1];
+			unsigned char undergroundStations[1];
+			unsigned char ferryStations[1];
+		} FindOptions(
+			const unsigned char stationId);
+
+
+
+
+
+		Station GetStationType(
+			const unsigned char stationId);
 	}
 };
 

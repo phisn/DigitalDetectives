@@ -2,26 +2,67 @@
 
 namespace Game
 {
-	Path::FindOptionsResult Path::FindOptions(
-		const int stationId,
+	Path::FindOptionsSpecificResult Path::FindOptionsSpecific(
+		const unsigned char stationId,
 		const Station::Type type)
 	{
-		FindOptionsResult result{ };
+		FindOptionsSpecificResult result{ };
 
 		for (int i = 0; i < 472; ++i)
 			if (connections[i].type == type)
 			{
+				const bool isStation1 = connections[i].station1 == stationId;
+				const bool isStation2 = connections[i].station2 == stationId;
 
-				if (connections[i].station1 == stationId)
+				if (isStation1 || isStation2)
 				{
-					result.station[result.stationCount++] = connections[i].station2;
-				}
-				else
-					if (connections[i].station2 == stationId)
+					result.station[result.stationCount++] = isStation1
+						? connections[i].station2
+						: connections[i].station1;
+
+					if (result.stationCount == 14)
 					{
-						result.station[result.stationCount++] = connections[i].station1;
+						break;
 					}
+				}
 			}
+
+		return result;
+	}
+
+	void FindOptionsFillResult(
+		const unsigned char stationId,
+		const Station::Type type, 
+		unsigned char* const result)
+	{
+		Path::FindOptionsSpecificResult specificResult = Path::FindOptionsSpecific(
+			stationId,
+			type
+		);
+
+		for (int i = 0; i < specificResult.stationCount; ++i)
+		{
+			result[i] = specificResult.station[i];
+		}
+	}
+
+	Path::FindOptionsResult Path::FindOptions(
+		const unsigned char stationId)
+	{
+		FindOptionsResult result{ };
+
+		FindOptionsFillResult(stationId, Station::Type::TAXI, result.taxiStations);
+		FindOptionsFillResult(stationId, Station::Type::BUS, result.busStations);
+		FindOptionsFillResult(stationId, Station::Type::UNDERGROUND, result.undergroundStations);
+		FindOptionsFillResult(stationId, Station::Type::FERRY, result.ferryStations);
+
+		return result;
+	}
+
+	Station Game::Path::GetStationType(
+		const unsigned char stationId)
+	{
+		return Station();
 	}
 
 	Station stations[199] PROGMEM =
