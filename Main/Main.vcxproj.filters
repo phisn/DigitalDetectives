@@ -93,6 +93,9 @@
     <ClInclude Include="Communication\SerialInterface.h">
       <Filter>Communication</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Connection.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -163,5 +166,10 @@
     <Image Include="..\Architecture\Combined_Layers.jpeg">
       <Filter>Architecture</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT">
+      <Filter>Docs</Filter>
+    </Text>
   </ItemGroup>
 </Project>

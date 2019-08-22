@@ -21,6 +21,7 @@ namespace Game
 	{
 		int position : 8;
 
+
 		int yellowTickets;
 		int greenTickets;
 		int redTickets;

@@ -9,6 +9,7 @@ namespace Game
 	struct Settings
 	{
 		int playerCount;
+		//int numBots;
 	};
 }
 
