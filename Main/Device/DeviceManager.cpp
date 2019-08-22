@@ -52,10 +52,13 @@ namespace Device::Manager
 
 	void InitilaizeGame()
 	{
+		Game::Access::Initialize();
 	}
 
 	void InitializeCommunication()
 	{
+		Communication::InterfaceManager::Initialize();
+		Communication::RequestHandler::Initialize();
 	}
 
 	void Process()

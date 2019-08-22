@@ -4,4 +4,6 @@
 
 namespace Communication::InterfaceManager
 {
+	void Initialize();
+	void Unintialize();
 }

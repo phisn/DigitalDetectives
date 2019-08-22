@@ -140,6 +140,8 @@
     <ClInclude Include="__vm\.Main.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Docs\Dokumentation.docx" />
+    <None Include="..\Docs\SY_Rules.pdf" />
     <None Include="Main.ino" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +168,7 @@
     <Image Include="..\Architecture\Game_Layer.jpeg" />
     <Image Include="..\Architecture\Overall_Progress.jpeg" />
     <Image Include="..\Docs\SY_Map.png" />
+    <Image Include="..\Docs\SY_Map_Splitted.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT" />

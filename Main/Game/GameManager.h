@@ -5,4 +5,8 @@
 
 namespace Game::Manager
 {
+	void Initialize();
+	void Uninitialize();
+
+
 }

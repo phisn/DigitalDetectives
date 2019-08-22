@@ -5,4 +5,6 @@
 
 namespace Communication::RequestHandler
 {
+	void Initialize();
+	void Unintialize();
 }

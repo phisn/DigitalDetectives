@@ -99,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
+    <None Include="..\Docs\SY_Rules.pdf">
+      <Filter>Docs</Filter>
+    </None>
+    <None Include="..\Docs\Dokumentation.docx">
+      <Filter>Docs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device\DeviceManager.cpp">
@@ -165,6 +171,9 @@
     </Image>
     <Image Include="..\Architecture\Combined_Layers.jpeg">
       <Filter>Architecture</Filter>
+    </Image>
+    <Image Include="..\Docs\SY_Map_Splitted.jpeg">
+      <Filter>Docs</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

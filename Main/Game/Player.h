@@ -8,23 +8,23 @@ namespace Game
 {
 	struct Detective
 	{
-		int order; // ?
+		unsigned char order : 3; // ?
 	};
 
 	struct Villian
 	{
-		int blackTicketCount;
-		int doubleTicketCount : 2;
+		unsigned char blackTicketCount : 3;
+		unsigned char doubleTicketCount : 2;
 	};
-	
+
 	struct Player
 	{
-		int position : 8;
+		unsigned char path[24]; // : 8
+		unsigned char position; // : 8
 
-
-		int yellowTickets;
-		int greenTickets;
-		int redTickets;
+		unsigned char yellowTickets : 6;
+		unsigned char greenTickets : 6;
+		unsigned char redTickets : 5;
 
 		// allow easy safe and load from
 		// game-data perspective and also no need
@@ -36,5 +36,7 @@ namespace Game
 		};
 	};
 }
+
+int i = sizeof(Game::Player);
 
 RESOURCE_END
