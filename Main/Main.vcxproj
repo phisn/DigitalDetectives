@@ -157,6 +157,7 @@
     <ClCompile Include="Device\OutputManager.cpp" />
     <ClCompile Include="Device\StatusLED.cpp" />
     <ClCompile Include="Game\BoardManager.cpp" />
+    <ClCompile Include="Game\Connection.cpp" />
     <ClCompile Include="Game\GameAccess.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
   </ItemGroup>

@@ -149,6 +149,9 @@
     <ClCompile Include="Communication\SerialInterface.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Connection.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Docs\SY_Map.png">
