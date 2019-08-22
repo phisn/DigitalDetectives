@@ -1,12 +1,15 @@
 #include "MapManager.h"
 
-namespace Device::MapManager
+namespace Device
 {
-	void Initialize()
+	namespace MapManager
 	{
-	}
+		void Initialize()
+		{
+		}
 
-	void Unintialize()
-	{
+		void Unintialize()
+		{
+		}
 	}
 }

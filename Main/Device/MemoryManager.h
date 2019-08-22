@@ -1,7 +1,10 @@
 #pragma once
 
-namespace Device::MemoryManager
+namespace Device
 {
-	void Initialize();
-	void Unintialize();
+	namespace MemoryManager
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

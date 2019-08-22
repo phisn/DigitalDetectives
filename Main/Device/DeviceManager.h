@@ -1,28 +1,31 @@
 #pragma once
 
-#include <Communication/InterfaceManager.h>
-#include <Communication/RequestHandler.h>
+#include "../Communication/InterfaceManager.h"
+#include "../Communication/RequestHandler.h"
 
-#include <Device/MapManager.h>
-#include <Device/NetworkManager.h>
+#include "../Device/MapManager.h"
+#include "../Device/NetworkManager.h"
 
-#include <Game/GameAccess.h>
+#include "../Game/GameAccess.h"
 
-namespace Device::Manager
+namespace Device
 {
-	enum class State
+	namespace Manager
 	{
-		Collect,
-		Setup,
-		Running
+		enum class State
+		{
+			Collect,
+			Setup,
+			Running
 
-	};
+		};
 
-	void Initialize();
-	void Uninitialize();
+		void Initialize();
+		void Uninitialize();
 
-	void Process();
+		void Process();
 
-	State GetCurrentState();
-	void SetCurrentState(const State);
+		State GetCurrentState();
+		void SetCurrentState(const State);
+	}
 }

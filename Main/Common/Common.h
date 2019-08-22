@@ -1,7 +1,6 @@
 #pragma once
 
-#define RESOURCE_BEGIN __pragma(pack(push, 1))
-#define RESOURCE_END __pragma(pack(pop))
+#include <Arduino.h>
 
 #ifdef __INTELLISENSE__
 #define INCL_ARDU(intel, real) intel

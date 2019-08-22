@@ -1,12 +1,15 @@
 #include "NetworkManager.h"
 
-namespace Device::NetworkManager
+namespace Device
 {
-	void Initialize()
+	namespace NetworkManager
 	{
-	}
+		void Initialize()
+		{
+		}
 
-	void Unintialize()
-	{
+		void Unintialize()
+		{
+		}
 	}
 }

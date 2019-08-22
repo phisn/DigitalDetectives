@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Communication/Interface.h>
+#include "../Communication/Interface.h"
 
 namespace Communication
 {

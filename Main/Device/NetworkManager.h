@@ -1,10 +1,13 @@
 #pragma once
 
-#include <Device/FaultHandler.h>
-#include <Device/OutputManager.h>
+#include "../Device/FaultHandler.h"
+#include "../Device/OutputManager.h"
 
-namespace Device::NetworkManager
+namespace Device
 {
-	void Initialize();
-	void Unintialize();
+	namespace NetworkManager
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

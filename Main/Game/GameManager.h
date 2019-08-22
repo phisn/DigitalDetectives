@@ -1,12 +1,13 @@
 #pragma once
 
-#include <Device/MemoryManager.h>
-#include <Game/BoardManager.h>
+#include "../Device/MemoryManager.h"
+#include "../Game/BoardManager.h"
 
-namespace Game::Manager
+namespace Game
 {
-	void Initialize();
-	void Uninitialize();
-
-
+	namespace Manager
+	{
+		void Initialize();
+		void Uninitialize();
+	}
 }

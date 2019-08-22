@@ -1,12 +1,15 @@
 #include "FailureHandler.h"
 
-namespace Device::FailureHandler
+namespace Device
 {
-	void Initialize()
+	namespace FailureHandler
 	{
-	}
+		void Initialize()
+		{
+		}
 
-	void Unintialize()
-	{
+		void Unintialize()
+		{
+		}
 	}
 }

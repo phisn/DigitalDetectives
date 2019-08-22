@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Common/Common.h>
+#include "../Common/Common.h"
 
-RESOURCE_BEGIN
+#pragma pack(push, 1)
 
 namespace Game
 {
@@ -22,7 +22,7 @@ namespace Game
 
 	struct Connection // 472
 	{
-		unsigned char station1 : 8; 
+		unsigned char station1 : 8;
 		unsigned char station2 : 8;
 
 		Station::Type type : 3;
@@ -32,29 +32,30 @@ namespace Game
 	{
 		struct FindOptionsSpecificResult
 		{
-			unsigned char station[14];
+			unsigned char station[6]; // highest possible number
 			unsigned char stationCount;
 
-		} FindOptionsSpecific(
+		};
+		
+		FindOptionsSpecificResult FindOptionsSpecific(
 			const unsigned char stationId,
 			const Station::Type type);
 
 		struct FindOptionsResult
 		{
-			unsigned char taxiStations[1];
-			unsigned char busStations[1];
-			unsigned char undergroundStations[1];
-			unsigned char ferryStations[1];
-		} FindOptions(
+			unsigned char taxiStations[6];
+			unsigned char busStations[5];
+			unsigned char undergroundStations[4];
+			unsigned char ferryStations[2];
+
+		};
+		
+		FindOptionsResult FindOptions(
 			const unsigned char stationId);
 
-
-
-
-
-		Station GetStationType(
+		const Game::Station& GetStationType(
 			const unsigned char stationId);
 	}
 };
 
-RESOURCE_END
+#pragma pack(pop)

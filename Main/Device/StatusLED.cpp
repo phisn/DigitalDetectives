@@ -1,12 +1,18 @@
 #include "StatusLED.h"
 
-namespace Device::StatusLED
-{
-	void Initialize()
-	{
-	}
+#include "../Device/DevicePins.h"
 
-	void Unintialize()
+namespace Device
+{
+	namespace StatusLED
 	{
+		void Initialize()
+		{
+			pinMode(DEVICE_STATUS_LED, OUTPUT);
+		}
+
+		void Unintialize()
+		{
+		}
 	}
 }

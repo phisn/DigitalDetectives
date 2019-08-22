@@ -1,9 +1,12 @@
 #pragma once
 
-#include <Game/GameManager.h>
+#include "../Game/GameManager.h"
 
-namespace Game::Access
+namespace Game
 {
-	void Initialize();
-	void Uninitialize();
+	namespace Access
+	{
+		void Initialize();
+		void Uninitialize();
+	}
 }

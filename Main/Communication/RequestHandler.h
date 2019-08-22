@@ -1,10 +1,13 @@
 #pragma once
 
-#include <Communication/Request.h>
-#include <Game/GameAccess.h>
+#include "../Communication/Request.h"
+#include "../Game/GameAccess.h"
 
-namespace Communication::RequestHandler
+namespace Communication
 {
-	void Initialize();
-	void Unintialize();
+	namespace RequestHandler
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

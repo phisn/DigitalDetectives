@@ -1,20 +1,23 @@
 #include "OutputManager.h"
 
-#include <LiquidCrystal.h>
+// #include <LiquidCrystal.h>
 
 namespace
 {
-	LiquidCrystal lcd;
+	// LiquidCrystal lcd;
 }
 
-namespace Device::OutputManager
+namespace Device
 {
-	void Initialize()
+	namespace OutputManager
 	{
+		void Initialize()
+		{
 
-	}
+		}
 
-	void Uninitialize()
-	{
+		void Uninitialize()
+		{
+		}
 	}
 }

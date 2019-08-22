@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Communication/RequestHandler.h>
+#include "../Communication/RequestHandler.h"
 
 namespace Communication
 {

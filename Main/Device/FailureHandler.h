@@ -1,9 +1,12 @@
 #pragma once
 
-#include <Device/StatusLED.h>
+#include "../Device/StatusLED.h"
 
-namespace Device::FailureHandler
+namespace Device
 {
-	void Initialize();
-	void Unintialize();
+	namespace FailureHandler
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

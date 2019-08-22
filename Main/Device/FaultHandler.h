@@ -1,10 +1,13 @@
 #pragma once
 
-#include <Device/FailureHandler.h>
-#include <Device/MemoryManager.h>
+#include "../Device/FailureHandler.h"
+#include "../Device/MemoryManager.h"
 
-namespace Device::FaultHandler
+namespace Device
 {
-	void Initialize();
-	void Unintialize();
+	namespace FaultHandler
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

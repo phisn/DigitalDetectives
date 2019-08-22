@@ -1,12 +1,15 @@
 #include "MemoryManager.h"
 
-namespace Device::MemoryManager
+namespace Device
 {
-	void Initialize()
+	namespace MemoryManager
 	{
-	}
+		void Initialize()
+		{
+		}
 
-	void Unintialize()
-	{
+		void Unintialize()
+		{
+		}
 	}
 }

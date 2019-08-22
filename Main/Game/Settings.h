@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Common/Common.h>
+#include "../Common/Common.h"
 
-RESOURCE_BEGIN
+#pragma pack(push, 1)
 
 namespace Game
 {
@@ -12,4 +12,4 @@ namespace Game
 	};
 }
 
-RESOURCE_END
+#pragma pack(pop)

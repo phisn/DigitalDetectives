@@ -1,9 +1,12 @@
 #pragma once
 
-#include <Communication/Interface.h>
+#include "../Communication/Interface.h"
 
-namespace Communication::InterfaceManager
+namespace Communication
 {
-	void Initialize();
-	void Unintialize();
+	namespace InterfaceManager
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

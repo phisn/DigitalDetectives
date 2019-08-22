@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Common/Common.h>
+#include "../Common/Common.h"
 
-RESOURCE_BEGIN
+#pragma pack(push, 1)
 
 namespace Game
 {
@@ -37,6 +37,4 @@ namespace Game
 	};
 }
 
-int i = sizeof(Game::Player);
-
-RESOURCE_END
+#pragma pack(pop)

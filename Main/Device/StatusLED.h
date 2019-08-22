@@ -1,7 +1,10 @@
 #pragma once
 
-namespace Device::StatusLED
+namespace Device
 {
-	void Initialize();
-	void Unintialize();
+	namespace StatusLED
+	{
+		void Initialize();
+		void Unintialize();
+	}
 }

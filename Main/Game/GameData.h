@@ -1,21 +1,23 @@
 #pragma once
 
-#include <Game/Player.h>
-#include <Game/Settings.h>
+#include "../Game/Player.h"
+#include "../Game/Settings.h"
 
-RESOURCE_BEGIN
+#pragma pack(push, 1)
 
 namespace Game
 {
 	// Implementation in GameManager.cpp
 	// GameManager has the only acces to
 	// change GameData
-	const struct Data
+	struct Data
 	{
 		Player player[6];
 		Settings settings;
 
-	}& GetData();
+	};
+	
+	const Data& GetData();
 }
 
-RESOURCE_END
+#pragma pack(pop)
