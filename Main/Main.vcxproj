@@ -180,7 +180,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties config.Debug.customdebug_esp8266_nodemcuv2_vm_disable_optimization="vm_disable_opt_default" config.Debug.customdebug_esp8266_nodemcuv2_debugger_type="universal" arduino.upload.port="COM9" custom_esp8266_nodemcuv2_dbg="Disabled" />
+      <UserProperties config.Debug.customdebug_esp8266_nodemcuv2_vm_disable_optimization="vm_disable_opt_default" config.Debug.customdebug_esp8266_nodemcuv2_debugger_type="universal" arduino.upload.port="COM5" custom_esp8266_nodemcuv2_dbg="Disabled" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
