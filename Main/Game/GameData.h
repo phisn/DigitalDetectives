@@ -14,7 +14,6 @@ namespace Game
 	{
 		Player player[6];
 		Settings settings;
-
 	};
 	
 	const Data& GetData();
