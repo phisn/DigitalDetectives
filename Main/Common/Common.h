@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Esp.h>
 
 #ifdef __INTELLISENSE__
 #define INCL_ARDU(intel, real) intel
