@@ -51,16 +51,24 @@ ErrorMessage:
     ^^^^^^^^^^^^^^^^^^^
 */
 
-
+namespace
+{
+	Device::FaultHandler::InterfaceNotifierCallback interfaceNotifierCallback = NULL;
+}
 
 namespace Device
 {
 	namespace FaultHandler
 	{
-		void DisplayFaultMessage(
-			const FaultModule module,
-			FlashString text,
-			const FailureId id);
+		void DisplayFaultMessage(const Fault fault);
+		void HandleModuleFault(const Fault fault);
+		void HandleCommonFault(const Fault fault);
+
+		void RegisterInterfaceNotifier(
+			const InterfaceNotifierCallback callback)
+		{
+			interfaceNotifierCallback = callback;
+		}
 
 		void Initialize()
 		{
@@ -70,17 +78,23 @@ namespace Device
 		{
 		}
 
-		void Handle(
-			const FaultModule module, 
-			FlashString text,
-			const FailureId id)
+		void Handle(const Fault fault)
 		{
+			if (interfaceNotifierCallback == NULL)
+			{
+				FailureHandler::Handle(
+					FailureModule::FaultHandler,
+					FID::INC_NULL
+				);
+			}
+
+			DisplayFaultMessage(fault);
+			interfaceNotifierCallback(fault);
+
+			HandleModuleFault(fault);
 		}
 
-		void DisplayFaultMessage(
-			const FaultModule module,
-			FlashString text,
-			const FailureId id)
+		void DisplayFaultMessage(const Fault fault)
 		{
 			OutputManager::Lcd::DisplayLineType(
 				0,
@@ -94,6 +108,23 @@ namespace Device
 				0,
 				emessageFID);
 			// add fid number
+		}
+
+		void HandleModuleFault(const Fault fault)
+		{
+			switch (fault.module)
+			{
+			default:
+				HandleCommonFault(fault);
+			}
+		}
+
+		void HandleCommonFault(const Fault fault)
+		{
+			FailureHandler::Handle(
+				FailureModule::FaultHandler,
+				FID::_Length + (int) fault.module
+			);
 		}
 	}
 }

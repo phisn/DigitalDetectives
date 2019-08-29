@@ -146,6 +146,10 @@
     <None Include="..\Docs\Dokumentation.docx" />
     <None Include="..\Docs\SY_Rules.pdf" />
     <None Include="Main.ino" />
+    <None Include="Web\ingame_detective.html" />
+    <None Include="Web\ingame_mrx.html" />
+    <None Include="Web\login_phase_1.html" />
+    <None Include="Web\login_phase_2.html" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communication\InterfaceManager.cpp" />

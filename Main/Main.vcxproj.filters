@@ -19,6 +19,9 @@
     <Filter Include="Architecture">
       <UniqueIdentifier>{12a17a49-882c-4ab9-8388-f20f8cdd65d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Web">
+      <UniqueIdentifier>{e5c0706c-d201-4927-852e-9562cb89d0ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -96,7 +99,9 @@
     <ClInclude Include="Game\Connection.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Device\DevicePins.h" />
+    <ClInclude Include="Device\DevicePins.h">
+      <Filter>Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -105,6 +110,18 @@
     </None>
     <None Include="..\Docs\Dokumentation.docx">
       <Filter>Docs</Filter>
+    </None>
+    <None Include="Web\ingame_detective.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\ingame_mrx.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\login_phase_1.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\login_phase_2.html">
+      <Filter>Web</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
