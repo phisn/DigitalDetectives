@@ -2,7 +2,7 @@
 
 namespace
 {
-	const size_t zone_offsets[] PROGMEM =
+	unsigned long zone_offsets[3] =
 	{
 		ZONE_MEMORY_STATUS,
 		ZONE_MEMORY_FAULTHANDLER,
@@ -34,7 +34,7 @@ namespace Device
 		{
 		}
 
-		void* AllocateDynamic(const size_t length)
+		void* AllocateDynamic(const unsigned long length)
 		{
 		}
 	}

@@ -8,9 +8,9 @@ namespace Device
 	{
 		void Initialize()
 		{
-			pinMode(DEVICE_STATUS_LED_R, OUTPUT);
-			pinMode(DEVICE_STATUS_LED_G, OUTPUT);
-			pinMode(DEVICE_STATUS_LED_B, OUTPUT);
+			pinMode(DEVICE_PIN_STATUS_LED_R, OUTPUT);
+			pinMode(DEVICE_PIN_STATUS_LED_G, OUTPUT);
+			pinMode(DEVICE_PIN_STATUS_LED_B, OUTPUT);
 
 			Show(RGB{ HIGH, HIGH, HIGH });
 		}
@@ -21,9 +21,9 @@ namespace Device
 
 		void Show(const RGB color)
 		{
-			digitalWrite(DEVICE_STATUS_LED_R, color.r);
-			digitalWrite(DEVICE_STATUS_LED_G, color.g);
-			digitalWrite(DEVICE_STATUS_LED_B, color.b);
+			digitalWrite(DEVICE_PIN_STATUS_LED_R, color.r);
+			digitalWrite(DEVICE_PIN_STATUS_LED_G, color.g);
+			digitalWrite(DEVICE_PIN_STATUS_LED_B, color.b);
 		}
 	}
 }

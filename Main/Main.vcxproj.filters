@@ -96,6 +96,7 @@
     <ClInclude Include="Game\Connection.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Device\DevicePins.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />

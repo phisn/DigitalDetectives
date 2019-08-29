@@ -31,6 +31,6 @@ namespace Device
 			const MemoryZone zone,
 			char* const buffer);
 
-		void* AllocateDynamic(const size_t length);
+		void* AllocateDynamic(const unsigned long length);
 	}
 }
