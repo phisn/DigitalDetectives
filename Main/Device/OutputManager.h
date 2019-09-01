@@ -3,6 +3,7 @@
 #include "../Device/FailureHandler.h"
 #include "../Device/MemoryManager.h"
 
+#define DEVICE_LCD_WIDTH 20
 #define DEVICE_FASTLED_MAP_LEDCOUNT 199
 
 namespace Device
@@ -39,6 +40,7 @@ namespace Device
 						FID::LCD_DISPLAY
 					);
 				}
+
 			}
 
 			void Clear();

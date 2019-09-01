@@ -1,22 +1,35 @@
 #include "FaultHandler.h"
 
+// minus null byte
+#define DEVICE_EMESSAGE_ERROR_LEN sizeof(DEVICE_EMESSAGE_ERROR) - 1
+#define DEVICE_EMESSAGE_MODULE_LEN sizeof(DEVICE_EMESSAGE_MODULE) - 1
+#define DEVICE_EMESSAGE_FID_LEN sizeof(DEVICE_EMESSAGE_FID) - 1
+
+#define DEVICE_EMESSAGE_MESSAGE_LEN_FL DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_ERROR_LEN
+#define DEVICE_EMESSAGE_MODULE_NAME_LEN DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_MODULE_LEN
+#define DEVICE_EMESSAGE_FID_NUMBER_LEN DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_FID_LEN
+
 namespace
 {
-	FlashString emessageError = FPSTR(PSTR("Error: "));
-	FlashString emessageModule = FPSTR(PSTR("Module: "));
-	FlashString emessageFID = FPSTR(PSTR("FailureId: "));
+	FlashString emessageError = FPSTR(DEVICE_EMESSAGE_ERROR);
+	FlashString emessageModule = FPSTR(DEVICE_EMESSAGE_MODULE);
+	FlashString emessageFID = FPSTR(DEVICE_EMESSAGE_FID);
 
-	FlashString emessageModuleNames[(int) Device::FaultModule::_Length][12] PROGMEM = // 11 + \0
+	FlashString emessageModuleNames[(int) Device::FaultModule::_Length] PROGMEM = // 11 + \0
 	{
-		FPSTR(PSTR("InterfaceMg")),
-		FPSTR(PSTR("NetworkMg  ")),
-		FPSTR(PSTR("MapManager ")),
-		FPSTR(PSTR("BoardMg    ")),
-		FPSTR(PSTR("GameAccess ")),
-		FPSTR(PSTR("RequestHndl")),
-		FPSTR(PSTR("WebInt     "))
+		FPSTR("InterfaceMng"),
+		FPSTR("NetworkMng  "),
+		FPSTR("MapManager  "),
+		FPSTR("BoardMng    "),
+		FPSTR("GameAccess  "),
+		FPSTR("RequestHndlr"),
+		FPSTR("WebInterface")
 	};
 }
+
+// Force adjustments on lcd change
+static_assert(DEVICE_LCD_WIDTH == 20,
+	"LCD width changed, FaultHandler needs adjustments");
 
 // ################### <- 20
 // ########            <- 9
@@ -43,12 +56,12 @@ namespace
 /*
 
 ErrorMessage:
-	vvvvvvvvvvvvvvvvvvv
-   >Error: ############ <- 12 ch error message
-   >################### <- + 20 ch -> 30 ch
-   >Module: ########### <- 11 ch module name
-   >FailureId: ######## <- 7 digits for failure id
-    ^^^^^^^^^^^^^^^^^^^
+	vvvvvvvvvvvvvvvvvvvv
+   >Error: ############# <- 13 ch error message
+   >#################### <- + 20 ch -> 33 ch
+   >Module: ############ <- 12 ch module name
+   >FailureId: ######### <- 9 digits for failure id
+    ^^^^^^^^^^^^^^^^^^^^
 */
 
 namespace
@@ -96,18 +109,50 @@ namespace Device
 
 		void DisplayFaultMessage(const Fault fault)
 		{
+			char buffer[DEVICE_LCD_WIDTH] = { };
+
+			// print error message
+			memcpy_P(buffer, emessageError, DEVICE_EMESSAGE_ERROR_LEN);
+			memcpy_P(
+				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
+				fault.text, 
+				DEVICE_EMESSAGE_MESSAGE_LEN_FL);
+
 			OutputManager::Lcd::DisplayLineType(
 				0,
-				emessageError);
-			// add error message
+				buffer);
+
+			// print remaining error message
+			memcpy_P(
+				buffer, 
+				(const char*) fault.text + DEVICE_EMESSAGE_MESSAGE_LEN_FL, 
+				DEVICE_EMESSAGE_MESSAGE_LEN);
+			
+			OutputManager::Lcd::DisplayLineType(
+				1,
+				buffer);
+
+			// print module name
+			memcpy_P(buffer, emessageModule, DEVICE_EMESSAGE_MODULE_LEN);
+			memcpy_P(
+				buffer + DEVICE_EMESSAGE_MODULE_LEN, 
+				emessageModuleNames[(int) fault.module], 
+				DEVICE_EMESSAGE_MODULE_NAME_LEN);
+
 			OutputManager::Lcd::DisplayLineType(
 				2,
-				emessageModule);
-			// add module name
+				buffer);
+
+			// print failure id
+			memcpy_P(buffer, emessageFID, DEVICE_EMESSAGE_FID_LEN);
+			sprintf_P(
+				buffer + DEVICE_EMESSAGE_FID_LEN,
+				PSTR("%09d"),
+				fault.id);
+
 			OutputManager::Lcd::DisplayLineType(
-				0,
-				emessageFID);
-			// add fid number
+				3,
+				buffer);
 		}
 
 		void HandleModuleFault(const Fault fault)

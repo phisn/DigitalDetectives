@@ -12,11 +12,23 @@ namespace Device
 {
 	namespace OutputManager
 	{
+		void InitializeLcd();
+		void InitializeFastLed();
+
 		void Initialize()
+		{
+			InitializeLcd();
+			InitializeFastLed();
+		}
+
+		void InitializeLcd()
 		{
 			lcd.init();
 			lcd.backlight();
+		}
 
+		void InitializeFastLed()
+		{
 			FastLED.addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED>(
 				mapLeds, DEVICE_FASTLED_MAP_LEDCOUNT
 			);

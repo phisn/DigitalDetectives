@@ -6,11 +6,6 @@
 
 namespace Device
 {
-	struct RGB
-	{
-		unsigned char r, g, b;
-	};
-
 	namespace StatusLED
 	{
 		void Initialize();
