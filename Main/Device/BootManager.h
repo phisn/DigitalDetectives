@@ -8,6 +8,8 @@ namespace Device
 	{
 		enum State : unsigned char
 		{
+			Shutdown,
+
 			Collect,
 			Setup,
 			Running,
@@ -25,5 +27,7 @@ namespace Device
 
 		void Boot(); // called single time at begin by devicemanager
 		void Process(); // called on module finish (forward by devicemanager)
+
+		BootSector* _GetCurrentBootSector();
 	}
 }

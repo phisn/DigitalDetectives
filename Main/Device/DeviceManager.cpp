@@ -1,5 +1,14 @@
 #include "DeviceManager.h"
 
+#include "../Communication/InterfaceManager.h"
+#include "../Communication/RequestHandler.h"
+
+#include "../Device/BootManager.h"
+#include "../Device/MapManager.h"
+#include "../Device/NetworkManager.h"
+
+#include "../Game/GameAccess.h"
+
 namespace
 {
 	Device::Manager::State currentState;
@@ -33,7 +42,10 @@ namespace Device
 			InitilaizeGame();
 			InitializeCommunication();
 
-			currentState = State::Collect;
+			// old
+			// currentState = State::Collect;
+
+			BootManager::Boot();
 		}
 
 		void Uninitialize()
@@ -86,17 +98,19 @@ namespace Device
 
 		void ProcessCollect()
 		{
-
 		}
 
 		void ProcessSetup()
 		{
-
 		}
 
 		void ProcessRunning()
 		{
+		}
 
+		void Exit()
+		{
+			BootManager::Process(); // forward
 		}
 	}
 }

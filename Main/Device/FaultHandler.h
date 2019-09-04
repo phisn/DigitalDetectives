@@ -16,6 +16,8 @@
 #define DEVICE_FAULT_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) == DEVICE_EMESSAGE_MESSAGE_LEN, \
 	"Fault message has to be have full length (see DEVICE_EMESSAGE_MESSAGE_LEN)")
 
+#define DEVICE_MIN_REMAIN_MEMORY 128
+
 namespace Device
 {
 	enum class FaultModule
@@ -63,6 +65,7 @@ namespace Device
 		void Initialize();
 		void Unintialize();
 
+		void Report(); // -> eeprom
 		void Handle(const Fault fault);
 		void ValidateDeviceState();
 	}

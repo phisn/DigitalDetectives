@@ -23,7 +23,8 @@ namespace Device
 		{
 			enum
 			{
-				EEPROM_WRITE = 2 // -> + MemorySector::_Length
+				HEAP_OVERFLOW = 2,
+				EEPROM_WRITE // -> + MemorySector::_Length
 			};
 		};
 

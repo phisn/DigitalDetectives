@@ -1,6 +1,5 @@
 #include "MemoryManager.h"
 
-const unsigned long SectorBootSize = 0;
 const unsigned long SectorFaultSize = 0;
 const unsigned long SectorGameSize = 0;
 
@@ -86,6 +85,14 @@ namespace Device
 
 		void* AllocateDynamic(const unsigned long length)
 		{
+			if (ESP.getMaxFreeBlockSize() < length)
+			{
+				FailureHandler::Handle(
+					FailureModule::MemoryManager,
+					FID::HEAP_OVERFLOW
+				);
+			}
+
 			return malloc(length);
 		}
 

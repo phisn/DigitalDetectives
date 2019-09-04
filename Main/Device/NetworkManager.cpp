@@ -30,6 +30,11 @@ namespace Device
 		void Initialize()
 		{
 			/*
+			if (!WiFi.mode(WiFiMode::WIFI_AP))
+			{
+				// ...
+			}
+
 			IPAddress local_ip DEVICE_NET_LOCAL_IP;
 			IPAddress subnet_mask DEVICE_NET_SUBNET_MASK;
 

@@ -91,6 +91,10 @@ namespace Device
 		{
 		}
 
+		void Report()
+		{
+		}
+
 		void Handle(const Fault fault)
 		{
 			if (interfaceNotifierCallback == NULL)
@@ -110,6 +114,29 @@ namespace Device
 		void ValidateDeviceState()
 		{
 			// ex. check if device memory overflows
+
+			if (ESP.getFreeHeap() < DEVICE_MIN_REMAIN_MEMORY || 
+				ESP.getFreeContStack() < DEVICE_MIN_REMAIN_MEMORY)
+			{
+				// low memory
+			}
+
+			/*
+				if (ESP.getHeapFragmentation() > 90)
+				{
+					// high frag
+				}
+			*/
+
+			/*
+				ESP.getFreeHeap();
+				ESP.getFreeContStack();
+
+				// ESP.getFreeSketchSpace();
+				ESP.getHeapFragmentation();
+				ESP.getHeapStats();
+				ESP.getMaxFreeBlockSize();
+			*/
 		}
 
 		void DisplayFaultMessage(const Fault fault)
