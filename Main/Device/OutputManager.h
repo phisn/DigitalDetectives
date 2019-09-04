@@ -10,6 +10,7 @@ namespace Device
 {
 	namespace OutputManager
 	{
+		
 		struct FID
 		{
 			enum

@@ -1,36 +1,43 @@
 #pragma once
 
-#define ZONE_MEMORY_STATUS_SIZE 0
-#define ZONE_MEMORY_FAULTHANDLER_SIZE 0
-#define ZONE_MEMORY_GAMESTATE_SIZE 0
+#include "../Device/FailureHandler.h"
 
-#define ZONE_MEMORY_BEGIN 0
-#define ZONE_MEMORY_STATUS ZONE_MEMORY_BEGIN
-#define ZONE_MEMORY_FAULTHANDLER \
-	ZONE_MEMORY_STATUS + ZONE_MEMORY_STATUS_SIZE
-#define ZONE_MEMORY_GAMESTATE \
-	ZONE_MEMORY_FAULTHANDLER + ZONE_MEMORY_FAULTHANDLER_SIZE
+extern const unsigned long SectorBootSize;
+extern const unsigned long SectorFaultSize;
+extern const unsigned long SectorGameSize;
 
 namespace Device
 {
-	enum class MemoryZone : unsigned char
+	enum class MemorySector : unsigned char
 	{
-		FaultHandler,
-		GameState
+		Boot,
+		Fault,
+		Game,
+
+		_Length
 	};
 
 	namespace MemoryManager
 	{
+		struct FID
+		{
+			enum
+			{
+				EEPROM_WRITE = 2 // -> + MemorySector::_Length
+			};
+		};
+
 		void Initialize();
 		void Unintialize();
 
-		void ReadMemoryZone(
-			const MemoryZone zone,
+		void ReadSector(
+			const MemorySector zone,
 			char* const buffer);
-		void WriteMemoryZone(
-			const MemoryZone zone,
+		void WriteSector(
+			const MemorySector zone,
 			char* const buffer);
 
 		void* AllocateDynamic(const unsigned long length);
+		void DeallocateDynamic(void* memory);
 	}
 }

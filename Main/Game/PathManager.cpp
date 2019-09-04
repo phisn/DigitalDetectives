@@ -1,13 +1,10 @@
-#include "Connection.h"
+#include "PathManager.h"
 
 namespace Game
 {
 #pragma region Data
 	Station stations[199] PROGMEM =
 	{
-
-
-		
 		Station {Station::Type::UNDERGROUND, 0},
 		Station {Station::Type::TAXI, 0},
 		Station {Station::Type::BUS, 0},
@@ -686,7 +683,7 @@ namespace Game
 	};
 #pragma endregion
 
-	Path::FindOptionsSpecificResult Path::FindOptionsSpecific(
+	PathManager::FindOptionsSpecificResult PathManager::FindOptionsSpecific(
 		const unsigned char stationId,
 		const Station::Type type)
 	{
@@ -719,7 +716,7 @@ namespace Game
 		const Station::Type type, 
 		unsigned char* const result)
 	{
-		Path::FindOptionsSpecificResult specificResult = Path::FindOptionsSpecific(
+		PathManager::FindOptionsSpecificResult specificResult = PathManager::FindOptionsSpecific(
 			stationId,
 			type
 		);
@@ -730,7 +727,7 @@ namespace Game
 		}
 	}
 
-	Path::FindOptionsResult Path::FindOptions(
+	PathManager::FindOptionsResult PathManager::FindOptions(
 		const unsigned char stationId)
 	{
 		FindOptionsResult result{ };
@@ -743,7 +740,7 @@ namespace Game
 		return result;
 	}
 
-	const Station& Game::Path::GetStationType(
+	const Station& Game::PathManager::GetStationType(
 		const unsigned char stationId)
 	{
 		return stations[stationId];

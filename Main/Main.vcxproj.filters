@@ -96,11 +96,11 @@
     <ClInclude Include="Communication\SerialInterface.h">
       <Filter>Communication</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Connection.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Device\DevicePins.h">
       <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PathManager.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,7 +167,7 @@
     <ClCompile Include="Communication\SerialInterface.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Connection.cpp">
+    <ClCompile Include="Game\PathManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>

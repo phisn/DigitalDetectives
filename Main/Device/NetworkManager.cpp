@@ -29,6 +29,7 @@ namespace Device
 	{
 		void Initialize()
 		{
+			/*
 			IPAddress local_ip DEVICE_NET_LOCAL_IP;
 			IPAddress subnet_mask DEVICE_NET_SUBNET_MASK;
 
@@ -67,6 +68,7 @@ namespace Device
 			}
 
 			server.begin(80);
+			*/
 		}
 
 		void Unintialize()

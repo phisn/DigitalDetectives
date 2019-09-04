@@ -1,5 +1,10 @@
 #include "FailureHandler.h"
 
+// allow to access fid
+#include "../Device/FaultHandler.h"
+#include "../Device/MemoryManager.h"
+#include "../Device/OutputManager.h"
+
 namespace Device
 {
 	namespace FailureHandler
@@ -39,12 +44,28 @@ namespace Device
 				HandleFaultFailure(id);
 
 				break;
+			default:
+				DisplayFailureStatus(DEVICE_MEMORY_MANAGER_COLOR, id);
+				HandleFatalError();
+
+				break;
 			}
 		}
 
 		void HandleMemoryFailure(const FailureId id)
 		{
 			DisplayFailureStatus(DEVICE_MEMORY_MANAGER_COLOR, id);
+
+			/* Only for corrupted eeprom
+
+				// is eeprom write error -> try to clear eeprom
+				if (id > MemoryManager::FID::EEPROM_WRITE && 
+					id < MemoryManager::FID::EEPROM_WRITE + (int)MemorySector::_Length)
+				{
+				
+				}
+			*/
+
 			HandleFatalError();
 		}
 
@@ -73,6 +94,16 @@ namespace Device
 			const RGB color,
 			const FailureId id)
 		{
+			if (id > 16)
+			{
+				// handle bad FailureId
+
+				StatusLED::Show(color);
+				delay(5000);
+
+				return;
+			}
+
 			for (int i = 0; i < 3; ++i)
 			{
 				for (FailureId i = 0; i < id; ++i)

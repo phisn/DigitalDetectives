@@ -84,8 +84,7 @@ namespace Device
 
 		void ProcessCollect()
 		{
-			delay(3000);
-			FailureHandler::Handle(FailureModule::FaultHandler, 5);
+
 		}
 
 		void ProcessSetup()

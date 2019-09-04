@@ -28,7 +28,7 @@ namespace Game
 		Station::Type type : 3;
 	};
 
-	namespace Path
+	namespace PathManager
 	{
 		struct FindOptionsSpecificResult
 		{

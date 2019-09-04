@@ -1,7 +1,6 @@
 #include "Device/DeviceManager.h"
 
 /*
-
 Info:
 - All data should be stored as PROGMEM and strings
   should use the definition FlashString defined in
@@ -20,16 +19,15 @@ Info:
   -> Error messages can be max. 30 characters long
   -> FailureId can be max. 7 digits long (DEC)
   -> Module names are predefined in faulthandler
-
 */
 
 void setup()
 {
 	Device::Manager::Initialize();
+	Device::OutputManager::Lcd::DisplayLineType(0, "- Hello World -");
 }
 
 void loop()
 {
 	Device::Manager::Process();
 }
-

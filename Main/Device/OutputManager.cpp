@@ -3,8 +3,6 @@
 
 namespace
 {
-	LiquidCrystal_I2C lcd{ 0x27, 20, 4 };
-
 	CRGB mapLeds[DEVICE_FASTLED_MAP_LEDCOUNT];
 }
 
@@ -18,13 +16,17 @@ namespace Device
 		void Initialize()
 		{
 			InitializeLcd();
-			InitializeFastLed();
+			// InitializeFastLed();
 		}
 
 		void InitializeLcd()
 		{
-			lcd.init();
-			lcd.backlight();
+			Wire.begin(D5, D4);
+			
+			Lcd::_GetDisplay()->init();
+			Lcd::_GetDisplay()->backlight();
+		
+			delay(500);
 		}
 
 		void InitializeFastLed()
@@ -40,12 +42,14 @@ namespace Device
 
 		void Lcd::Clear()
 		{
-			lcd.clear();
+			//lcd.clear();
 		}
 
 		LiquidCrystal_I2C* Lcd::_GetDisplay()
 		{
-			return &lcd;
+			// fix bug
+			static LiquidCrystal_I2C lcdi2c(0x27, 20, 4);
+			return &lcdi2c;
 		}
 	}
 }

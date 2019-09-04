@@ -32,6 +32,7 @@ namespace Device
 		_Length
 	};
 
+	
 	struct Fault
 	{
 		FaultModule module;

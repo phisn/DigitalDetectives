@@ -115,7 +115,7 @@ namespace Device
 			memcpy_P(buffer, emessageError, DEVICE_EMESSAGE_ERROR_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
-				fault.text, 
+				(const char*) fault.text, 
 				DEVICE_EMESSAGE_MESSAGE_LEN_FL);
 
 			OutputManager::Lcd::DisplayLineType(
