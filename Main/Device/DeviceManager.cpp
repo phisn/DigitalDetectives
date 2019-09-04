@@ -80,6 +80,8 @@ namespace Device
 
 				break;
 			}
+
+			FaultHandler::ValidateDeviceState();
 		}
 
 		void ProcessCollect()

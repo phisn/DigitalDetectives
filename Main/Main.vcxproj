@@ -125,6 +125,7 @@
     <ClInclude Include="Communication\Request.h" />
     <ClInclude Include="Communication\RequestHandler.h" />
     <ClInclude Include="Communication\SerialInterface.h" />
+    <ClInclude Include="Device\BootManager.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\DevicePins.h" />
     <ClInclude Include="Device\FailureHandler.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Communication\InterfaceManager.cpp" />
     <ClCompile Include="Communication\RequestHandler.cpp" />
     <ClCompile Include="Communication\SerialInterface.cpp" />
+    <ClCompile Include="Device\BootManager.cpp" />
     <ClCompile Include="Device\DeviceManager.cpp" />
     <ClCompile Include="Device\FailureHandler.cpp" />
     <ClCompile Include="Device\FaultHandler.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="Game\GameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Architecture\BootConcept.jpeg" />
     <Image Include="..\Architecture\Combined_Layers.jpeg" />
     <Image Include="..\Architecture\Communication_Layer.jpeg" />
     <Image Include="..\Architecture\Device_Layer.jpeg" />

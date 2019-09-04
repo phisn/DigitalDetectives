@@ -102,6 +102,9 @@
     <ClInclude Include="Game\PathManager.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Device\BootManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -170,6 +173,9 @@
     <ClCompile Include="Game\PathManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Device\BootManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Docs\SY_Map.png">
@@ -195,6 +201,9 @@
     </Image>
     <Image Include="..\Docs\SY_Map_Splitted.jpeg">
       <Filter>Docs</Filter>
+    </Image>
+    <Image Include="..\Architecture\BootConcept.jpeg">
+      <Filter>Architecture</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

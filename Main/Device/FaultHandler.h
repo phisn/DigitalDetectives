@@ -64,5 +64,6 @@ namespace Device
 		void Unintialize();
 
 		void Handle(const Fault fault);
+		void ValidateDeviceState();
 	}
 }

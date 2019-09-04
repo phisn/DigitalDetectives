@@ -107,6 +107,11 @@ namespace Device
 			HandleModuleFault(fault);
 		}
 
+		void ValidateDeviceState()
+		{
+			// ex. check if device memory overflows
+		}
+
 		void DisplayFaultMessage(const Fault fault)
 		{
 			char buffer[DEVICE_LCD_WIDTH] = { };
