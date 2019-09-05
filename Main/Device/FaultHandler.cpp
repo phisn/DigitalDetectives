@@ -1,9 +1,9 @@
 #include "FaultHandler.h"
 
 // minus null byte
-#define DEVICE_EMESSAGE_ERROR_LEN sizeof(DEVICE_EMESSAGE_ERROR) - 1
-#define DEVICE_EMESSAGE_MODULE_LEN sizeof(DEVICE_EMESSAGE_MODULE) - 1
-#define DEVICE_EMESSAGE_FID_LEN sizeof(DEVICE_EMESSAGE_FID) - 1
+#define DEVICE_EMESSAGE_ERROR_LEN (sizeof(DEVICE_EMESSAGE_ERROR) - 1)
+#define DEVICE_EMESSAGE_MODULE_LEN (sizeof(DEVICE_EMESSAGE_MODULE) - 1)
+#define DEVICE_EMESSAGE_FID_LEN (sizeof(DEVICE_EMESSAGE_FID) - 1)
 
 #define DEVICE_EMESSAGE_MESSAGE_LEN_FL DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_ERROR_LEN
 #define DEVICE_EMESSAGE_MODULE_NAME_LEN DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_MODULE_LEN
@@ -17,13 +17,14 @@ namespace
 
 	FlashString emessageModuleNames[(int) Device::FaultModule::_Length] PROGMEM = // 11 + \0
 	{
-		FPSTR("InterfaceMng"),
-		FPSTR("NetworkMng  "),
-		FPSTR("MapManager  "),
-		FPSTR("BoardMng    "),
-		FPSTR("GameAccess  "),
-		FPSTR("RequestHndlr"),
-		FPSTR("WebInterface")
+		FPSTR("NetworkMng  \0"),
+		FPSTR("MapManager  \0"),
+		FPSTR("BoardManager\0"),
+		FPSTR("GameManager \0"),
+		FPSTR("GameAccess  \0"),
+		FPSTR("InterfaceMng\0"),
+		FPSTR("RequestHndlr\0"),
+		FPSTR("WebInterface\0")
 	};
 }
 
@@ -97,16 +98,18 @@ namespace Device
 
 		void Handle(const Fault fault)
 		{
-			if (interfaceNotifierCallback == NULL)
-			{
-				FailureHandler::Handle(
-					FailureModule::FaultHandler,
-					FID::INC_NULL
-				);
-			}
+			/* TODO:
+				if (interfaceNotifierCallback == NULL)
+				{
+					FailureHandler::Handle(
+						FailureModule::FaultHandler,
+						FID::INC_NULL
+					);
+				}
+			*/
 
 			DisplayFaultMessage(fault);
-			interfaceNotifierCallback(fault);
+			// interfaceNotifierCallback(fault);
 
 			HandleModuleFault(fault);
 		}
@@ -141,7 +144,8 @@ namespace Device
 
 		void DisplayFaultMessage(const Fault fault)
 		{
-			char buffer[DEVICE_LCD_WIDTH] = { };
+			OutputManager::Lcd::Clear();
+			char buffer[DEVICE_LCD_WIDTH + 1] = { };
 
 			// print error message
 			memcpy_P(buffer, emessageError, DEVICE_EMESSAGE_ERROR_LEN);
@@ -154,15 +158,21 @@ namespace Device
 				0,
 				buffer);
 
+			// memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
+
 			// print remaining error message
+			// ignore space on next line
+			const bool offset = pgm_read_byte((const char*) fault.text + DEVICE_EMESSAGE_MESSAGE_LEN_FL) == ' ';
 			memcpy_P(
 				buffer, 
-				(const char*) fault.text + DEVICE_EMESSAGE_MESSAGE_LEN_FL, 
-				DEVICE_EMESSAGE_MESSAGE_LEN);
-			
+				(const char*) fault.text + DEVICE_EMESSAGE_MESSAGE_LEN_FL + offset,
+				DEVICE_LCD_WIDTH - offset);
+
 			OutputManager::Lcd::DisplayLineType(
 				1,
 				buffer);
+
+			// memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
 
 			// print module name
 			memcpy_P(buffer, emessageModule, DEVICE_EMESSAGE_MODULE_LEN);
@@ -170,7 +180,7 @@ namespace Device
 				buffer + DEVICE_EMESSAGE_MODULE_LEN, 
 				emessageModuleNames[(int) fault.module], 
 				DEVICE_EMESSAGE_MODULE_NAME_LEN);
-
+			
 			OutputManager::Lcd::DisplayLineType(
 				2,
 				buffer);
@@ -181,7 +191,7 @@ namespace Device
 				buffer + DEVICE_EMESSAGE_FID_LEN,
 				PSTR("%09d"),
 				fault.id);
-
+			
 			OutputManager::Lcd::DisplayLineType(
 				3,
 				buffer);

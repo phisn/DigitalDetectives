@@ -75,9 +75,6 @@
     <ClInclude Include="Game\Settings.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameMap.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\StaticGameData.h">
       <Filter>Game</Filter>
     </ClInclude>

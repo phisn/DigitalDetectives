@@ -9,8 +9,8 @@
 #define DEVICE_EMESSAGE_FID "FailureId: "
 
 // minus null byte
-#define DEVICE_EMESSAGE_ERROR_LEN sizeof(DEVICE_EMESSAGE_ERROR) - 1
-#define DEVICE_EMESSAGE_MESSAGE_LEN DEVICE_LCD_WIDTH * 2 - sizeof(DEVICE_EMESSAGE_ERROR) - 1
+#define DEVICE_EMESSAGE_ERROR_LEN (sizeof(DEVICE_EMESSAGE_ERROR) - 1)
+#define DEVICE_EMESSAGE_MESSAGE_LEN (DEVICE_LCD_WIDTH * 2 - sizeof(DEVICE_EMESSAGE_ERROR) - 1)
 
 // usage: FlashString fault_xxx = DEVICE_FAULT_MESSAGE("xxx");
 #define DEVICE_FAULT_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) == DEVICE_EMESSAGE_MESSAGE_LEN, \

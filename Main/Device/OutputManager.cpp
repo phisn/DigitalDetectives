@@ -42,13 +42,15 @@ namespace Device
 
 		void Lcd::Clear()
 		{
-			//lcd.clear();
+			_GetDisplay()->clear();
 		}
 
 		LiquidCrystal_I2C* Lcd::_GetDisplay()
 		{
 			// fix bug
-			static LiquidCrystal_I2C lcdi2c(0x27, 20, 4);
+			static LiquidCrystal_I2C lcdi2c(
+				DEVICE_LCD_ADDRESS,
+				DEVICE_LCD_WIDTH, 4);
 			return &lcdi2c;
 		}
 	}

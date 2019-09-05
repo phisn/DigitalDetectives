@@ -3,6 +3,7 @@
 #include "../Device/FailureHandler.h"
 #include "../Device/MemoryManager.h"
 
+#define DEVICE_LCD_ADDRESS 0x27
 #define DEVICE_LCD_WIDTH 20
 #define DEVICE_FASTLED_MAP_LEDCOUNT 199
 

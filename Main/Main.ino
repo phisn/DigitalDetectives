@@ -23,8 +23,8 @@ Info:
 
 void setup()
 {
+	Serial.begin(9600);
 	Device::Manager::Initialize();
-	Device::OutputManager::Lcd::DisplayLineType(0, "- Hello World -");
 }
 
 void loop()

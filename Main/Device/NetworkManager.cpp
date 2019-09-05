@@ -29,7 +29,6 @@ namespace Device
 	{
 		void Initialize()
 		{
-			/*
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
 				// ...
@@ -73,7 +72,6 @@ namespace Device
 			}
 
 			server.begin(80);
-			*/
 		}
 
 		void Unintialize()

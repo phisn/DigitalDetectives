@@ -45,7 +45,7 @@ namespace Device
 			// old
 			// currentState = State::Collect;
 
-			BootManager::Boot();
+			// BootManager::Boot();
 		}
 
 		void Uninitialize()
