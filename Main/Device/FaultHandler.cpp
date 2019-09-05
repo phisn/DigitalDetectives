@@ -17,6 +17,7 @@ namespace
 
 	FlashString emessageModuleNames[(int) Device::FaultModule::_Length] PROGMEM = // 11 + \0
 	{
+		FPSTR("FaultHandler\0"),
 		FPSTR("NetworkMng  \0"),
 		FPSTR("MapManager  \0"),
 		FPSTR("BoardManager\0"),
@@ -26,6 +27,9 @@ namespace
 		FPSTR("RequestHndlr\0"),
 		FPSTR("WebInterface\0")
 	};
+
+	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null       ");
+	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory         ");
 }
 
 // Force adjustments on lcd change
@@ -96,22 +100,28 @@ namespace Device
 		{
 		}
 
-		void Handle(const Fault fault)
+		void Handle(const Fault fault, const bool fatal)
 		{
 			/* TODO:
 				if (interfaceNotifierCallback == NULL)
 				{
-					FailureHandler::Handle(
-						FailureModule::FaultHandler,
-						FID::INC_NULL
-					);
+					Handle(
+					{
+						FaultModule::FaultHandler,
+						(FailureId) FID::INC_NULL,
+						fault_intmg_null
+					});
 				}
 			*/
 
 			DisplayFaultMessage(fault);
-			// interfaceNotifierCallback(fault);
 
-			HandleModuleFault(fault);
+			if (fatal)
+			{
+				// interfaceNotifierCallback(fault);
+
+				HandleModuleFault(fault);
+			}
 		}
 
 		void ValidateDeviceState()
@@ -121,7 +131,12 @@ namespace Device
 			if (ESP.getFreeHeap() < DEVICE_MIN_REMAIN_MEMORY || 
 				ESP.getFreeContStack() < DEVICE_MIN_REMAIN_MEMORY)
 			{
-				// low memory
+				Handle(
+				{
+					FaultModule::FaultHandler,
+					(FailureId)FID::LOW_MEMORY,
+					fault_low_memory
+				});
 			}
 
 			/*

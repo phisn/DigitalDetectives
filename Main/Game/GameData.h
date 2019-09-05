@@ -7,16 +7,16 @@
 
 namespace Game
 {
-	// Implementation in GameManager.cpp
-	// GameManager has the only acces to
-	// change GameData
 	struct Data
 	{
 		Player player[6];
 		Settings settings;
 	};
-	
-	const Data& GetData();
+
+	// Implementation in GameManager.cpp
+	// GameManager has the only access to
+	// change GameData
+	const Data* GetData();
 }
 
 #pragma pack(pop)

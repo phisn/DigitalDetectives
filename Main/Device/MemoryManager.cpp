@@ -1,7 +1,6 @@
 #include "MemoryManager.h"
 
 const unsigned long SectorFaultSize = 0;
-const unsigned long SectorGameSize = 0;
 
 #define DEVICE_SECTOR_BOOT_OFFSET 0
 #define DEVICE_SECTOR_FAULT_OFFSET SectorBootSize

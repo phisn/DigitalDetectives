@@ -22,6 +22,7 @@ namespace Device
 {
 	enum class FaultModule
 	{
+		FaultHandler,
 		NetworkManager,
 		MapManager,
 		BoardManager,
@@ -52,6 +53,7 @@ namespace Device
 			enum
 			{
 				INC_NULL = 2, // interfacenotifiercallback
+				LOW_MEMORY,
 				_Length // for fault module conversion in HandleCommonFault
 			};
 		};
@@ -66,7 +68,7 @@ namespace Device
 		void Unintialize();
 
 		void Report(); // -> eeprom
-		void Handle(const Fault fault);
+		void Handle(const Fault fault, const bool fatal = true);
 		void ValidateDeviceState();
 	}
 }
