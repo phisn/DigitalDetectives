@@ -12,6 +12,7 @@
 namespace
 {
 	FlashString emessageError = FPSTR(DEVICE_EMESSAGE_ERROR);
+	FlashString emessageErrorNonFatal FPSTR(DEVICE_EMESSAGE_ERROR_NONFATAL);
 	FlashString emessageModule = FPSTR(DEVICE_EMESSAGE_MODULE);
 	FlashString emessageFID = FPSTR(DEVICE_EMESSAGE_FID);
 
@@ -32,6 +33,10 @@ namespace
 	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory         ");
 }
 
+// prevent accidential change of nonfatal
+static_assert(sizeof(DEVICE_EMESSAGE_ERROR) == sizeof(DEVICE_EMESSAGE_ERROR_NONFATAL),
+	"Replacement 'non-fatal' must have the same size as the normal error");
+
 // Force adjustments on lcd change
 static_assert(DEVICE_LCD_WIDTH == 20,
 	"LCD width changed, FaultHandler needs adjustments");
@@ -40,23 +45,6 @@ static_assert(DEVICE_LCD_WIDTH == 20,
 // ########            <- 9
 //         ########### <- 11 
 // Module: InterfaceMg   
-// Module: NetworkMg
-// Module: MapManager
-// Module: BoardMg
-// Module: GameAccess
-// Module: RequestHndl
-// Module: WebInt
-
-/*
-		NetworkManager,
-		MapManager,
-		BoardManager,
-		GameManager,
-		GameAccess,
-		InterfaceManager,
-		RequestHandler,
-		WebInterface
-*/
 
 /*
 
@@ -78,7 +66,7 @@ namespace Device
 {
 	namespace FaultHandler
 	{
-		void DisplayFaultMessage(const Fault fault);
+		void DisplayFaultMessage(const Fault fault, const bool fatal);
 		void HandleModuleFault(const Fault fault);
 		void HandleCommonFault(const Fault fault);
 
@@ -102,24 +90,26 @@ namespace Device
 
 		void Handle(const Fault fault, const bool fatal)
 		{
-			/* TODO:
-				if (interfaceNotifierCallback == NULL)
+			/*
+			
+			if (interfaceNotifierCallback == NULL)
+			{
+				Handle(
 				{
-					Handle(
-					{
-						FaultModule::FaultHandler,
-						(FailureId) FID::INC_NULL,
-						fault_intmg_null
-					});
-				}
+					FaultModule::FaultHandler,
+					(FailureId) FID::INC_NULL,
+					fault_intmg_null
+				});
+			/}
+			
 			*/
 
-			DisplayFaultMessage(fault);
+			DisplayFaultMessage(fault, fatal);
 
 			if (fatal)
 			{
-				// interfaceNotifierCallback(fault);
-
+				if ()
+				interfaceNotifierCallback(fault);
 				HandleModuleFault(fault);
 			}
 		}
@@ -157,13 +147,16 @@ namespace Device
 			*/
 		}
 
-		void DisplayFaultMessage(const Fault fault)
+		void DisplayFaultMessage(const Fault fault, const bool fatal)
 		{
 			OutputManager::Lcd::Clear();
 			char buffer[DEVICE_LCD_WIDTH + 1] = { };
 
 			// print error message
-			memcpy_P(buffer, emessageError, DEVICE_EMESSAGE_ERROR_LEN);
+			memcpy_P(
+				buffer,  
+				fatal ? emessageError : emessageErrorNonFatal,
+				DEVICE_EMESSAGE_ERROR_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
 				(const char*) fault.text, 

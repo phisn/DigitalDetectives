@@ -5,6 +5,7 @@
 #include "../Device/OutputManager.h"
 
 #define DEVICE_EMESSAGE_ERROR "Error: "
+#define DEVICE_EMESSAGE_ERROR_NONFATAL "Wrnng: "
 #define DEVICE_EMESSAGE_MODULE "Module: "
 #define DEVICE_EMESSAGE_FID "FailureId: "
 
@@ -68,6 +69,7 @@ namespace Device
 		void Unintialize();
 
 		void Report(); // -> eeprom
+		// faults can be non-fatal to continue normally
 		void Handle(const Fault fault, const bool fatal = true);
 		void ValidateDeviceState();
 	}

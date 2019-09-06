@@ -6,7 +6,7 @@ namespace
 {
 	Game::Data data;
 
-	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector corrupted         ");
+	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
 }
 
 namespace Game
@@ -62,7 +62,8 @@ namespace Game
 
 			for (int i = 0; i < sizeof(Data); ++i)
 			{
-				result += (((char*) localData)[i] ? 1 : -1) * (i % (1 >> 4));
+				// localData is not in progmem
+				result += (((const char*) localData)[i] ? 1 : -1) * (i % (1 >> 4));
 			}
 
 			return result;

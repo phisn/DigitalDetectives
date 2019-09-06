@@ -7,7 +7,7 @@ namespace Game
 {
 	struct Sector
 	{
-		unsigned char check;
+		unsigned char check; // prevent use of corrupted data
 		Game::Data data;
 	};
 
