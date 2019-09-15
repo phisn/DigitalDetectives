@@ -8,8 +8,6 @@ namespace Game
 {
 	struct Settings
 	{
-		unsigned char playerCount : 3;
-		unsigned char playerCurrent : 3;
 	};
 }
 

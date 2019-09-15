@@ -26,9 +26,13 @@ namespace Device
 		FaultHandler,
 		NetworkManager,
 		MapManager,
+
 		BoardManager,
+		Collector,
+		SetupManager,
 		GameManager,
-		GameAccess,
+		GameController,
+
 		InterfaceManager,
 		RequestHandler,
 		WebInterface,

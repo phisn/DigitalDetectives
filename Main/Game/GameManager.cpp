@@ -4,23 +4,15 @@ const unsigned long SectorGameSize = sizeof(Game::Sector);
 
 namespace
 {
-	Game::Data data;
-
-	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
+	//FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
 }
 
 namespace Game
 {
-	// from GameData.h
-	const Data* GetData()
-	{
-		return &data;
-	}
-
 	namespace Manager
 	{
-		unsigned char CalculateCheck(const Data* const);
-		bool ValidateCheck(const Data* const);
+		/*unsigned char CalculateCheck(const Data* const);
+		bool ValidateCheck(const Data* const);*/
 
 		void Initialize()
 		{
@@ -30,7 +22,7 @@ namespace Game
 		{
 		}
 
-		void Restore()
+		/*void Restore()
 		{
 			Sector sectorBuffer;
 
@@ -72,6 +64,6 @@ namespace Game
 		bool ValidateCheck(const Sector* const sector)
 		{
 			return CalculateCheck(&sector->data) == sector->check;
-		}
+		}*/
 	}
 }

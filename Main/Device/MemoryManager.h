@@ -2,9 +2,12 @@
 
 #include "../Device/FailureHandler.h"
 
-extern const unsigned long SectorBootSize;
-extern const unsigned long SectorFaultSize;
-extern const unsigned long SectorGameSize;
+namespace Extern
+{
+	extern const unsigned long SectorBootSize;
+	extern const unsigned long SectorFaultSize;
+	extern const unsigned long SectorGameSize;
+}
 
 namespace Device
 {

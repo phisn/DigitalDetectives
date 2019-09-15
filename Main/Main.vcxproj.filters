@@ -60,12 +60,6 @@
     <ClInclude Include="Game\BoardManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameAccess.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameData.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\GameManager.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -101,6 +95,15 @@
     </ClInclude>
     <ClInclude Include="Device\BootManager.h">
       <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SetupManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Collector.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameController.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +155,6 @@
     <ClCompile Include="Game\BoardManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameAccess.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -172,6 +172,15 @@
     </ClCompile>
     <ClCompile Include="Device\BootManager.cpp">
       <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SetupManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Collector.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameController.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
