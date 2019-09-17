@@ -93,9 +93,6 @@
     <ClInclude Include="Game\PathManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Device\BootManager.h">
-      <Filter>Device</Filter>
-    </ClInclude>
     <ClInclude Include="Game\SetupManager.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -169,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="Game\PathManager.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Device\BootManager.cpp">
-      <Filter>Device</Filter>
     </ClCompile>
     <ClCompile Include="Game\SetupManager.cpp">
       <Filter>Game</Filter>

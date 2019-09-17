@@ -1,12 +1,5 @@
 #include "GameManager.h"
 
-const unsigned long SectorGameSize = sizeof(Game::Sector);
-
-namespace
-{
-	//FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
-}
-
 namespace Game
 {
 	namespace Manager

@@ -16,7 +16,6 @@ namespace Device
 		void Uninitialize();
 
 		void Process();
-		void Exit();
 
 		State GetCurrentState();
 		void SetCurrentState(const State);

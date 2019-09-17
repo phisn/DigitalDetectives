@@ -43,11 +43,11 @@ namespace Device
 					subnet_mask))
 			{
 				FaultHandler::Handle(
-					{
-						FaultModule::NetworkManager,
-						(FailureId) FID::SOFT_AP_CONFIG,
-						fault_soft_ap_config
-					});
+				{
+					FaultModule::NetworkManager,
+					(FailureId) FID::SOFT_AP_CONFIG,
+					fault_soft_ap_config
+				}, true);
 			}
 
 			char ssidBuffer[sizeof(DEVICE_NET_SSID)];
@@ -64,11 +64,11 @@ namespace Device
 					DEVICE_NET_MAX_CONN))
 			{
 				FaultHandler::Handle(
-					{
-						FaultModule::NetworkManager,
-						(FailureId) FID::SOFT_AP_CREATE,
-						fault_soft_ap_create
-					});
+				{
+					FaultModule::NetworkManager,
+					(FailureId) FID::SOFT_AP_CREATE,
+					fault_soft_ap_create
+				}, true);
 			}
 
 			server.begin(80);

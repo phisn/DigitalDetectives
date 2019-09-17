@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Communication/Request.h"
-#include "../Game/GameAccess.h"
+#include "../Game/GameController.h"
 
 namespace Communication
 {

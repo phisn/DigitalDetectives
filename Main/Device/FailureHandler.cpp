@@ -18,6 +18,9 @@ namespace Device
 		void DisplayFailureStatus(
 			const RGB color,
 			const FailureId id);
+		void DisplayFailureStatusLoop(
+			const RGB color,
+			const FailureId id);
 
 		void Initialize()
 		{
@@ -27,8 +30,16 @@ namespace Device
 		{
 		}
 
+		void Display(
+			const RGB color, 
+			const FailureId id)
+		{
+			DisplayFailureStatus(color, id);
+		}
 
-		void Handle(const FailureModule module, const FailureId id)
+		void Handle(
+			const FailureModule module,
+			const FailureId id)
 		{
 			switch (module)
 			{
@@ -45,7 +56,7 @@ namespace Device
 
 				break;
 			default:
-				DisplayFailureStatus(DEVICE_MEMORY_MANAGER_COLOR, id);
+				DisplayFailureStatus(DEVICE_UNKOWN_COLOR, id);
 				HandleFatalError();
 
 				break;
@@ -54,17 +65,23 @@ namespace Device
 
 		void HandleMemoryFailure(const FailureId id)
 		{
+			if (id == MemoryManager::FID::EEPROM_OVERFLOW ||
+				id == MemoryManager::FID::INVALID_SECTOR)
+			{
+				DisplayFailureStatusLoop(DEVICE_MEMORY_MANAGER_COLOR, id);
+			}
+
 			DisplayFailureStatus(DEVICE_MEMORY_MANAGER_COLOR, id);
 
-			/* Only for corrupted eeprom
+			if (id == MemoryManager::FID::EEPROM_CORRUPTED)
+			{
+				MemoryManager::CleanEEPROM();
+			}
 
-				// is eeprom write error -> try to clear eeprom
-				if (id > MemoryManager::FID::EEPROM_WRITE && 
-					id < MemoryManager::FID::EEPROM_WRITE + (int)MemorySector::_Length)
-				{
-				
-				}
-			*/
+			// Cant be handled
+			//  EEPROM_WRITE_CLEAN
+			//  EEPROM_WRITE
+			//  EEPROM_HEAP_OVERFLOW
 
 			HandleFatalError();
 		}
@@ -94,13 +111,14 @@ namespace Device
 			const RGB color,
 			const FailureId id)
 		{
-			if (id > 16)
+			if (id > DEVICE_FID_OVERFLOW)
 			{
 				// handle bad FailureId
-
+				StatusLED::Show(DEVICE_IFID_COLOR);
+				delay(5000);
 				StatusLED::Show(color);
 				delay(5000);
-
+				
 				return;
 			}
 
@@ -115,6 +133,17 @@ namespace Device
 				}
 
 				delay(2000);
+			}
+		}
+
+		void DisplayFailureStatusLoop(const RGB color, const FailureId id)
+		{
+			while (true)
+			{
+				DisplayFailureStatus(color, id);
+
+				StatusLED::Show(DEVICE_LOOP_COLOR);
+				delay(1000);
 			}
 		}
 	}

@@ -108,8 +108,7 @@ namespace Device
 
 			if (fatal)
 			{
-				if ()
-				interfaceNotifierCallback(fault);
+				// interfaceNotifierCallback(fault);
 				HandleModuleFault(fault);
 			}
 		}
@@ -121,12 +120,12 @@ namespace Device
 			if (ESP.getFreeHeap() < DEVICE_MIN_REMAIN_MEMORY || 
 				ESP.getFreeContStack() < DEVICE_MIN_REMAIN_MEMORY)
 			{
-				Handle(
+				FaultHandler::Handle(
 				{
 					FaultModule::FaultHandler,
 					(FailureId)FID::LOW_MEMORY,
 					fault_low_memory
-				});
+				}, true);
 			}
 
 			/*

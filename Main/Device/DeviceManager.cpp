@@ -3,11 +3,10 @@
 #include "../Communication/InterfaceManager.h"
 #include "../Communication/RequestHandler.h"
 
-#include "../Device/BootManager.h"
 #include "../Device/MapManager.h"
 #include "../Device/NetworkManager.h"
 
-#include "../Game/GameAccess.h"
+#include "../Game/GameController.h"
 
 namespace
 {
@@ -66,7 +65,7 @@ namespace Device
 
 		void InitilaizeGame()
 		{
-			Game::Access::Initialize();
+			Game::Controller::Initialize();
 		}
 
 		void InitializeCommunication()
@@ -106,11 +105,6 @@ namespace Device
 
 		void ProcessRunning()
 		{
-		}
-
-		void Exit()
-		{
-			BootManager::Process(); // forward
 		}
 	}
 }

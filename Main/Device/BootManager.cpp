@@ -1,7 +1,5 @@
 #include "BootManager.h"
 
-const unsigned long SectorBootSize = sizeof(Device::BootSector);
-
 namespace
 {
 	Device::BootSector* bootSector;

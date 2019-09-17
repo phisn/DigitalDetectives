@@ -6,6 +6,8 @@
 
 #define DEVICE_EMESSAGE_ERROR "Error: "
 #define DEVICE_EMESSAGE_ERROR_NONFATAL "Wrnng: "
+#define DEVICE_EMESSAGE_ERROR_FATAL "Fatal: "
+
 #define DEVICE_EMESSAGE_MODULE "Module: "
 #define DEVICE_EMESSAGE_FID "FailureId: "
 
@@ -39,13 +41,19 @@ namespace Device
 
 		_Length
 	};
-
 	
 	struct Fault
 	{
 		FaultModule module;
 		FailureId id;
 		FlashString text;
+
+		enum Type
+		{
+			NonFatal,
+			Fatal,
+			Irreparable
+		} type;
 	};
 
 	namespace FaultHandler
@@ -74,7 +82,7 @@ namespace Device
 
 		void Report(); // -> eeprom
 		// faults can be non-fatal to continue normally
-		void Handle(const Fault fault, const bool fatal = true);
+		void Handle(const Fault fault, const bool fatal);
 		void ValidateDeviceState();
 	}
 }

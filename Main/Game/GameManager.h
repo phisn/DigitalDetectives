@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Device/MemoryManager.h"
+
 #include "../Game/BoardManager.h"
+#include "../Game/Player.h"
 
 #pragma pack(push, 1)
 

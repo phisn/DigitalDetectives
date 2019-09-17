@@ -4,21 +4,23 @@
 
 namespace Extern
 {
-	extern const unsigned long SectorBootSize;
 	extern const unsigned long SectorFaultSize;
 	extern const unsigned long SectorGameSize;
+	extern const unsigned long SectorValidationSize;
 }
 
 namespace Device
 {
 	enum class MemorySector : unsigned char
 	{
-		Boot,
+		Validation,
 		Fault,
 		Game,
 
 		_Length
 	};
+
+	typedef unsigned short ValidationSector;
 
 	namespace MemoryManager
 	{
@@ -27,7 +29,13 @@ namespace Device
 			enum
 			{
 				HEAP_OVERFLOW = 2,
-				EEPROM_WRITE // -> + MemorySector::_Length
+
+				INVALID_SECTOR,
+
+				EEPROM_OVERFLOW,
+				EEPROM_CORRUPTED,
+				EEPROM_WRITE_CLEAN,
+				EEPROM_WRITE // has to be last | + MemorySector::_Length
 			};
 		};
 
@@ -40,6 +48,8 @@ namespace Device
 		void WriteSector(
 			const MemorySector zone,
 			char* const buffer);
+
+		void CleanEEPROM();
 
 		void* AllocateDynamic(const unsigned long length);
 		void DeallocateDynamic(void* memory);

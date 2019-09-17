@@ -8,29 +8,21 @@ namespace Game
 {
 	enum class State : unsigned char
 	{
-		Running = 0b0011'0000,
+		Shutdown = 0, // zero for fresh start / clean
+		Running,
 
 		Setup,
 		Collect,
-		Restore,
-
-		Finished,
-		Paused,
-		Shutdown
+		Restore
 	};
 
-	struct Sector
+	struct GameSector
 	{
-		unsigned char check;
+		GameData game;
+		SetupData setup;
+		CollectData collect;
 
-		struct Data
-		{
-			GameData game;
-			SetupData setup;
-			CollectData collect;
-
-			State state;
-		} data;
+		State state;
 	};
 
 	namespace Controller
@@ -40,7 +32,7 @@ namespace Game
 			enum
 			{
 				SECTOR_CORRUPTED,
-				INVALID_STATE = 0b1000'0000
+				INVALID_STATE = 0xB0
 				// fids for invalid state, 0xB0 prefix and
 				// state suffix -> 0xB0 - 0xB6
 			};

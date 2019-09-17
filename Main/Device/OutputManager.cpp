@@ -25,8 +25,8 @@ namespace Device
 			
 			Lcd::_GetDisplay()->init();
 			Lcd::_GetDisplay()->backlight();
-		
-			delay(500);
+
+			Lcd::Clear();
 		}
 
 		void InitializeFastLed()
@@ -40,18 +40,47 @@ namespace Device
 		{
 		}
 
-		void Lcd::Clear()
+		namespace Interact
 		{
-			_GetDisplay()->clear();
+			Choice GetChoice()
+			{
+			}
+
+			Choice ForceGetChoice()
+			{
+				Choice choice;
+
+				while (true)
+				{
+					choice = GetChoice();
+
+					if (choice != Choice::Empty)
+					{
+						break;
+					}
+
+					delay(500);
+				}
+
+				return choice;
+			}
 		}
 
-		LiquidCrystal_I2C* Lcd::_GetDisplay()
+		namespace Lcd
 		{
-			// fix bug
-			static LiquidCrystal_I2C lcdi2c(
-				DEVICE_LCD_ADDRESS,
-				DEVICE_LCD_WIDTH, 4);
-			return &lcdi2c;
+			void Clear()
+			{
+				_GetDisplay()->clear();
+			}
+
+			LiquidCrystal_I2C* _GetDisplay()
+			{
+				// fix bug
+				static LiquidCrystal_I2C lcdi2c(
+					DEVICE_LCD_ADDRESS,
+					DEVICE_LCD_WIDTH, 4);
+				return &lcdi2c;
+			}
 		}
 	}
 }

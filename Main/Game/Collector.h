@@ -16,11 +16,13 @@ namespace Game
 
 	namespace Collector
 	{
-		static struct DynamicContext
+		struct DynamicContext
 		{
 
 
-		} getDynamicContext()
+		};
+
+		static DynamicContext getDynamicContext()
 		{
 			return { };
 		}

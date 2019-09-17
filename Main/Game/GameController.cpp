@@ -4,13 +4,16 @@
 
 namespace Extern
 {
-	const unsigned long SectorGameSize = sizeof(Game::Sector);
+	const unsigned long SectorGameSize = sizeof(Game::GameSector);
 }
 
 namespace
 {
-	Game::Sector sector;
-	
+	Game::GameSector sector;
+
+	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("Old session found, ");
+	FlashString lcd_ask_restore_2 = DEVICE_LCD_MESSAGE("restore?           ");
+
 	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
 	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in invalid state");
 }
@@ -19,11 +22,9 @@ namespace Game
 {
 	namespace Controller
 	{
-		unsigned char CalculateCheck(const Sector::Data* const);
-		bool ValidateCheck(const Sector* const);
-
 		void StartSession();
 		void RestoreSession();
+		bool AskRestore();
 
 		void Initialize()
 		{
@@ -31,44 +32,26 @@ namespace Game
 				Device::MemorySector::Game,
 				(char*) &sector
 			);
-
-			if (ValidateCheck(&sector))
+			
+			switch (sector.state)
 			{
-				switch (sector.data.state)
-				{
-				case State::Running:
-				case State::Paused:
-					RestoreSession();
+			case State::Running:
+				RestoreSession();
 
-					break;
-				default:
-					if (sector.data.state != State::Shutdown ||
-						sector.data.state != State::Finished ||
-						(int) sector.data.state == NULL) // fresh start
-					{
-						Device::FaultHandler::Handle(
-						{
-							Device::FaultModule::GameController,
-							(Device::FailureId) FID::INVALID_STATE + (int) sector.data.state,
-							fault_invalid_state
-						}, false);
-					}
-
-					StartSession();
-
-					break;
-				}
-			}
-			else
-			{
+				break;
+			default:
 				Device::FaultHandler::Handle(
 					{
 						Device::FaultModule::GameController,
-						(Device::FailureId) FID::SECTOR_CORRUPTED,
-						fault_sector_corrupted
+						(Device::FailureId) FID::INVALID_STATE + (int)sector.state,
+						fault_invalid_state
 					}, false);
 
+				// fall through
+			case State::Shutdown:
 				StartSession();
+
+				break;
 			}
 		}
 
@@ -82,25 +65,25 @@ namespace Game
 
 		void RestoreSession()
 		{
-
-		}
-
-		unsigned char CalculateCheck(const Sector::Data* const localData)
-		{
-			unsigned char result = 0;
-
-			for (int i = 0; i < sizeof(Sector::Data); ++i)
+			if (!AskRestore())
 			{
-				// localData is not in progmem
-				result += (((const char*) localData)[i] ? 1 : -1) * (i % (1 >> 4));
+				StartSession();
+
+				return;
 			}
 
-			return result;
+
 		}
 
-		bool ValidateCheck(const Sector* const sector)
+		bool AskRestore()
 		{
-			return CalculateCheck(&sector->data) == sector->check;
+			Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_1);
+			Device::OutputManager::Lcd::DisplayLineType(2, lcd_ask_restore_2);
+
+			Device::OutputManager::Lcd::Clear();
+
+			return Device::OutputManager::Interact::ForceGetChoice()
+				== Device::OutputManager::Interact::Choice::Yes;
 		}
 	}
 }
