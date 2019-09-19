@@ -66,9 +66,6 @@
     <ClInclude Include="Game\Player.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Settings.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\StaticGameData.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -101,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameController.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Settings.h">
+      <Filter>Docs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

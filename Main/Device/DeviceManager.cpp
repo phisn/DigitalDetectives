@@ -32,13 +32,13 @@ namespace Device
 		void ProcessRunning();
 
 		void InitializeDevice();
-		void InitilaizeGame();
+		void InitializeGame();
 		void InitializeCommunication();
 
 		void Initialize()
 		{
 			InitializeDevice();
-			InitilaizeGame();
+			InitializeGame();
 			InitializeCommunication();
 
 			// old
@@ -63,7 +63,7 @@ namespace Device
 			NetworkManager::Initialize();
 		}
 
-		void InitilaizeGame()
+		void InitializeGame()
 		{
 			Game::Controller::Initialize();
 		}
