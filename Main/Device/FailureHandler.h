@@ -2,13 +2,19 @@
 
 #include "../Device/StatusLED.h"
 
-#define DEVICE_MEMORY_MANAGER_COLOR (Device::RGB{ HIGH, LOW, LOW })
-#define DEVICE_OUTPUT_MANAGER_COLOR (Device::RGB{ LOW, HIGH, LOW })
-#define DEVICE_FAULT_MANAGER_COLOR (Device::RGB{ LOW, LOW, HIGH })
+#define DEVICE_FID_OVERFLOW 16
+
+#define DEVICE_UNKOWN_COLOR  (Device::RGB{ HIGH, LOW, HIGH })		// PURPLE
+#define DEVICE_LOOP_COLOR (Device::RGB{ HIGH, HIGH, LOW })			// YELLOW
+#define DEVICE_IFID_COLOR (Device::RGB{ LOW, HIGH, HIGH })			// BLUE
+
+#define DEVICE_MEMORY_MANAGER_COLOR (Device::RGB{ HIGH, LOW, LOW })	// RED
+#define DEVICE_OUTPUT_MANAGER_COLOR (Device::RGB{ LOW, HIGH, LOW })	// GREEN
+#define DEVICE_FAULT_MANAGER_COLOR (Device::RGB{ LOW, LOW, HIGH })	// BLUE
 
 namespace Device
 {
-	typedef unsigned char FailureId;
+	typedef unsigned int FailureId;
 
 	enum class FailureModule : unsigned char
 	{
@@ -22,6 +28,9 @@ namespace Device
 		void Initialize();
 		void Unintialize();
 
+		void Display(
+			const RGB color,
+			const FailureId id);
 		void Handle(
 			const FailureModule module,
 			const FailureId id);

@@ -15,15 +15,15 @@
 #define _VSARDUINO_H_
 #define __ESP8266_esp8266__
 #define __ESP8266_ESP8266__
+#define _VMDEBUG 1
 #define __ets__
 #define ICACHE_FLASH
-#define NONOSDK221 1
 #define F_CPU 80000000L
 #define LWIP_OPEN_SRC
 #define TCP_MSS 536
 #define LWIP_FEATURES 1
 #define LWIP_IPV6 0
-#define ARDUINO 10809
+#define ARDUINO 10808
 #define ARDUINO_ESP8266_NODEMCU
 #define ARDUINO_ARCH_ESP8266
 #define FLASHMODE_DIO

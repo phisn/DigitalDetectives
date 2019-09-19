@@ -19,8 +19,8 @@ namespace Game
 
 	struct Player
 	{
-		unsigned char path[24]; // : 8
-		unsigned char position; // : 8
+		MapPosition path[24]; // : 8
+		MapPosition position; // : 8
 
 		unsigned char yellowTickets : 6;
 		unsigned char greenTickets : 6;

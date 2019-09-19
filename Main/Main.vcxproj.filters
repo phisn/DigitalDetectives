@@ -19,6 +19,9 @@
     <Filter Include="Architecture">
       <UniqueIdentifier>{12a17a49-882c-4ab9-8388-f20f8cdd65d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Web">
+      <UniqueIdentifier>{e5c0706c-d201-4927-852e-9562cb89d0ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -57,12 +60,6 @@
     <ClInclude Include="Game\BoardManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameAccess.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameData.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\GameManager.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -70,9 +67,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Settings.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameMap.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\StaticGameData.h">
@@ -93,10 +87,21 @@
     <ClInclude Include="Communication\SerialInterface.h">
       <Filter>Communication</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Connection.h">
+    <ClInclude Include="Device\DevicePins.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PathManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Device\DevicePins.h" />
+    <ClInclude Include="Game\SetupManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Collector.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameController.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -105,6 +110,18 @@
     </None>
     <None Include="..\Docs\Dokumentation.docx">
       <Filter>Docs</Filter>
+    </None>
+    <None Include="Web\collecting_phase.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\setup_phase.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\game_phase_detective.html">
+      <Filter>Web</Filter>
+    </None>
+    <None Include="Web\game_phase_villian.html">
+      <Filter>Web</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +152,6 @@
     <ClCompile Include="Game\BoardManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameAccess.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -150,7 +164,16 @@
     <ClCompile Include="Communication\SerialInterface.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Connection.cpp">
+    <ClCompile Include="Game\PathManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SetupManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Collector.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameController.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -178,6 +201,9 @@
     </Image>
     <Image Include="..\Docs\SY_Map_Splitted.jpeg">
       <Filter>Docs</Filter>
+    </Image>
+    <Image Include="..\Architecture\BootConcept.jpeg">
+      <Filter>Architecture</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

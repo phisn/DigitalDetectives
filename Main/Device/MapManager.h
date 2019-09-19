@@ -9,5 +9,7 @@ namespace Device
 	{
 		void Initialize();
 		void Unintialize();
+
+		Game::MapPosition Translate(const Game::MapPosition);
 	}
 }
