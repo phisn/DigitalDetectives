@@ -13,7 +13,7 @@ namespace
 	FlashString ssid = FPSTR(DEVICE_NET_SSID);
 	FlashString pass = FPSTR(DEVICE_NET_PASS);
 
-	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode     ");
+	FlashString fault_soft_ap_mode = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode     ");
 	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config   ");
 	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP       ");
 
@@ -41,7 +41,7 @@ namespace Device
 				{
 					FaultModule::NetworkManager,
 					(FailureId)FID::SOFT_AP_CONFIG,
-					fault_soft_ap_config
+					fault_soft_ap_mode
 				}, true);
 
 				return; // retry
@@ -89,6 +89,13 @@ namespace Device
 
 				return; // retry
 			}
+
+			FaultHandler::Handle(
+				{
+					FaultModule::NetworkManager,
+					(FailureId)FID::SOFT_AP_CREATE,
+					fault_soft_ap_create
+				}, true);
 
 			// server.begin(80);
 		}

@@ -106,7 +106,7 @@ namespace Device
 			
 			*/
 
-			DEBUG_MESSAGE("Inside FaultHandler");
+			DEBUG_MESSAGE("Inside FaultHandler (text / module / id / isFatal)");
 			DEBUG_MESSAGE(fault.text);
 			DEBUG_MESSAGE((int) fault.module);
 			DEBUG_MESSAGE((int) fault.id);
