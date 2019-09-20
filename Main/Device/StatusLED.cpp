@@ -2,6 +2,11 @@
 
 #include "../Device/DevicePins.h"
 
+namespace
+{
+	Device::RGB current = Device::RGB{ LOW, LOW, LOW };
+}
+
 namespace Device
 {
 	namespace StatusLED
@@ -21,9 +26,16 @@ namespace Device
 
 		void Show(const RGB color)
 		{
+			current = color;
+
 			digitalWrite(DEVICE_PIN_STATUS_LED_R, color.r);
 			digitalWrite(DEVICE_PIN_STATUS_LED_G, color.g);
 			digitalWrite(DEVICE_PIN_STATUS_LED_B, color.b);
+		}
+
+		RGB GetCurrent()
+		{
+			return current;
 		}
 	}
 }

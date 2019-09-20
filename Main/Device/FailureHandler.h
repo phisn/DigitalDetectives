@@ -4,6 +4,7 @@
 
 #define DEVICE_FID_OVERFLOW 16
 
+// unkown module color is also used as timeout color in statusled (static light)
 #define DEVICE_UNKOWN_COLOR  (Device::RGB{ HIGH, LOW, HIGH })		// PURPLE
 #define DEVICE_LOOP_COLOR (Device::RGB{ HIGH, HIGH, LOW })			// YELLOW
 #define DEVICE_IFID_COLOR (Device::RGB{ LOW, HIGH, HIGH })			// BLUE

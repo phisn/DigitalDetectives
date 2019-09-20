@@ -47,13 +47,6 @@ namespace Device
 		FaultModule module;
 		FailureId id;
 		FlashString text;
-
-		enum Type
-		{
-			NonFatal,
-			Fatal,
-			Irreparable
-		} type;
 	};
 
 	namespace FaultHandler

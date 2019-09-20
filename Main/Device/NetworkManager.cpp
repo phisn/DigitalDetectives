@@ -13,6 +13,7 @@ namespace
 	FlashString ssid = FPSTR(DEVICE_NET_SSID);
 	FlashString pass = FPSTR(DEVICE_NET_PASS);
 
+	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode     ");
 	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config   ");
 	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP       ");
 
@@ -29,13 +30,21 @@ namespace Device
 	{
 		void Initialize()
 		{
-			DEBUG_MESSAGE("WiFi Init");
+			DEBUG_MESSAGE("WiFi Init (ssid / pass)");
+
+			DEBUG_MESSAGE(DEVICE_NET_SSID);
+			DEBUG_MESSAGE(DEVICE_NET_PASS);
 			
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
-				DEBUG_MESSAGE("WIFI_AP fail");
+				FaultHandler::Handle(
+				{
+					FaultModule::NetworkManager,
+					(FailureId)FID::SOFT_AP_CONFIG,
+					fault_soft_ap_config
+				}, true);
 
-				// ...
+				return; // retry
 			}
 
 			IPAddress local_ip DEVICE_NET_LOCAL_IP;
@@ -46,14 +55,14 @@ namespace Device
 					local_ip,
 					subnet_mask))
 			{
-				DEBUG_MESSAGE("SOFT_AP_CONFIG");
-
 				FaultHandler::Handle(
 				{
 					FaultModule::NetworkManager,
 					(FailureId) FID::SOFT_AP_CONFIG,
 					fault_soft_ap_config
 				}, true);
+
+				return; // retry
 			}
 
 			char ssidBuffer[sizeof(DEVICE_NET_SSID)];
@@ -71,14 +80,14 @@ namespace Device
 					DEVICE_NET_SSID_HIDDEN,
 					DEVICE_NET_MAX_CONN))
 			{
-				DEBUG_MESSAGE("SOFT_AP_CREATE");
-
 				FaultHandler::Handle(
 				{
 					FaultModule::NetworkManager,
 					(FailureId) FID::SOFT_AP_CREATE,
 					fault_soft_ap_create
 				}, true);
+
+				return; // retry
 			}
 
 			// server.begin(80);
