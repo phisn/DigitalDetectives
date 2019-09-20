@@ -53,8 +53,6 @@ namespace Device
 
 		void InitializeDevice()
 		{
-			DEBUG_MESSAGE("Device Init");
-
 			StatusLED::Initialize();
 
 			FailureHandler::Initialize();
@@ -63,8 +61,6 @@ namespace Device
 			FaultHandler::Initialize();
 			MapManager::Initialize();
 			NetworkManager::Initialize();
-
-			DEBUG_MESSAGE("Device Init Finished");
 		}
 
 		void InitilaizeGame()
@@ -80,7 +76,6 @@ namespace Device
 
 		void Process()
 		{
-			/*
 			switch (currentState)
 			{
 			case State::Collect:
@@ -96,7 +91,6 @@ namespace Device
 
 				break;
 			}
-			*/
 
 			FaultHandler::ValidateDeviceState();
 		}

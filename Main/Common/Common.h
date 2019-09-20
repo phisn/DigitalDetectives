@@ -43,3 +43,9 @@ namespace Device
 #else
 #define INCL_ARDU(intel, real) real
 #endif
+
+#ifdef VM_DEBUG
+#define DEBUG_MESSAGE(message) Serial.println(message)
+#else
+#define DEBUG_MESSAGE(message) __noop
+#endif

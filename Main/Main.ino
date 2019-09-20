@@ -1,4 +1,12 @@
+#include "Common/Common.h"
 #include "Device/DeviceManager.h"
+
+namespace EOBJ
+{
+	EEPROMClass* EEPROM = &::EEPROM;
+	ESP8266WiFiClass* WiFi = &::WiFi;
+	CFastLED* FastLED = &::FastLED;
+}
 
 /*
 Info:
@@ -24,6 +32,9 @@ Info:
 void setup()
 {
 	Serial.begin(9600);
+
+	DEBUG_MESSAGE("ESP8266 Boot");
+
 	Device::Manager::Initialize();
 }
 

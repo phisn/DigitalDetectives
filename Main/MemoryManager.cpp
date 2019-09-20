@@ -11,7 +11,7 @@ namespace EOBJ
 	extern EEPROMClass* EEPROM;
 }
 
-#define DEVICE_SECTOR_VALIDATION_OFFSET 0
+#define DEVICE_SECTOR_CHECK_OFFSET 0
 #define DEVICE_SECTOR_FAULT_OFFSET Extern::SectorValidationSize
 #define DEVICE_SECTOR_GAME_OFFSET Extern::SectorFaultSize + DEVICE_SECTOR_FAULT_OFFSET
 #define DEVICE_SECTOR_EMPTY_OFFSET Extern::SectorGameSize + DEVICE_SECTOR_GAME_OFFSET
@@ -32,7 +32,7 @@ namespace
 {
 	unsigned long sector_offset[(int) Device::MemorySector::_Length] =
 	{
-		DEVICE_SECTOR_VALIDATION_OFFSET,
+		DEVICE_SECTOR_CHECK_OFFSET,
 		DEVICE_SECTOR_FAULT_OFFSET,
 		DEVICE_SECTOR_GAME_OFFSET
 	};
@@ -55,25 +55,20 @@ namespace Device
 		
 		void Initialize()
 		{
-			DEBUG_MESSAGE("Memory Init");
-
 			if (DEVICE_EEPROM_SIZE < DEVICE_EERPOM_SIZE_RUNTIME)
 			{
-				DEBUG_MESSAGE("EEPROM_OVERFLOW");
-
 				Device::FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::EEPROM_OVERFLOW
 				);
 			}
 
-			DEBUG_MESSAGE("EEPROM begin");
+			Serial.print("A.....");
 			EOBJ::EEPROM->begin(DEVICE_EERPOM_SIZE_RUNTIME + 1);
+			Serial.print("B.....");
 
 			if (!ValidateEEPROM())
 			{
-				DEBUG_MESSAGE("EEPROM_CORRUPTED");
-
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::EEPROM_CORRUPTED
@@ -92,8 +87,6 @@ namespace Device
 		{
 			if ((int) zone > (int)MemorySector::_Length)
 			{
-				DEBUG_MESSAGE("INVALID_SECTOR");
-
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::INVALID_SECTOR
@@ -115,8 +108,6 @@ namespace Device
 		{
 			if ((int) sector > (int) MemorySector::_Length)
 			{
-				DEBUG_MESSAGE("INVALID_SECTOR");
-
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::INVALID_SECTOR
@@ -133,9 +124,6 @@ namespace Device
 
 			if (!EOBJ::EEPROM->commit())
 			{
-				DEBUG_MESSAGE("EEPROM_WRITE (sector): ");
-				DEBUG_MESSAGE((int) sector);
-
 				// possible failure -> invalid zone 
 				// would result in infinit error code
 
@@ -160,8 +148,6 @@ namespace Device
 
 			if (!EEPROM.commit())
 			{
-				DEBUG_MESSAGE("EEPROM_WRITE_CLEAN");
-
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::EEPROM_WRITE_CLEAN
@@ -175,8 +161,6 @@ namespace Device
 		{
 			if (ESP.getMaxFreeBlockSize() < length)
 			{
-				DEBUG_MESSAGE("HEAP_OVERFLOW");
-
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
 					FID::HEAP_OVERFLOW
@@ -193,44 +177,26 @@ namespace Device
 
 		bool ValidateEEPROM()
 		{
-			ValidationSector checkSector, createdSector;
+			ValidationSector checkSector;
 
 			ReadSector(
 				MemorySector::Validation,
 				(char*) &checkSector
 			);
 
-			createdSector = CreateValidation();
-
-			DEBUG_MESSAGE("ValidateEEPROM (expected / created): ");
-			DEBUG_MESSAGE(checkSector);
-			DEBUG_MESSAGE(createdSector);
-
-			return checkSector == createdSector;
+			return checkSector == CreateValidation();
 		}
 
 		ValidationSector CreateValidation()
 		{
 			unsigned char result = 0;
-			const unsigned long ValidationBegin = DEVICE_SECTOR_VALIDATION_OFFSET + Extern::SectorValidationSize;
 
-			for (int i = ValidationBegin; i < DEVICE_EERPOM_SIZE_RUNTIME; ++i)
+			for (int i = 0; i < DEVICE_EERPOM_SIZE_RUNTIME; ++i)
 			{
-				const uint8_t read = EOBJ::EEPROM->read(i);
-				
-				if (read == 0)
-				{
-					result -= 1;
-				}
-				else
-				{
-					result += read;
-				}
-				
 				// localData is not in progmem
-				/* result += (EOBJ::EEPROM->read(DEVICE_SECTOR_CHECK_OFFSET + i)
+				result += (EOBJ::EEPROM->read(DEVICE_SECTOR_CHECK_OFFSET + i)
 					? + 1 
-					: - 1) * (i % (1 >> 4));*/
+					: - 1) * (i % (1 >> 4));
 			}
 
 			return result;
@@ -239,9 +205,6 @@ namespace Device
 		void SignEEPROM()
 		{
 			ValidationSector validation = CreateValidation();
-
-			DEBUG_MESSAGE("SignEEPROM (created): ");
-			DEBUG_MESSAGE(validation);
 
 			WriteSector(
 				MemorySector::Validation,

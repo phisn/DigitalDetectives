@@ -16,7 +16,7 @@ namespace
 	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config   ");
 	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP       ");
 
-	// ESP8266WebServer server;
+	ESP8266WebServer server;
 }
 
 // Number of connections is limited (sAP info)
@@ -29,12 +29,8 @@ namespace Device
 	{
 		void Initialize()
 		{
-			DEBUG_MESSAGE("WiFi Init");
-			
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
-				DEBUG_MESSAGE("WIFI_AP fail");
-
 				// ...
 			}
 
@@ -46,8 +42,6 @@ namespace Device
 					local_ip,
 					subnet_mask))
 			{
-				DEBUG_MESSAGE("SOFT_AP_CONFIG");
-
 				FaultHandler::Handle(
 				{
 					FaultModule::NetworkManager,
@@ -62,17 +56,13 @@ namespace Device
 			memcpy_P(ssidBuffer, ssid, sizeof(DEVICE_NET_SSID));
 			memcpy_P(passBuffer, pass, sizeof(DEVICE_NET_PASS));
 
-			WiFi.softAPdisconnect();
-
 			if (!WiFi.softAP(
 					ssidBuffer,
-					passBuffer,
+					pass,
 					DEVICE_NET_CHANNEL,
 					DEVICE_NET_SSID_HIDDEN,
 					DEVICE_NET_MAX_CONN))
 			{
-				DEBUG_MESSAGE("SOFT_AP_CREATE");
-
 				FaultHandler::Handle(
 				{
 					FaultModule::NetworkManager,
@@ -81,7 +71,7 @@ namespace Device
 				}, true);
 			}
 
-			// server.begin(80);
+			server.begin(80);
 		}
 
 		void Unintialize()
@@ -96,7 +86,7 @@ namespace Device
 
 		void Process()
 		{
-			// server.handleClient();
+			server.handleClient();
 		}
 	}
 }
