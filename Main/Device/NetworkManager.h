@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../Device/FaultHandler.h"
+#include "../Device/Logger.h"
 #include "../Device/OutputManager.h"
 
 #define DEVICE_NET_SSID "nodemcu"
-#define DEVICE_NET_PASS "nodemcu"
+#define DEVICE_NET_PASS "nodemcu________"
 
 #define DEVICE_NET_LOCAL_IP { 192, 168, 0, 1 }
 #define DEVICE_NET_SUBNET_MASK { 255, 255, 255, 0 }; 
@@ -23,7 +24,8 @@ namespace Device
 		{
 			enum
 			{
-				SOFT_AP_CONFIG = 2,
+				SOFT_AP_MODE = 2,
+				SOFT_AP_CONFIG,
 				SOFT_AP_CREATE
 			};
 		};

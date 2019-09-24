@@ -13,10 +13,11 @@ namespace
 	FlashString ssid = FPSTR(DEVICE_NET_SSID);
 	FlashString pass = FPSTR(DEVICE_NET_PASS);
 
+	FlashString fault_soft_ap_mode = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode     ");
 	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config   ");
 	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP       ");
 
-	ESP8266WebServer server;
+	// ESP8266WebServer server;
 }
 
 // Number of connections is limited (sAP info)
@@ -29,9 +30,21 @@ namespace Device
 	{
 		void Initialize()
 		{
+			DEBUG_MESSAGE("WiFi Init (ssid / pass)");
+
+			DEBUG_MESSAGE(DEVICE_NET_SSID);
+			DEBUG_MESSAGE(DEVICE_NET_PASS);
+			
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
-				// ...
+				FaultHandler::Handle(
+				{
+					FaultModule::NetworkManager,
+					(FailureId)FID::SOFT_AP_CONFIG,
+					fault_soft_ap_mode
+				}, true);
+
+				return; // retry
 			}
 
 			IPAddress local_ip DEVICE_NET_LOCAL_IP;
@@ -48,6 +61,8 @@ namespace Device
 					(FailureId) FID::SOFT_AP_CONFIG,
 					fault_soft_ap_config
 				}, true);
+
+				return; // retry
 			}
 
 			char ssidBuffer[sizeof(DEVICE_NET_SSID)];
@@ -56,9 +71,11 @@ namespace Device
 			memcpy_P(ssidBuffer, ssid, sizeof(DEVICE_NET_SSID));
 			memcpy_P(passBuffer, pass, sizeof(DEVICE_NET_PASS));
 
+			WiFi.softAPdisconnect();
+
 			if (!WiFi.softAP(
 					ssidBuffer,
-					pass,
+					passBuffer,
 					DEVICE_NET_CHANNEL,
 					DEVICE_NET_SSID_HIDDEN,
 					DEVICE_NET_MAX_CONN))
@@ -69,9 +86,18 @@ namespace Device
 					(FailureId) FID::SOFT_AP_CREATE,
 					fault_soft_ap_create
 				}, true);
+
+				return; // retry
 			}
 
-			server.begin(80);
+			FaultHandler::Handle(
+				{
+					FaultModule::NetworkManager,
+					(FailureId)FID::SOFT_AP_CREATE,
+					fault_soft_ap_create
+				}, true);
+
+			// server.begin(80);
 		}
 
 		void Unintialize()
@@ -86,7 +112,7 @@ namespace Device
 
 		void Process()
 		{
-			server.handleClient();
+			// server.handleClient();
 		}
 	}
 }

@@ -1,4 +1,5 @@
 #include "FaultHandler.h"
+#include "../Device/NetworkManager.h"
 
 // minus null byte
 #define DEVICE_EMESSAGE_ERROR_LEN (sizeof(DEVICE_EMESSAGE_ERROR) - 1)
@@ -69,6 +70,7 @@ namespace Device
 		void DisplayFaultMessage(const Fault fault, const bool fatal);
 		void HandleModuleFault(const Fault fault);
 		void HandleCommonFault(const Fault fault);
+		void HandleNetworkFault(const Fault fault);
 
 		void RegisterInterfaceNotifier(
 			const InterfaceNotifierCallback callback)
@@ -104,6 +106,12 @@ namespace Device
 			
 			*/
 
+			DEBUG_MESSAGE("Inside FaultHandler (text / module / id / isFatal)");
+			DEBUG_MESSAGE(fault.text);
+			DEBUG_MESSAGE((int) fault.module);
+			DEBUG_MESSAGE((int) fault.id);
+			DEBUG_MESSAGE((int) fatal);
+
 			DisplayFaultMessage(fault, fatal);
 
 			if (fatal)
@@ -111,6 +119,49 @@ namespace Device
 				// interfaceNotifierCallback(fault);
 				HandleModuleFault(fault);
 			}
+		}
+
+		void HandleModuleFault(const Fault fault)
+		{
+			switch (fault.module)
+			{
+			case FaultModule::NetworkManager:
+				HandleNetworkFault(fault);
+
+				break;
+			default:
+				HandleCommonFault(fault);
+
+				break;
+			}
+		}
+
+		void HandleNetworkFault(const Fault fault)
+		{
+			static bool alreadyTried = false;
+
+			if (alreadyTried)
+			{
+				HandleCommonFault(fault);
+			}
+			else // retry
+			{
+				alreadyTried = true;
+
+				Timeout(30000); // 30 sec
+				NetworkManager::Initialize();
+
+				// reset for further retries
+				alreadyTried = false;
+			}
+		}
+
+		void HandleCommonFault(const Fault fault)
+		{
+			FailureHandler::Handle(
+				FailureModule::FaultHandler,
+				FID::_Length + (int)fault.module
+			);
 		}
 
 		void ValidateDeviceState()
@@ -202,23 +253,6 @@ namespace Device
 			OutputManager::Lcd::DisplayLineType(
 				3,
 				buffer);
-		}
-
-		void HandleModuleFault(const Fault fault)
-		{
-			switch (fault.module)
-			{
-			default:
-				HandleCommonFault(fault);
-			}
-		}
-
-		void HandleCommonFault(const Fault fault)
-		{
-			FailureHandler::Handle(
-				FailureModule::FaultHandler,
-				FID::_Length + (int) fault.module
-			);
 		}
 	}
 }

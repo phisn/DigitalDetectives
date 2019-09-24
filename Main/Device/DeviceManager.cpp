@@ -3,6 +3,7 @@
 #include "../Communication/InterfaceManager.h"
 #include "../Communication/RequestHandler.h"
 
+#include "../Device/Logger.h"
 #include "../Device/MapManager.h"
 #include "../Device/NetworkManager.h"
 
@@ -53,14 +54,21 @@ namespace Device
 
 		void InitializeDevice()
 		{
+			DEBUG_MESSAGE("Device Init (low)");
+
 			StatusLED::Initialize();
 
 			FailureHandler::Initialize();
 			MemoryManager::Initialize();
 			OutputManager::Initialize();
+
+			DEBUG_MESSAGE("Device Init (high)");
+
 			FaultHandler::Initialize();
 			MapManager::Initialize();
 			NetworkManager::Initialize();
+
+			DEBUG_MESSAGE("Device Init finished");
 		}
 
 		void InitializeGame()
@@ -76,6 +84,7 @@ namespace Device
 
 		void Process()
 		{
+			/*
 			switch (currentState)
 			{
 			case State::Collect:
@@ -91,6 +100,7 @@ namespace Device
 
 				break;
 			}
+			*/
 
 			FaultHandler::ValidateDeviceState();
 		}

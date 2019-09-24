@@ -41,6 +41,10 @@ namespace Device
 			const FailureModule module,
 			const FailureId id)
 		{
+			DEBUG_MESSAGE("Inside FailureHandler");
+			DEBUG_MESSAGE((int) module);
+			DEBUG_MESSAGE((int) id);
+
 			switch (module)
 			{
 			case FailureModule::MemoryManager:

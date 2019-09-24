@@ -205,6 +205,9 @@
     <Image Include="..\Architecture\BootConcept.jpeg">
       <Filter>Architecture</Filter>
     </Image>
+    <Image Include="..\Architecture\Game_Layer2.jpeg.jpg">
+      <Filter>Architecture</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT">

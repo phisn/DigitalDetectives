@@ -16,8 +16,6 @@
 // common definitions
 typedef const __FlashStringHelper* FlashString;
 
-#define COMMON_MAP_SIZE 199
-
 namespace Game
 {
 	typedef unsigned char MapPosition;
@@ -31,15 +29,23 @@ namespace Device
 	};
 }
 
-// ws2812b
-// #define FASTLED_ALLOW_INTERRUPTS 0
-#define FASTLED_INTERNAL
-#define FASTLED_ESP8266_RAW_PIN_ORDER
-
-#include <FastLED.h>
+#define COMMON_MAP_SIZE 199
 
 #ifdef __INTELLISENSE__
 #define INCL_ARDU(intel, real) intel
 #else
 #define INCL_ARDU(intel, real) real
 #endif
+
+#ifdef VM_DEBUG
+#define DEBUG_MESSAGE(message) Serial.println(message)
+#else
+#define DEBUG_MESSAGE(message) (void) 0
+#endif
+
+// ws2812b
+// #define FASTLED_ALLOW_INTERRUPTS 0
+#define FASTLED_INTERNAL
+#define FASTLED_ESP8266_RAW_PIN_ORDER
+
+#include <FastLED.h>
