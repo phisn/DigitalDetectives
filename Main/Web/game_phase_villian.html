@@ -2,6 +2,8 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link href="Manjari/Manjari-Regular.ttf" rel="stylesheet" type="text/css">
+	<link href="style.css" rel="stylesheet" type="text/css">
     <title></title>
   </head>
   <body>
@@ -11,29 +13,33 @@
     <p><i><b>Tickets of BLUE: </b>20 Underground, 4 Bus, 1 Taxi</i></p>
     <p><i><b>Tickets of GREEN: </b>20 Underground, 4 Bus, 1 Taxi</i></p>
     <p>Your position is revealed in <b>2</b> moves</p>
-    <p><b>Move:</b></p>
-    <label> <input name="double_ticket" ype="checkbox"> Use
-      Double-Ticket </label>
-    <p> <button name="1" formmethod="post">1</button> <button name="102" formmethod="post">102</button>
+    <h3>Move:</h3>
+    <label> <input name="double_ticket" type="checkbox"> Use Double-Ticket </label>
+    <p><b>Black-Ticket</b></p>
+	<p class="black"> <button name="1" formmethod="post">1</button> <button name="102" formmethod="post">102</button>
 		<button name="1" formmethod="post">1</button> <button name="102" formmethod="post">102</button>
 		<button name="1" formmethod="post">1</button> <button name="102" formmethod="post">102</button>
     </p>
-    <p> <button name="102" formmethod="post" style="color: yellow;">102</button>
-		<button name="1" formmethod="post" style="color: yellow;">1</button> 
-		<button name="102" formmethod="post" style="color: yellow;">102</button>
+	<p><b>Taxi</b></p>
+    <p class="taxi"> <button name="102" formmethod="post">102</button>
+		<button name="1" formmethod="post">1</button> 
+		<button name="102" formmethod="post">102</button>
 	</p>
-    <p> <button name="1" formmethod="post" style="color: green;">1</button>
-		<button name="102" formmethod="post" style="color: green;">102</button>
-		<button name="102" formmethod="post" style="color: green;">102</button>
-		<button name="1" formmethod="post" style="color: green;">1</button>
-		<button name="102" formmethod="post" style="color: green;">102</button>
+	<p><b>Bus</b></p>
+    <p class="bus"> <button name="1" formmethod="post">1</button>
+		<button name="102" formmethod="post">102</button>
+		<button name="102" formmethod="post">102</button>
+		<button name="1" formmethod="post">1</button>
+		<button name="102" formmethod="post">102</button>
 	</p>
-    <p> <button name="1" formmethod="post" style="color: red;">1</button>
-		<button name="102" formmethod="post" style="color: red;">102</button>
-		<button name="1" formmethod="post" style="color: red;">1</button> 
+	<p><b>Underground</b></p>
+    <p class="underground"> <button name="1" formmethod="post">1</button>
+		<button name="102" formmethod="post">102</button>
+		<button name="1" formmethod="post">1</button> 
 		</p>
-    <p> <button name="102" formmethod="post" style="color: blue;">102</button>
-		<button name="1" formmethod="post" style="color: blue;">1</button>
+	<p><b>Ferry</b></p>
+    <p class="ferry"> <button name="102" formmethod="post">102</button>
+		<button name="1" formmethod="post">1</button>
 	</p>
   </body>
 </html>
