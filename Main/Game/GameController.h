@@ -6,14 +6,12 @@
 
 namespace Game
 {
-	enum class State : unsigned char
+	enum class GameState : unsigned char
 	{
 		Shutdown = 0, // zero for fresh start / clean
 		Running,
-
 		Setup,
-		Collect,
-		Restore
+		Collect
 	};
 
 	struct GameSector
@@ -22,7 +20,7 @@ namespace Game
 		SetupData setup;
 		CollectData collect;
 
-		State state;
+		GameState state;
 	};
 
 	namespace Controller
@@ -40,5 +38,9 @@ namespace Game
 
 		void Initialize();
 		void Uninitialize();
+
+		bool Process();
+
+		const GameSector* ReadSector();
 	}
 }

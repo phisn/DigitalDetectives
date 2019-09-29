@@ -9,22 +9,16 @@
 
 namespace Game
 {
-	/*struct Sector
-	{
-		unsigned char check; // prevent use of corrupted data
-		Game::Data data;
-	};*/
-
 	struct GameData
 	{
 		Player player[6];
 
-		struct State
+		struct GameState
 		{
 		} state;
 	};
 
-	namespace Manager
+	namespace GameManager
 	{
 		struct FID
 		{
@@ -34,9 +28,9 @@ namespace Game
 			};
 		};
 
-		void Begin(GameData* const gameData);
-		// TODO: restore in game cant fail?
-		void Restore(GameData* const gameData);
+		void Create();
+		bool Process();
+		void Restore();
 	}
 }
 

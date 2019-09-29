@@ -7,7 +7,7 @@
 #define DEVICE_LCD_WIDTH 20
 #define DEVICE_FASTLED_MAP_LEDCOUNT 199
 
-#define DEVICE_LCD_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) == DEVICE_LCD_WIDTH, \
+#define DEVICE_LCD_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_LCD_WIDTH, \
 	"LCD message has to be have the length of LCD width (see DEVICE_LCD_WIDTH)")
 
 

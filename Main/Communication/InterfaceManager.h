@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Communication/Interface.h"
+#include "../Game/GameController.h"
 
 namespace Communication
 {
@@ -8,5 +9,7 @@ namespace Communication
 	{
 		void Initialize();
 		void Unintialize();
+
+		void Process();
 	}
 }

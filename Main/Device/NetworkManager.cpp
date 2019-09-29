@@ -90,13 +90,6 @@ namespace Device
 				return; // retry
 			}
 
-			FaultHandler::Handle(
-				{
-					FaultModule::NetworkManager,
-					(FailureId)FID::SOFT_AP_CREATE,
-					fault_soft_ap_create
-				}, true);
-
 			// server.begin(80);
 		}
 

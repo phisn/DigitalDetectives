@@ -4,7 +4,6 @@
 
 namespace Game
 {
-	// dynamic
 	struct CollectData
 	{
 		struct StaticContext
@@ -18,8 +17,6 @@ namespace Game
 	{
 		struct DynamicContext
 		{
-
-
 		};
 
 		static DynamicContext getDynamicContext()
@@ -27,8 +24,9 @@ namespace Game
 			return { };
 		}
 
-		void Begin();
-		bool Restore();
+		void Create();
+		bool Process();
+		void Restore();
 	}
 }
 

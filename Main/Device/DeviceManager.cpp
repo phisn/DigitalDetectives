@@ -11,19 +11,19 @@
 
 namespace
 {
-	Device::Manager::State currentState;
+	Device::GameManager::GameState currentState;
 }
 
 namespace Device
 {
-	namespace Manager
+	namespace GameManager
 	{
-		State GetCurrentState()
+		GameState GetCurrentState()
 		{
 			return currentState;
 		}
 
-		void SetCurrentState(const State state)
+		void SetCurrentState(const GameState state)
 		{
 			currentState = state;
 		}
@@ -103,6 +103,10 @@ namespace Device
 			*/
 
 			FaultHandler::ValidateDeviceState();
+		}
+
+		void Game::GameManager::Restore()
+		{
 		}
 
 		void ProcessCollect()

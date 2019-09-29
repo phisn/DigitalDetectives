@@ -35,10 +35,10 @@ void setup()
 
 	DEBUG_MESSAGE("ESP8266 Boot");
 
-	Device::Manager::Initialize();
+	Device::GameManager::Initialize();
 }
 
 void loop()
 {
-	Device::Manager::Process();
+	Device::GameManager::Process();
 }

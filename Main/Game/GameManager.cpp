@@ -2,7 +2,7 @@
 
 namespace Game
 {
-	namespace Manager
+	namespace GameManager
 	{
 		/*unsigned char CalculateCheck(const Data* const);
 		bool ValidateCheck(const Data* const);*/

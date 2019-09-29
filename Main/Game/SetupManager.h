@@ -13,8 +13,16 @@ namespace Game
 
 	namespace SetupManager
 	{
-		void Begin(SetupData* const data);
-		bool Restore(SetupData* const data);
+		struct FID
+		{
+			enum
+			{
+			};
+		};
+
+		void Create();
+		bool Process();
+		void Restore();
 	}
 }
 

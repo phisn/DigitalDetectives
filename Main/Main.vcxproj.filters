@@ -75,12 +75,6 @@
     <ClInclude Include="Communication\InterfaceManager.h">
       <Filter>Communication</Filter>
     </ClInclude>
-    <ClInclude Include="Communication\Request.h">
-      <Filter>Communication</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\RequestHandler.h">
-      <Filter>Communication</Filter>
-    </ClInclude>
     <ClInclude Include="Communication\SerialInterface.h">
       <Filter>Communication</Filter>
     </ClInclude>
@@ -156,9 +150,6 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Communication\InterfaceManager.cpp">
-      <Filter>Communication</Filter>
-    </ClCompile>
-    <ClCompile Include="Communication\RequestHandler.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
     <ClCompile Include="Communication\SerialInterface.cpp">
