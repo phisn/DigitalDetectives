@@ -40,7 +40,5 @@ namespace Game
 		void Uninitialize();
 
 		bool Process();
-
-		const GameSector* ReadSector();
 	}
 }

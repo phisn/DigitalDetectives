@@ -15,8 +15,8 @@ namespace
 {
 	Game::GameSector sector;
 
-	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("Old session found, ");
-	FlashString lcd_ask_restore_2 = DEVICE_LCD_MESSAGE("restore?           ");
+	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("Old session found,  ");
+	FlashString lcd_ask_restore_2 = DEVICE_LCD_MESSAGE("restore?            ");
 
 	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
 	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in invalid state");
@@ -28,6 +28,7 @@ namespace Game
 {
 	namespace Controller
 	{
+		bool ProcessModules();
 		void Save();
 
 		void RestoreSession();
@@ -64,8 +65,7 @@ namespace Game
 				break;
 			}
 
-			sector.state = GameState::Collect;
-
+			StartSession();
 			Save();
 		}
 
@@ -77,40 +77,24 @@ namespace Game
 			);
 		}
 
-		void StartSession()
-		{
-			sector.state = GameState::Collect;
-		}
-
-		void RestoreSession()
-		{
-			if (!AskRestore())
-			{
-				StartSession();
-
-				return;
-			}
-
-			Collector::Restore();
-			SetupManager::Restore();
-		}
-
-		bool AskRestore()
-		{
-			Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_1);
-			Device::OutputManager::Lcd::DisplayLineType(2, lcd_ask_restore_2);
-
-			Device::OutputManager::Lcd::Clear();
-
-			return Device::OutputManager::Interact::ForceGetChoice()
-				== Device::OutputManager::Interact::Choice::Yes;
-		}
-
 		void Uninitialize()
 		{
 		}
 
 		bool Process()
+		{
+			bool result = ProcessModules();
+
+			if (result)
+			{
+				Save();
+				BoardManager::Update();
+			}
+
+			return result;
+		}
+
+		bool ProcessModules()
 		{
 			switch (sector.state)
 			{
@@ -125,19 +109,42 @@ namespace Game
 
 			default:
 				Device::FaultHandler::Handle(
-				{
-					Device::FaultModule::GameController,
-					(int) sector.state,
-					fault_invalid_running_state
-				}, true);
+					{
+						Device::FaultModule::GameController,
+						(int)sector.state,
+						fault_invalid_running_state
+					}, true);
 
 				break;
 			}
+
+			return false; // unreachable
 		}
 
-		const GameSector* ReadSector()
+		void StartSession()
 		{
-			return &sector;
+			sector.state = GameState::Collect;
+		}
+
+		void RestoreSession()
+		{
+			if (AskRestore())
+			{
+				Collector::Restore();
+				SetupManager::Restore();
+				GameManager::Restore();
+			}
+		}
+
+		bool AskRestore()
+		{
+			Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_1);
+			Device::OutputManager::Lcd::DisplayLineType(2, lcd_ask_restore_2);
+
+			Device::OutputManager::Lcd::Clear();
+
+			return Device::OutputManager::Interact::ForceGetChoice()
+				== Device::OutputManager::Interact::Choice::Yes;
 		}
 	}
 }

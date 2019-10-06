@@ -39,7 +39,7 @@ namespace Communication
 			Serial.print("Collect update");
 
 			Serial.write("-> playercount: ");
-			Serial.print(sector->collect.context.playerCount);
+			Serial.print(sector->collect.playerCount);
 		}
 
 		void UpdateRunning()

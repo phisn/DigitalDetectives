@@ -5,14 +5,18 @@ namespace Extern
 	extern Game::SetupData* setupData;
 }
 
-void Game::SetupManager::Create()
+namespace Game
 {
-}
+	void SetupManager::Create()
+	{
+	}
 
-void Game::SetupManager::Process()
-{
-}
+	bool SetupManager::Process()
+	{
+		return false;
+	}
 
-void Game::SetupManager::Restore()
-{
+	void SetupManager::Restore()
+	{
+	}
 }

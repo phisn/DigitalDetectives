@@ -4,9 +4,6 @@ namespace Game
 {
 	namespace GameManager
 	{
-		/*unsigned char CalculateCheck(const Data* const);
-		bool ValidateCheck(const Data* const);*/
-
 		void Initialize()
 		{
 		}
@@ -15,48 +12,13 @@ namespace Game
 		{
 		}
 
-		/*void Restore()
+		bool Process()
 		{
-			Sector sectorBuffer;
-
-			Device::MemoryManager::ReadSector(
-				Device::MemorySector::Game,
-				(char*) &sectorBuffer
-			);
-
-			if (ValidateCheck(&sectorBuffer))
-			{
-				memcpy(&data, &sectorBuffer.data, sizeof(Data));
-			}
-			else
-			{
-				Device::FaultHandler::Handle(
-				{
-					Device::FaultModule::GameManager,
-					(Device::FailureId) FID::SECTOR_CORRUPTED,
-					fault_sector_corrupted
-				}, false); // not fatal, can continue
-
-				Create();
-			}
-		}
-		
-		unsigned char CalculateCheck(const Data* const localData)
-		{
-			unsigned char result = 0;
-
-			for (int i = 0; i < sizeof(Data); ++i)
-			{
-				// localData is not in progmem
-				result += (((const char*) localData)[i] ? 1 : -1) * (i % (1 >> 4));
-			}
-
-			return result;
+			return false;
 		}
 
-		bool ValidateCheck(const Sector* const sector)
+		void Restore()
 		{
-			return CalculateCheck(&sector->data) == sector->check;
-		}*/
+		}
 	}
 }
