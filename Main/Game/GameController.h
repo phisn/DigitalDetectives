@@ -40,5 +40,7 @@ namespace Game
 		void Uninitialize();
 
 		bool Process();
+
+		GameState GetState();
 	}
 }

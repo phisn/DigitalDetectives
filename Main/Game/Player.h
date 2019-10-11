@@ -8,6 +8,14 @@ namespace Game
 {
 	struct Detective
 	{
+		enum class Color : unsigned char
+		{
+			Yellow,
+			Red,
+			Blue
+
+		} color;
+
 		unsigned char order : 3; // ?
 	};
 

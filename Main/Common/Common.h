@@ -13,9 +13,16 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// common definitions
+// general string type
 typedef const __FlashStringHelper* FlashString;
 
+// placement new fix
+inline void* operator new(unsigned, void* ptr)
+{
+	return ptr;
+}
+
+// common definitions
 namespace Game
 {
 	typedef unsigned char MapPosition;
@@ -31,6 +38,7 @@ namespace Device
 
 #define COMMON_MAP_SIZE 199
 
+// wrong intellisense include fix
 #ifdef __INTELLISENSE__
 #define INCL_ARDU(intel, real) intel
 #else

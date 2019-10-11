@@ -94,6 +94,11 @@ namespace Game
 			return result;
 		}
 
+		GameState GetState()
+		{
+			return sector.state;
+		}
+
 		bool ProcessModules()
 		{
 			switch (sector.state)

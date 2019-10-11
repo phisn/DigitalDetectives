@@ -5,51 +5,62 @@
 
 namespace Communication
 {
+	struct SerialInterfaceType {};
 	class SerialInterface
 		:
 		public Interface
 	{
 	public:
-		void Process() override
+		void initialize(const Game::PlayerId id) override
+		{
+			playerId = id;
+		}
+
+		void process() override
 		{
 		}
 
-		void Update() override
+		void update() override
 		{
-			switch (sector->state)
+			switch (Game::Controller::GetState())
 			{
 			case Game::GameState::Collect:
-				UpdateCollect();
+				updateCollect();
 
 				break;
 			case Game::GameState::Running:
-				UpdateRunning();
+				updateRunning();
 
 				break;
 			case Game::GameState::Setup:
-				UpdateSetup();
+				updateSetup();
 
 				break;
 			}
 		}
 
+		const Game::PlayerId getPlayerId() const
+		{
+			return playerId;
+		}
+
 	private:
-		void UpdateCollect()
+		Game::PlayerId playerId;
+
+		void updateCollect()
 		{
 			Serial.print("Collect update");
 
 			Serial.write("-> playercount: ");
-			Serial.print(sector->collect.playerCount);
+			Serial.print(Game::Collector::GetData()->playerCount);
 		}
 
-		void UpdateRunning()
+		void updateRunning()
 		{
 		}
 
-		void UpdateSetup()
+		void updateSetup()
 		{
 		}
-
-		const Game::GameSector* sector = Game::Controller::ReadSector();
 	};
 }

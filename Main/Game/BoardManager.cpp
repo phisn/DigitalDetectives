@@ -50,7 +50,7 @@ namespace Game
 			sprintf_P(
 				lcdBuffer, PSTR("%s: %d"),
 				cmessage_common_1_part,
-				sector->collect.context.playerCount
+				sector->collect.playerCount
 			);
 
 			Device::OutputManager::Lcd::DisplayLineType(

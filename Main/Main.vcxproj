@@ -123,6 +123,7 @@
     <ClInclude Include="Communication\Interface.h" />
     <ClInclude Include="Communication\InterfaceManager.h" />
     <ClInclude Include="Communication\SerialInterface.h" />
+    <ClInclude Include="Communication\WebInterface.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\DevicePins.h" />
     <ClInclude Include="Device\FailureHandler.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Communication\InterfaceManager.cpp" />
     <ClCompile Include="Communication\SerialInterface.cpp" />
+    <ClCompile Include="Communication\WebInterface.cpp" />
     <ClCompile Include="Device\DeviceManager.cpp" />
     <ClCompile Include="Device\FailureHandler.cpp" />
     <ClCompile Include="Device\FaultHandler.cpp" />

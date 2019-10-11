@@ -96,6 +96,9 @@
     <ClInclude Include="Game\Settings.h">
       <Filter>Docs</Filter>
     </ClInclude>
+    <ClInclude Include="Communication\WebInterface.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -120,9 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device\DeviceManager.cpp">
-      <Filter>Device</Filter>
-    </ClCompile>
-    <ClCompile Include="Device\FailureHandler.cpp">
       <Filter>Device</Filter>
     </ClCompile>
     <ClCompile Include="Device\FaultHandler.cpp">
@@ -166,6 +166,12 @@
     </ClCompile>
     <ClCompile Include="Game\GameController.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\FailureHandler.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\WebInterface.cpp">
+      <Filter>Communication</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
