@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Common/Common.h"
+#include "../Game/CollectData.h"
 
 #pragma pack(push, 1)
 
@@ -27,6 +28,8 @@ namespace Game
 
 	struct Player
 	{
+		PlayerId player; // : 8
+
 		MapPosition path[24]; // : 8
 		MapPosition position; // : 8
 
@@ -39,7 +42,7 @@ namespace Game
 		// for heavy dynamic allocation
 		union
 		{
-			Detective detective;
+			Detective detective; // how to determine if player is evil?
 			Villian villian;
 		};
 	};

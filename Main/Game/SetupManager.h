@@ -1,16 +1,11 @@
 #pragma once
 
-#include "../Game/Settings.h"
+#include "../Game/Data/SetupData.h"
 
 #pragma pack(push, 1)
 
 namespace Game
 {
-	struct SetupData
-	{
-		Settings settings;
-	};
-
 	namespace SetupManager
 	{
 		struct FID

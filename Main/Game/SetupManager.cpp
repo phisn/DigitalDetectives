@@ -7,16 +7,24 @@ namespace Extern
 
 namespace Game
 {
-	void SetupManager::Create()
+	namespace SetupManager
 	{
-	}
+		void Create()
+		{
+		}
 
-	bool SetupManager::Process()
-	{
-		return false;
-	}
+		bool Process()
+		{
+			return false;
+		}
 
-	void SetupManager::Restore()
-	{
+		void Restore()
+		{
+		}
+
+		const Game::SetupData* GetData()
+		{
+			return Extern::setupData;
+		}
 	}
 }

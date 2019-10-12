@@ -3,21 +3,12 @@
 #include "../Device/MemoryManager.h"
 
 #include "../Game/BoardManager.h"
-#include "../Game/Player.h"
+#include "../Game/Data/GameData.h"
 
 #pragma pack(push, 1)
 
 namespace Game
 {
-	struct GameData
-	{
-		Player player[6];
-
-		struct GameState
-		{
-		} state;
-	};
-
 	namespace GameManager
 	{
 		struct FID

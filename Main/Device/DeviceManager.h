@@ -17,7 +17,6 @@ namespace Device
 
 		void Process();
 
-		GameState GetCurrentState();
 		void SetCurrentState(const GameState);
 	}
 }

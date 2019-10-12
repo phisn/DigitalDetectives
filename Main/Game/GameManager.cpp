@@ -1,5 +1,10 @@
 #include "GameManager.h"
 
+namespace Extern
+{
+	extern Game::GameData* gameData;
+}
+
 namespace Game
 {
 	namespace GameManager
@@ -19,6 +24,11 @@ namespace Game
 
 		void Restore()
 		{
+		}
+
+		const GameData* GetData()
+		{
+			return Extern::gameData;
 		}
 	}
 }

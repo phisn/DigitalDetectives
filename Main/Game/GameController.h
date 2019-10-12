@@ -1,27 +1,13 @@
 #pragma once
 
+#include "../Game/Data/GameSector.h"
+
 #include "../Game/Collector.h"
 #include "../Game/GameManager.h"
 #include "../Game/SetupManager.h"
 
 namespace Game
 {
-	enum class GameState : unsigned char
-	{
-		Shutdown = 0, // zero for fresh start / clean
-		Running,
-		Setup,
-		Collect
-	};
-
-	struct GameSector
-	{
-		GameData game;
-		SetupData setup;
-		CollectData collect;
-
-		GameState state;
-	};
 
 	namespace Controller
 	{
@@ -40,7 +26,5 @@ namespace Game
 		void Uninitialize();
 
 		bool Process();
-
-		GameState GetState();
 	}
 }

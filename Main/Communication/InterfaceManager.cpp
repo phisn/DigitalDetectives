@@ -9,11 +9,15 @@ namespace
 	union InterfaceBuffer
 	{
 		InterfaceBuffer(Communication::SerialInterfaceType)
+			:
+			active(Serial)
 		{
 			new (&serial) Communication::SerialInterface();
 		}
 
 		InterfaceBuffer(Communication::WebInterfaceType)
+			:
+			active(Web)
 		{
 			new (&web) Communication::WebInterface();
 		}
@@ -25,9 +29,27 @@ namespace
 
 		~InterfaceBuffer()
 		{
+			switch (active)
+			{
+			case Serial:
+				serial.~SerialInterface();
+	
+				break;
+			case Web:
+				web.~WebInterface();
+				
+				break;
+			}
 		}
 
 	private:
+		const enum : unsigned char
+		{
+			Serial,
+			Web
+
+		} active;
+
 		Communication::WebInterface web;
 		Communication::SerialInterface serial;
 	};

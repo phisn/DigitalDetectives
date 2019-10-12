@@ -1,11 +1,8 @@
 #include "BoardManager.h"
-#include "../Game/GameController.h"
+#include "../Game/Data/GameSector.h"
 
 namespace
 {
-	// change read later (dependencies)
-	const Game::GameSector* sector = Game::Controller::ReadSector();
-
 	FlashString cmessage_common_0 = DEVICE_LCD_MESSAGE("Waiting for players ");
 	FlashString cmessage_common_1_part = FPSTR("Currently: ");
 }
@@ -20,7 +17,7 @@ namespace Game
 
 		void Update()
 		{
-			switch (sector->state)
+			switch (Controller::GetState())
 			{
 			case GameState::Collect:
 				UpdateCollect();
@@ -50,7 +47,7 @@ namespace Game
 			sprintf_P(
 				lcdBuffer, PSTR("%s: %d"),
 				cmessage_common_1_part,
-				sector->collect.playerCount
+				Collector::GetData()->playerCount
 			);
 
 			Device::OutputManager::Lcd::DisplayLineType(

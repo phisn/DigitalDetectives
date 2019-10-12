@@ -36,6 +36,7 @@ namespace Device
 	};
 }
 
+#define GAME_MAX_PLAYERCOUNT 6
 #define COMMON_MAP_SIZE 199
 
 // wrong intellisense include fix
