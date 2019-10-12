@@ -193,7 +193,7 @@ namespace Device
 				// ESP.getFreeSketchSpace();
 				ESP.getHeapFragmentation();
 				ESP.getHeapStats();
-				ESP.getMaxFreeBlockSize();
+				ESP.getMaxFreeBlockSize();	// test for block size!
 			*/
 		}
 

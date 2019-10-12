@@ -44,7 +44,7 @@ namespace Game
 
 		PlayerId CreatePlayer()
 		{
-			if (Extern::collectData->playerCount >= GAME_MAX_PLAYERCOUNT)
+			if (Extern::collectData->playerCount >= COMMON_MAX_PLAYERCOUNT)
 			{
 				Device::FaultHandler::Handle(
 				{

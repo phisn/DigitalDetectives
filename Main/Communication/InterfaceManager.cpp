@@ -54,7 +54,7 @@ namespace
 		Communication::SerialInterface serial;
 	};
 
-	InterfaceBuffer interfaces[GAME_MAX_PLAYERCOUNT];
+	InterfaceBuffer interfaces[COMMON_MAX_PLAYERCOUNT];
 
 	FlashString fault_remove_invalid_playerid = DEVICE_FAULT_MESSAGE("Got invalid PlayerId in remove");
 }
@@ -76,7 +76,6 @@ namespace Communication
 
 	void InterfaceManager::Process()
 	{
-		Game::Controller::Process();
 		ProcessInterfaces();
 	}
 

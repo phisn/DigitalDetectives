@@ -22,6 +22,9 @@
     <Filter Include="Web">
       <UniqueIdentifier>{e5c0706c-d201-4927-852e-9562cb89d0ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Data">
+      <UniqueIdentifier>{cd69c715-9f04-49be-a397-d415925251b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -63,12 +66,6 @@
     <ClInclude Include="Game\GameManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\StaticGameData.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Communication\Interface.h">
       <Filter>Communication</Filter>
     </ClInclude>
@@ -98,6 +95,24 @@
     </ClInclude>
     <ClInclude Include="Communication\WebInterface.h">
       <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\CollectData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\GameData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\PlayerData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\SettingsData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\SetupData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\GameSector.h">
+      <Filter>Game\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
