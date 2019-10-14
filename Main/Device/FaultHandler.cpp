@@ -32,6 +32,7 @@ namespace
 
 	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null       ");
 	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory         ");
+	FlashString fault_heap_frag = DEVICE_FAULT_MESSAGE("Device heap is fragmented     ");
 }
 
 // prevent accidential change of nonfatal
@@ -174,26 +175,23 @@ namespace Device
 				FaultHandler::Handle(
 				{
 					FaultModule::FaultHandler,
-					(FailureId)FID::LOW_MEMORY,
+					(FailureId) FID::LOW_MEMORY,
 					fault_low_memory
 				}, true);
 			}
 
-			/*
-				if (ESP.getHeapFragmentation() > 90)
+			if (ESP.getHeapFragmentation() > DEVICE_MAX_HEAP_FRAGMENT)
+			{
+				FaultHandler::Handle(
 				{
-					// high frag
-				}
-			*/
+					FaultModule::FaultHandler,
+					(FailureId) FID::HEAP_FRAG,
+					fault_heap_frag
+				}, true);
+			}
 
-			/*
-				ESP.getFreeHeap();
-				ESP.getFreeContStack();
-
-				// ESP.getFreeSketchSpace();
-				ESP.getHeapFragmentation();
-				ESP.getHeapStats();
-				ESP.getMaxFreeBlockSize();	// test for block size!
+			/* use to determine eeprom max size?
+				ESP.getFreeSketchSpace();
 			*/
 		}
 

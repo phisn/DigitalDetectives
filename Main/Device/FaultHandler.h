@@ -20,6 +20,7 @@
 	"Fault message has to be have full length (see DEVICE_EMESSAGE_MESSAGE_LEN)")
 
 #define DEVICE_MIN_REMAIN_MEMORY 128
+#define DEVICE_MAX_HEAP_FRAGMENT 50 // in percent
 
 namespace Device
 {
@@ -60,6 +61,7 @@ namespace Device
 			{
 				INC_NULL = 2, // interfacenotifiercallback
 				LOW_MEMORY,
+				HEAP_FRAG,
 				_Length // for fault module conversion in HandleCommonFault
 			};
 		};
