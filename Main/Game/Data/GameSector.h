@@ -8,19 +8,21 @@ namespace Game
 {
 	enum class GameState : unsigned char
 	{
+		PreRunning = -1,
+
 		Shutdown = 0, // zero for fresh start / clean
 		Running,
 		Setup,
-		Collect
+		Collect,
 	};
 
 	struct GameSector
 	{
+		GameState state = GameState::PreRunning;
+
 		GameData game;
 		SetupData setup;
 		CollectData collect;
-
-		GameState state;
 	};
 
 	namespace Controller

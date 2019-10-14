@@ -61,10 +61,30 @@ namespace
 
 namespace Communication
 {
-	void ProcessInterfaces();
+	void FaultNotifier(const Device::Fault fault);
 
 	void Pop(Interface* const interface);
 	void Push(Interface* const interface);
+
+	void InterfaceManager::RegisterFaultNotifier()
+	{
+		Device::FaultHandler::RegisterFaultInterfaceNotifier(
+			(Device::FaultHandler::InterfaceNotifierCallback) FaultNotifier
+		);
+	}
+
+	void FaultNotifier(const Device::Fault fault)
+	{
+		if (Game::Controller::GetState() == Game::GameState::PreRunning)
+		{
+			return;
+		}
+
+		for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+		{
+			interfaces[i].Get()->notifyFault(fault);
+		}
+	}
 
 	void InterfaceManager::Initialize()
 	{
@@ -74,13 +94,19 @@ namespace Communication
 	{
 	}
 
-	void InterfaceManager::Process()
+	void InterfaceManager::Process(const bool update)
 	{
-		ProcessInterfaces();
-	}
+		for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+		{
+			Interface* const interface = interfaces[i].Get();
 
-	void ProcessInterfaces()
-	{
+			if (update)
+			{
+				interface->update();
+			}
+
+			interface->process();
+		}
 	}
 
 	template <>

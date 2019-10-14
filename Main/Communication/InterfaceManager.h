@@ -15,10 +15,12 @@ namespace Communication
 			};
 		};
 
+		void RegisterFaultNotifier();
+
 		void Initialize();
 		void Unintialize();
 
-		void Process();
+		void Process(const bool update);
 
 		template <typename InterfaceType>
 		void CreateInterface();

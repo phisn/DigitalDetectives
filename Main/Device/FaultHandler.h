@@ -69,7 +69,7 @@ namespace Device
 		typedef void (*InterfaceNotifierCallback)(const Fault);
 
 		// called in interfacemanager
-		void RegisterInterfaceNotifier(
+		void RegisterFaultInterfaceNotifier(
 			const InterfaceNotifierCallback callback);
 
 		void Initialize();

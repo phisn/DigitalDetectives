@@ -221,9 +221,4 @@
       <Filter>Architecture</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT">
-      <Filter>Docs</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

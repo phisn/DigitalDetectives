@@ -73,7 +73,7 @@ namespace Device
 		void HandleCommonFault(const Fault fault);
 		void HandleNetworkFault(const Fault fault);
 
-		void RegisterInterfaceNotifier(
+		void RegisterFaultInterfaceNotifier(
 			const InterfaceNotifierCallback callback)
 		{
 			interfaceNotifierCallback = callback;

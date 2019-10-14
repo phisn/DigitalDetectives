@@ -188,9 +188,6 @@
     <Image Include="..\Docs\SY_Map.png" />
     <Image Include="..\Docs\SY_Map_Splitted.jpeg" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

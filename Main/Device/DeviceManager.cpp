@@ -58,8 +58,8 @@ namespace Device
 		{
 			NetworkManager::Process();
 			
-			Game::Controller::Process();
-			Communication::InterfaceManager::Process();
+			const bool update = Game::Controller::Process();
+			Communication::InterfaceManager::Process(update);
 
 			FaultHandler::ValidateDeviceState();
 		}
