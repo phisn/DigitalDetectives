@@ -10,7 +10,10 @@ namespace Game
 
 		struct GameState
 		{
-			PlayerId currentPlayer;
+			unsigned char round; // max 24
+			// index in playersetup order
+			unsigned char activePlayerIndex;
+			PlayerId activePlayer;
 
 		} state;
 	};

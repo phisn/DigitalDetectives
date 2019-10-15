@@ -8,13 +8,21 @@ namespace Extern
 namespace
 {
 	bool needsUpdate = false;
+
+	FlashString turn_fail_activeplayer = FPSTR("PlayerId not active");
+	FlashString turn_fail_playernotfound = FPSTR("PlayerId not found");
+	FlashString turn_fail_invalidturn = FPSTR("Got invalid turn");
+	FlashString turn_fail_ticketnotfound = FPSTR("Ticket not found");
 }
 
 namespace Game
 {
 	namespace GameManager
 	{
+		// can return null
 		Player* FindPlayer(const PlayerId id);
+		Player* FindVillian();
+
 		bool ValidateTurn(
 			const MapPosition source,
 			const Turn turn);
@@ -24,6 +32,9 @@ namespace Game
 		bool RemovePlayerTicket(
 			Player* const player, 
 			const Ticket ticket);
+		bool AddPlayerTicket(
+			Player* const player,
+			const Ticket ticket);
 
 		void Initialize()
 		{
@@ -31,6 +42,9 @@ namespace Game
 
 		void Create()
 		{
+			Extern::gameData->state.round = 0;
+			Extern::gameData->state.activePlayer = SetupManager::GetData()->playerContext.villian;
+			Extern::gameData->state.activePlayerIndex = 0;
 		}
 
 		bool Process()
@@ -48,39 +62,83 @@ namespace Game
 		{
 		}
 
-		bool MakeTurn(
+		TurnResult MakeTurn(
 			const PlayerId playerId, 
 			const Turn turn)
 		{
+			if (playerId != Extern::gameData->state.activePlayer)
+			{
+				return { false, turn_fail_activeplayer };
+			}
+
 			Player* const player = FindPlayer(playerId);
 
 			if (player == NULL)
 			{
-				return false;
+				return { false, turn_fail_playernotfound };
 			}
 
 			if (!ValidateTurn(player->position, turn))
 			{
-				return false;
+				return { false, turn_fail_invalidturn };
 			}
 
+			// also checks if playe has ticket
 			if (!RemovePlayerTicket(player, turn.ticket))
 			{
-				return false;
+				return { false, turn_fail_ticketnotfound };
 			}
 
-			// set player position
+			player->path[Extern::gameData->state.round] = player->position;
+			player->position = turn.position;
+
+			if (player->type == Player::Type::Detective)
+			{
+				Player* const villian = FindVillian();
+
+				if (villian->position == player->position)
+				{
+					// ...
+				}
+
+				AddPlayerTicket(villian, turn.ticket);
+			}
+			else
+			{
+				if (Extern::gameData->state.round == 24)
+				{
+					// game over
+				}
+
+				if (Extern::gameData->state.round % 5 == 3)
+				{
+					// display current position
+				}
+			}
+
+			// select next player index as active player and check for finished round
+			if (++Extern::gameData->state.activePlayerIndex >= Collector::GetData()->playerCount)
+			{
+				Extern::gameData->state.activePlayerIndex = 0;
+				++Extern::gameData->state.round;
+				
+				// ...
+			}
+			
+			// select next playerId as active player
+			Extern::gameData->state.activePlayer = SetupManager::GetData()
+				->playerContext.order[Extern::gameData->state.activePlayerIndex];
 
 			needsUpdate = true;
-
-			return true;
+			return { true, NULL };
 		}
 
-		bool MakeTurnDouble(
+		TurnResult MakeTurnDouble(
 			const PlayerId player,
 			const Turn firstTurn,
 			const Turn secondTurn)
 		{
+			return { };
 		}
 
 		Player* FindPlayer(const PlayerId id)
@@ -92,6 +150,16 @@ namespace Game
 				}
 
 			return NULL;
+		}
+
+		Player* FindVillian()
+		{
+			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+				if (Extern::gameData->player[i].type == Player::Type::Villian)
+				{
+					return &Extern::gameData->player[i];
+				}
+			// unreachable
 		}
 
 		bool ValidateTurn(
@@ -124,16 +192,34 @@ namespace Game
 			PathManager::FindOptionsResult result = PathManager::FindOptions(source);
 
 			switch (sourceStation.type)
-			{
-			case Station::TAXI:
+			{ // fall though all
+			case Station::UNDERGROUND:
+				for (int i = 0; result.undergroundStations[i]; ++i)
+					if (result.undergroundStations[i] == target)
+					{
+						return true;
+					}
+
 
 			case Station::BUS:
+				for (int i = 0; result.busStations[i]; ++i)
+					if (result.busStations[i] == target)
+					{
+						return true;
+					}
 
-			case Station::UNDERGROUND:
+			case Station::TAXI:
+				for (int i = 0; result.taxiStations[i]; ++i)
+					if (result.taxiStations[i] == target)
+					{
+						return true;
+					}
 
-				if (sourceStation.isFerry)
+				if (sourceStation.isFerry && ( // optimized forloop
+						result.ferryStations[0] == target ||
+						result.ferryStations[1] == target))
 				{
-
+					return true;
 				}
 
 				break;
@@ -202,6 +288,48 @@ namespace Game
 			}
 
 			return false;
+		}
+
+		bool AddPlayerTicket(
+			Player* const player,
+			const Ticket ticket)
+		{
+			// optimizing not possible, bitfields are used
+			switch (ticket)
+			{
+			case Ticket::Yellow:
+				++player->yellowTickets;
+
+				break;
+			case Ticket::Green:
+				++player->greenTickets;
+
+				break;
+			case Ticket::Red:
+				++player->redTickets;
+
+				break;
+			case Ticket::Black:
+				if (player->type == Player::Type::Detective)
+				{
+					return false;
+				}
+
+				++player->villian.blackTicketCount;
+
+				break;
+			case Ticket::Double:
+				if (player->type == Player::Type::Detective)
+				{
+					return false;
+				}
+
+				++player->villian.doubleTicketCount;
+
+				break;
+			}
+
+			return true;
 		}
 
 		const GameData* GetData()

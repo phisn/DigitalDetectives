@@ -3,8 +3,10 @@
 #include "../Device/MemoryManager.h"
 
 #include "../Game/BoardManager.h"
+#include "../Game/Collector.h"
 #include "../Game/Data/GameData.h"
 #include "../Game/PathManager.h"
+#include "../Game/SetupManager.h"
 
 #pragma pack(push, 1)
 
@@ -43,10 +45,16 @@ namespace Game
 		bool Process();
 		void Restore();
 
-		bool MakeTurn(
+		struct TurnResult
+		{
+			bool success;
+			FlashString message;
+		};
+		
+		TurnResult MakeTurn(
 			const PlayerId player,
 			const Turn turn);
-		bool MakeTurnDouble(
+		TurnResult MakeTurnDouble(
 			const PlayerId player,
 			const Turn firstTurn,
 			const Turn secondTurn);

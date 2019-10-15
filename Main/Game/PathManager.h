@@ -43,11 +43,11 @@ namespace Game
 
 		struct FindOptionsResult
 		{
-			unsigned char taxiStations[6];
-			unsigned char busStations[5];
-			unsigned char undergroundStations[4];
-			unsigned char ferryStations[2];
-
+			// plus one as zero byte
+			unsigned char taxiStations[6 + 1];
+			unsigned char busStations[5 + 1];
+			unsigned char undergroundStations[4 + 1];
+			unsigned char ferryStations[2 + 1];
 		};
 		
 		FindOptionsResult FindOptions(

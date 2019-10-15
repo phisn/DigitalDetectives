@@ -14,6 +14,7 @@ namespace Communication
 		:
 		public Interface
 	{
+		static char playerCharacterCounter;
 	public:
 		enum Command
 		{
@@ -31,6 +32,7 @@ namespace Communication
 
 		void initialize(const Game::PlayerId id) override
 		{
+			playerCharacter = playerCharacterCounter++;
 			playerId = id;
 		}
 
@@ -54,9 +56,25 @@ namespace Communication
 		{
 			const unsigned int size = Serial.available();
 	
-			if (!size)
+			if (size < 2)
 			{
 				return;
+			}
+
+			const char inputCharacter = Serial.peek();
+			if (inputCharacter != playerCharacter)
+			{
+				if (inputCharacter >= playerCharacterCounter ||
+					inputCharacter <= 'a')
+				{
+					Serial.flush();
+				}
+
+				return;
+			}
+			else
+			{
+				Serial.read();
 			}
 
 			switch (Serial.read())
@@ -107,25 +125,37 @@ namespace Communication
 		}
 
 	private:
+		char playerCharacter;
 		Game::PlayerId playerId;
 
 		void processTurn()
 		{
-			const Game::Ticket ticket = parseTicket();
+			Game::Turn turn;
+			turn.ticket = parseTicket();
 
-			if (ticket == Game::Ticket::_Invalid)
+			if (turn.ticket == Game::Ticket::_Invalid)
 			{
 				Serial.println(F("Got invalid ticket"));
+				return;
 			}
 
-			const int target = parseTarget();
+			turn.position = parseTarget();
 
-			if (target == 0)
+			if (turn.position == 0)
 			{
 				Serial.println(F("Got invalid target"));
+				return;
 			}
 
+			Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
+			
+			if (!result.success)
+			{
+				Serial.println(result.message);
+				return;
+			}
 
+			Serial.println(F("Turn successfully made"));
 		}
 
 		Game::Ticket parseTicket() const

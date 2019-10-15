@@ -18,6 +18,16 @@ namespace Game
 		void Create();
 		bool Process();
 		void Restore();
+
+		void AdjustDetectiveYellowTickets(const int count);
+		void AdjustDetectiveGreenTickets(const int count);
+		void AdjustDetectiveRedTickets(const int count);
+
+		void AdjustVillianYellowTickets(const int count);
+		void AdjustVillianGreenTickets(const int count);
+		void AdjustVillianRedTickets(const int count);
+		void AdjustVillianBlackTickets(const int count);
+		void AdjustVillianDoubleTickets(const int count);
 	}
 }
 

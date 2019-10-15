@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Game/Data/CollectData.h"
 #include "../../Game/Data/SettingsData.h"
 
 namespace Game
@@ -7,7 +8,13 @@ namespace Game
 	struct SetupData
 	{
 		Settings settings;
-		// order (first player, next player | by id)
+
+		struct PlayerContext
+		{
+			PlayerId villian;
+			PlayerId order[COMMON_MAX_PLAYERCOUNT];
+
+		} playerContext;
 	};
 
 	namespace SetupManager
