@@ -58,6 +58,9 @@ namespace Game
 			const PlayerId player,
 			const Turn firstTurn,
 			const Turn secondTurn);
+
+		// avoid multiple calls!
+		const Player* ReadPlayer(const PlayerId id);
 	}
 }
 

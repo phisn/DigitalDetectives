@@ -332,6 +332,11 @@ namespace Game
 			return true;
 		}
 
+		const Player* ReadPlayer(const PlayerId id)
+		{
+			return FindPlayer(id);
+		}
+
 		const GameData* GetData()
 		{
 			return Extern::gameData;

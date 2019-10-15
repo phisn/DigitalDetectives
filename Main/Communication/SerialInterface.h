@@ -211,14 +211,22 @@ namespace Communication
 
 		void updateCollect()
 		{
-			Serial.print("Collect update");
+			Serial.print(F("Collect update for "));
+			Serial.println(playerCharacter);
 
-			Serial.write("-> playercount: ");
-			Serial.print(Game::Collector::GetData()->playerCount);
+			Serial.print(F(" - playercount: "));
+			Serial.println(Game::Collector::GetData()->playerCount);
 		}
 
 		void updateRunning()
 		{
+			const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
+
+			Serial.print(F("Running update for "));
+			Serial.println(playerCharacter);
+
+			Serial.print(F(" - playercount: "));
+			Serial.println(player->);
 		}
 
 		void updateSetup()
