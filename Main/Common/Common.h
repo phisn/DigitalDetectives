@@ -16,11 +16,13 @@
 // general string type
 typedef const __FlashStringHelper* FlashString;
 
+#ifdef __INTELLISENSE__
 // placement new fix
 inline void* operator new(unsigned, void* ptr)
 {
 	return ptr;
 }
+#endif
 
 // common definitions
 namespace Game

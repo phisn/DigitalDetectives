@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Game/Data/SettingsData.h"
+#include "../../Game/Data/SettingsData.h"
 
 namespace Game
 {

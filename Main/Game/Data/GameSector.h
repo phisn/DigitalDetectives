@@ -8,7 +8,7 @@ namespace Game
 {
 	enum class GameState : unsigned char
 	{
-		PreRunning = -1,
+		PreRunning = 255,
 
 		Shutdown = 0, // zero for fresh start / clean
 		Running,

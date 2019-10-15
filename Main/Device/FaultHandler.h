@@ -79,5 +79,7 @@ namespace Device
 		// faults can be non-fatal to continue normally
 		void Handle(const Fault fault, const bool fatal);
 		void ValidateDeviceState();
+
+		FlashString GetModuleName(const FaultModule module);
 	}
 }

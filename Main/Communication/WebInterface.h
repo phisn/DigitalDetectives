@@ -16,6 +16,10 @@ namespace Communication
 			playerId = id;
 		}
 
+		void notifyFault(const Device::Fault fault) override
+		{
+		}
+
 		void process() override
 		{
 		}

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Common/Common.h"
-#include "../Game/CollectData.h"
+#include "../../Common/Common.h"
+#include "../../Game/Data/CollectData.h"
 
 #pragma pack(push, 1)
 
@@ -36,6 +36,12 @@ namespace Game
 		unsigned char yellowTickets : 6;
 		unsigned char greenTickets : 6;
 		unsigned char redTickets : 5;
+
+		enum class Type
+		{
+			Villian,
+			Detective
+		} type : 1;
 
 		// allow easy safe and load from
 		// game-data perspective and also no need

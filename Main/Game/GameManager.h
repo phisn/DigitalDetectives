@@ -9,6 +9,23 @@
 
 namespace Game
 {
+	enum class Ticket
+	{
+		_Invalid,
+
+		Yellow,
+		Green,
+		Red,
+		Black,
+		Double
+	};
+
+	struct Turn
+	{
+		Ticket ticket;
+		MapPosition position;
+	};
+
 	namespace GameManager
 	{
 		struct FID
@@ -22,6 +39,14 @@ namespace Game
 		void Create();
 		bool Process();
 		void Restore();
+
+		bool MakeTurn(
+			const PlayerId player,
+			const Turn turn);
+		bool MakeTurnDouble(
+			const PlayerId player,
+			const Turn firstTurn,
+			const Turn secondTurn);
 	}
 }
 

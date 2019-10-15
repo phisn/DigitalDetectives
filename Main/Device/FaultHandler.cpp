@@ -234,7 +234,7 @@ namespace Device
 			memcpy_P(buffer, emessageModule, DEVICE_EMESSAGE_MODULE_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_MODULE_LEN, 
-				emessageModuleNames[(int) fault.module], 
+				GetModuleName(fault.module), 
 				DEVICE_EMESSAGE_MODULE_NAME_LEN);
 			
 			OutputManager::Lcd::DisplayLineType(
@@ -251,6 +251,11 @@ namespace Device
 			OutputManager::Lcd::DisplayLineType(
 				3,
 				buffer);
+		}
+
+		FlashString GetModuleName(const FaultModule module)
+		{
+			return emessageModuleNames[(int) module];
 		}
 	}
 }

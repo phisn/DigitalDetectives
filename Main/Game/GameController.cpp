@@ -31,6 +31,7 @@ namespace Game
 		bool ProcessModules();
 		void Save();
 
+		void StartSession();
 		void RestoreSession();
 		bool AskRestore();
 

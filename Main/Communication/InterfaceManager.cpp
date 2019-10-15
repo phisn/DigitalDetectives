@@ -54,117 +54,121 @@ namespace
 		Communication::SerialInterface serial;
 	};
 
-	InterfaceBuffer interfaces[COMMON_MAX_PLAYERCOUNT];
+	char interfaces_buffer[sizeof(InterfaceBuffer) * COMMON_MAX_PLAYERCOUNT];
+	InterfaceBuffer* interfaces = (InterfaceBuffer*) interfaces_buffer;
 
 	FlashString fault_remove_invalid_playerid = DEVICE_FAULT_MESSAGE("Got invalid PlayerId in remove");
 }
 
 namespace Communication
 {
-	void FaultNotifier(const Device::Fault fault);
-
-	void Pop(Interface* const interface);
-	void Push(Interface* const interface);
-
-	void InterfaceManager::RegisterFaultNotifier()
+	namespace InterfaceManager
 	{
-		Device::FaultHandler::RegisterFaultInterfaceNotifier(
-			(Device::FaultHandler::InterfaceNotifierCallback) FaultNotifier
-		);
-	}
+		void FaultNotifier(const Device::Fault fault);
 
-	void FaultNotifier(const Device::Fault fault)
-	{
-		if (Game::Controller::GetState() == Game::GameState::PreRunning)
+		void Pop(Interface* const interface);
+		void Push(Interface* const interface);
+
+		void RegisterFaultNotifier()
 		{
-			return;
+			Device::FaultHandler::RegisterFaultInterfaceNotifier(
+				(Device::FaultHandler::InterfaceNotifierCallback) FaultNotifier
+			);
 		}
 
-		for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+		void FaultNotifier(const Device::Fault fault)
 		{
-			interfaces[i].Get()->notifyFault(fault);
-		}
-	}
-
-	void InterfaceManager::Initialize()
-	{
-	}
-
-	void InterfaceManager::Unintialize()
-	{
-	}
-
-	void InterfaceManager::Process(const bool update)
-	{
-		for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
-		{
-			Interface* const interface = interfaces[i].Get();
-
-			if (update)
+			if (Game::Controller::GetState() == Game::GameState::PreRunning)
 			{
-				interface->update();
-			}
-
-			interface->process();
-		}
-	}
-
-	template <>
-	void InterfaceManager::CreateInterface<SerialInterfaceType>()
-	{
-		Push(new (
-			&interfaces[
-				Game::Collector::GetData()->playerCount
-			]) InterfaceBuffer(Communication::SerialInterfaceType{}
-		)->Get());
-	}
-
-	template <>
-	void InterfaceManager::CreateInterface<WebInterfaceType>()
-	{
-		Push(new (
-			&interfaces[
-				Game::Collector::GetData()->playerCount
-			]) InterfaceBuffer(Communication::WebInterfaceType{}
-		)->Get());
-	}
-
-	void RemoveInterface(const Game::PlayerId playerId)
-	{
-		for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
-			if (interfaces[i].Get()->getPlayerId() == playerId)
-			{
-				if (!Game::Collector::RemovePlayer(playerId))
-				{
-					break; // throw common removeinterface failure
-				}
-
-				interfaces[i].~InterfaceBuffer();
-
-				for (int j = i; j < Game::Collector::GetData()->playerCount - 1; ++j)
-				{
-					memcpy(&interfaces[j], &interfaces[j + 1], sizeof(InterfaceBuffer));
-				}
-
 				return;
 			}
 
-		Device::FaultHandler::Handle(
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+			{
+				interfaces[i].Get()->notifyFault(fault);
+			}
+		}
+
+		void Initialize()
 		{
-			Device::FaultModule::InterfaceManager,
-			InterfaceManager::FID::REMOVE_INVALID_PLAYERID,
-			fault_remove_invalid_playerid
-		}, true);
-	}
+		}
 
-	void Push(Interface* const interface)
-	{
-		interface->initialize(
-			Game::Collector::CreatePlayer()
-		);
-	}
+		void Unintialize()
+		{
+		}
 
-	void Pop(Interface* const interface)
-	{
+		void Process(const bool update)
+		{
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+			{
+				Interface* const interface = interfaces[i].Get();
+
+				if (update)
+				{
+					interface->update();
+				}
+
+				interface->process();
+			}
+		}
+
+		template <>
+		void CreateInterface<SerialInterfaceType>()
+		{
+			Push((new (
+				&interfaces[
+					Game::Collector::GetData()->playerCount
+				]) InterfaceBuffer(Communication::SerialInterfaceType{})
+						)->Get());
+		}
+
+		template <>
+		void CreateInterface<WebInterfaceType>()
+		{
+			Push((new (
+				&interfaces[
+					Game::Collector::GetData()->playerCount
+				]) InterfaceBuffer(Communication::WebInterfaceType{})
+						)->Get());
+		}
+
+		void RemoveInterface(const Game::PlayerId playerId)
+		{
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				if (interfaces[i].Get()->getPlayerId() == playerId)
+				{
+					if (!Game::Collector::RemovePlayer(playerId))
+					{
+						break; // throw common removeinterface failure
+					}
+
+					interfaces[i].~InterfaceBuffer();
+
+					for (int j = i; j < Game::Collector::GetData()->playerCount - 1; ++j)
+					{
+						memcpy(&interfaces[j], &interfaces[j + 1], sizeof(InterfaceBuffer));
+					}
+
+					return;
+				}
+
+			Device::FaultHandler::Handle(
+				{
+					Device::FaultModule::InterfaceManager,
+					InterfaceManager::FID::REMOVE_INVALID_PLAYERID,
+					fault_remove_invalid_playerid
+				}, true);
+		}
+
+		void Push(Interface * const interface)
+		{
+			interface->initialize(
+				Game::Collector::CreatePlayer()
+			);
+		}
+
+		void Pop(Interface * const interface)
+		{
+		}
 	}
 }
