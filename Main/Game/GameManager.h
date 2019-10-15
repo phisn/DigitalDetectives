@@ -4,6 +4,7 @@
 
 #include "../Game/BoardManager.h"
 #include "../Game/Data/GameData.h"
+#include "../Game/PathManager.h"
 
 #pragma pack(push, 1)
 
@@ -11,12 +12,14 @@ namespace Game
 {
 	enum class Ticket
 	{
-		_Invalid,
+		_Invalid = 255,
 
-		Yellow,
-		Green,
-		Red,
-		Black,
+		// sync with station to easily
+		// convert between them
+		Yellow = Station::TAXI,
+		Green = Station::BUS,
+		Red = Station::UNDERGROUND,
+		Black = Station::FERRY,
 		Double
 	};
 

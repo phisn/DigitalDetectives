@@ -1,5 +1,4 @@
 #include "GameManager.h"
-#include "../Game/PathManager.h"
 
 namespace Extern
 {
@@ -104,13 +103,43 @@ namespace Game
 				return ValidateTurnBlack(source, turn.position);
 			}
 
+			PathManager::FindOptionsSpecificResult result = PathManager::FindOptionsSpecific(
+				source,
+				(Station::Type) turn.ticket);
 
+			for (int i = 0; i < result.stationCount; ++i)
+				if (result.station[i] == turn.position)
+				{
+					return true;
+				}
+
+			return false;
 		}
 
 		bool ValidateTurnBlack(
 			const MapPosition source,
 			const MapPosition target)
 		{
+			Station sourceStation = PathManager::GetStationType(source);
+			PathManager::FindOptionsResult result = PathManager::FindOptions(source);
+
+			switch (sourceStation.type)
+			{
+			case Station::TAXI:
+
+			case Station::BUS:
+
+			case Station::UNDERGROUND:
+
+				if (sourceStation.isFerry)
+				{
+
+				}
+
+				break;
+			}
+
+			return false;
 		}
 
 		bool RemovePlayerTicket(
