@@ -61,6 +61,7 @@ namespace Game
 
 		// avoid multiple calls!
 		const Player* ReadPlayer(const PlayerId id);
+		MapPosition GetLastVillianPosition();
 	}
 }
 

@@ -7,12 +7,15 @@ namespace Extern
 
 namespace
 {
-	bool needsUpdate = false;
+	bool needsUpdate = true;
 
 	FlashString turn_fail_activeplayer = FPSTR("PlayerId not active");
 	FlashString turn_fail_playernotfound = FPSTR("PlayerId not found");
 	FlashString turn_fail_invalidturn = FPSTR("Got invalid turn");
 	FlashString turn_fail_ticketnotfound = FPSTR("Ticket not found");
+	FlashString turn_fail_ticketnotavaible = FPSTR("Villian ticket not avaiable");
+
+	Game::MapPosition lastVillianPosition;
 }
 
 namespace Game
@@ -42,9 +45,41 @@ namespace Game
 
 		void Create()
 		{
+			DEBUG_MESSAGE("GameManager create");
+
 			Extern::gameData->state.round = 0;
 			Extern::gameData->state.activePlayer = SetupManager::GetData()->playerContext.villian;
 			Extern::gameData->state.activePlayerIndex = 0;
+
+			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+			{
+				Player* const player = &Extern::gameData->player[i];
+				player->player = Collector::GetData()->playerIds[i];
+				
+				if (player->player == SetupManager::GetData()->playerContext.villian)
+				{
+					player->type = Player::Type::Villian;
+
+					player->yellowTickets = SetupManager::GetData()->settings.beginVillianYellowCount;
+					player->greenTickets = SetupManager::GetData()->settings.beginVillianGreenCount;
+					player->redTickets = SetupManager::GetData()->settings.beginVillianRedCount;
+
+					player->villian.blackTicketCount = SetupManager::GetData()->settings.beginVillianBlackCount;
+					player->villian.doubleTicketCount = SetupManager::GetData()->settings.beginVillianDoubleCount;
+				}
+				else
+				{
+					player->type = Player::Type::Detective;
+
+					player->yellowTickets = SetupManager::GetData()->settings.beginDetectiveYellowCount;
+					player->greenTickets = SetupManager::GetData()->settings.beginDetectiveGreenCount;
+					player->redTickets = SetupManager::GetData()->settings.beginDetectiveRedCount;
+
+					player->detective.color;
+				}
+
+				player->position = random(200); // TODO: get defaults
+			}
 		}
 
 		bool Process()
@@ -76,6 +111,17 @@ namespace Game
 			if (player == NULL)
 			{
 				return { false, turn_fail_playernotfound };
+			}
+
+			int b = (int) player->type;
+			DEBUG_MESSAGE("Make turn as: ");
+			DEBUG_MESSAGE(b);
+
+			if (player->type == Player::Type::Detective &&
+				   (turn.ticket == Ticket::Black ||
+					turn.ticket == Ticket::Double))
+			{
+				return { false, turn_fail_ticketnotavaible };
 			}
 
 			if (!ValidateTurn(player->position, turn))
@@ -112,7 +158,7 @@ namespace Game
 
 				if (Extern::gameData->state.round % 5 == 3)
 				{
-					// display current position
+					lastVillianPosition = player->position;
 				}
 			}
 
@@ -335,6 +381,11 @@ namespace Game
 		const Player* ReadPlayer(const PlayerId id)
 		{
 			return FindPlayer(id);
+		}
+
+		MapPosition GetLastVillianPosition()
+		{
+			return lastVillianPosition;
 		}
 
 		const GameData* GetData()

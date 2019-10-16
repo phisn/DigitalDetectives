@@ -21,7 +21,9 @@ namespace
 	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
 	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in invalid state");
 	FlashString fault_invalid_running_state = DEVICE_FAULT_MESSAGE("Got invalid running state     ");
+	FlashString fault_invalid_finish = DEVICE_FAULT_MESSAGE("Got invalid finish request    ");
 
+	bool requestFinish = false;
 }
 
 namespace Game
@@ -34,6 +36,8 @@ namespace Game
 		void StartSession();
 		void RestoreSession();
 		bool AskRestore();
+
+		bool FinishState();
 
 		void Initialize()
 		{
@@ -51,18 +55,23 @@ namespace Game
 			switch (sector.state)
 			{
 			case GameState::Running:
-				RestoreSession();
+				DEBUG_MESSAGE("Found old session, asking for restore");
+
+				// getchoice not implemented
+				// RestoreSession();
 
 				break;
 			default:
 				Device::FaultHandler::Handle(
-					{
-						Device::FaultModule::GameController,
-						(Device::FailureId) FID::INVALID_STATE + (int)sector.state,
-						fault_invalid_state
-					}, false);
+				{
+					Device::FaultModule::GameController,
+					(Device::FailureId) FID::INVALID_STATE + (int) sector.state,
+					fault_invalid_state
+				}, false);
 
 			case GameState::Shutdown:
+				DEBUG_MESSAGE("Found shutdown, continuing normally");
+
 				break;
 			}
 
@@ -72,6 +81,8 @@ namespace Game
 
 		void Save()
 		{
+			DEBUG_MESSAGE("Saving current session");
+
 			Device::MemoryManager::WriteSector(
 				Device::MemorySector::Game,
 				(char*)& sector
@@ -84,6 +95,16 @@ namespace Game
 
 		bool Process()
 		{
+			if (requestFinish)
+			{
+				requestFinish = false;
+
+				if (FinishState())
+				{
+					return false;
+				}
+			}
+
 			bool result = ProcessModules();
 
 			if (result)
@@ -129,7 +150,10 @@ namespace Game
 
 		void StartSession()
 		{
+			DEBUG_MESSAGE("Starting session");
+
 			sector.state = GameState::Collect;
+			Collector::Create();
 		}
 
 		void RestoreSession()
@@ -139,6 +163,12 @@ namespace Game
 				Collector::Restore();
 				SetupManager::Restore();
 				GameManager::Restore();
+
+				DEBUG_MESSAGE("Restore accepted");
+			}
+			else
+			{
+				DEBUG_MESSAGE("Restore canceled");
 			}
 		}
 
@@ -151,6 +181,56 @@ namespace Game
 
 			return Device::OutputManager::Interact::ForceGetChoice()
 				== Device::OutputManager::Interact::Choice::Yes;
+		}
+
+		bool FinishState()
+		{
+			switch (sector.state)
+			{
+			case GameState::Collect:
+				if (Collector::Finish())
+				{
+					DEBUG_MESSAGE("Finishing Collect, starting setup");
+
+					sector.state = GameState::Setup;
+					SetupManager::Create();
+
+					return true;
+				}
+
+				break;
+			case GameState::Setup:
+				if (SetupManager::Finish())
+				{
+					DEBUG_MESSAGE("Finishing Setup, starting running");
+
+					sector.state = GameState::Running;
+					GameManager::Create();
+
+					return true;
+				}
+
+				break;
+			default:
+				Device::FaultHandler::Handle(
+				{
+					Device::FaultModule::GameController,
+					(Device::FailureId) FID::INVALID_FINISH,
+					fault_invalid_finish
+				}, false);
+
+				break;
+			}
+
+			DEBUG_MESSAGE("Finish canceled");
+
+			return false;
+		}
+
+		void RequestFinish()
+		{
+			DEBUG_MESSAGE("Finish requested");
+			requestFinish = true;
 		}
 	}
 }

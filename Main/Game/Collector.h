@@ -27,6 +27,8 @@ namespace Game
 
 		bool RemovePlayer(const PlayerId playerId);
 		bool ExistsPlayer(const PlayerId playerId);
+		
+		bool Finish();
 	}
 }
 

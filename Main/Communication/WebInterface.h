@@ -11,6 +11,10 @@ namespace Communication
 		public Interface
 	{
 	public:
+		static void Collect()
+		{
+		}
+
 		void initialize(const Game::PlayerId id) override
 		{
 			playerId = id;

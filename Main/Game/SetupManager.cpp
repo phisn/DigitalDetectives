@@ -1,5 +1,8 @@
 #include "SetupManager.h"
 
+// TODO remove (debug)
+#include "../Game/GameController.h"
+
 namespace Extern
 {
 	extern Game::SetupData* setupData;
@@ -11,6 +14,8 @@ namespace Game
 	{
 		void Create()
 		{
+			DEBUG_MESSAGE("SetupManager create");
+
 			Extern::setupData->settings.beginDetectiveYellowCount = Default::beginDetectiveYellowCount;
 			Extern::setupData->settings.beginDetectiveGreenCount = Default::beginDetectiveGreenCount;
 			Extern::setupData->settings.beginDetectiveRedCount = Default::beginDetectiveRedCount;
@@ -29,7 +34,7 @@ namespace Game
 
 			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
 			{
-				int randomIndex = rand() % Collector::GetData()->playerCount;
+				int randomIndex = random(Collector::GetData()->playerCount);
 
 				// swap
 				PlayerId temp = Extern::setupData->playerContext.order[randomIndex];
@@ -43,6 +48,10 @@ namespace Game
 
 		bool Process()
 		{
+			// TODO: change (debug)
+			DEBUG_MESSAGE("Setup auto request finish");
+			Game::Controller::RequestFinish();
+
 			return false;
 		}
 
@@ -93,6 +102,11 @@ namespace Game
 		const Game::SetupData* GetData()
 		{
 			return Extern::setupData;
+		}
+
+		bool Finish()
+		{
+			return true;
 		}
 	}
 }

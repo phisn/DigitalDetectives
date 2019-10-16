@@ -9,13 +9,20 @@
 namespace Communication
 {
 	struct SerialInterfaceType {};
-
 	class SerialInterface
 		:
 		public Interface
 	{
 		static char playerCharacterCounter;
 	public:
+		enum CollectCommand
+		{
+			Join = 'j',
+			Start = 's'
+		};
+
+		static void Collect();
+
 		enum Command
 		{
 			Turn = 't'
@@ -34,6 +41,12 @@ namespace Communication
 		{
 			playerCharacter = playerCharacterCounter++;
 			playerId = id;
+
+			Serial.print(F("Created interface as "));
+			Serial.print(id);
+			Serial.print(F(" with '"));
+			Serial.print(playerCharacter);
+			Serial.println('\'');
 		}
 
 		void notifyFault(const Device::Fault fault) override
@@ -54,27 +67,49 @@ namespace Communication
 
 		void process() override
 		{
-			const unsigned int size = Serial.available();
-	
+			if (Game::Controller::GetState() != Game::GameState::Running)
+			{
+				return;
+			}
+
+			if (Serial.available() > 0)
+			{
+				delay(200); // wait for data
+			}
+
+			const int size = Serial.available();
+
 			if (size < 2)
 			{
-				return;
+				goto CLEAR_BUFFER;
 			}
 
-			const char inputCharacter = Serial.peek();
-			if (inputCharacter != playerCharacter)
 			{
-				if (inputCharacter >= playerCharacterCounter ||
-					inputCharacter <= 'a')
+				const char inputCharacter = Serial.peek();
+				if (inputCharacter != playerCharacter)
 				{
-					Serial.flush();
-				}
+					if (inputCharacter >= playerCharacterCounter ||
+						inputCharacter < 'a')
+					{
+						DEBUG_MESSAGE("Got invalid character: ");
+						DEBUG_MESSAGE(inputCharacter);
 
-				return;
-			}
-			else
-			{
-				Serial.read();
+						goto CLEAR_BUFFER;
+					}
+
+					DEBUG_MESSAGE("Ignoring character: ");
+					DEBUG_MESSAGE(inputCharacter);
+
+					return;
+				}
+				else
+				{
+					DEBUG_MESSAGE("Got valid character: (character, length)");
+					DEBUG_MESSAGE(inputCharacter);
+					DEBUG_MESSAGE(size);
+
+					Serial.read();
+				}
 			}
 
 			switch (Serial.read())
@@ -97,7 +132,9 @@ namespace Communication
 				break;
 			}
 
-			Serial.flush();
+		CLEAR_BUFFER:
+			while (Serial.available())
+				Serial.read();
 		}
 
 		void update() override
@@ -189,7 +226,7 @@ namespace Communication
 			int target = 0;
 			for (int i = 0;;)
 			{
-				target += Serial.read();
+				target += Serial.read() - '0'; // convert char to int
 
 				if (++i >= targetLength)
 				{
@@ -222,11 +259,44 @@ namespace Communication
 		{
 			const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
 
+			if (player == NULL)
+			{
+				Serial.print(F("PlayerId not found"));
+			}
+
 			Serial.print(F("Running update for "));
 			Serial.println(playerCharacter);
 
-			Serial.print(F(" - playercount: "));
-			Serial.println(player->);
+			Serial.println(F("You: "));
+
+			Serial.print(F(" - position: "));
+			Serial.println(player->position);
+
+			Serial.print(F(" - active: "));
+			Serial.println(playerId == Game::GameManager::GetData()->state.activePlayer);
+
+			Serial.print(F(" - yellow count: "));
+			Serial.println(player->yellowTickets);
+
+			Serial.print(F(" - green count: "));
+			Serial.println(player->greenTickets);
+
+			Serial.print(F(" - red count: "));
+			Serial.println(player->redTickets);
+
+			if (player->type == Game::Player::Type::Villian)
+			{
+				Serial.print(F(" - black count: "));
+				Serial.println(player->villian.blackTicketCount);
+
+				Serial.print(F(" - double count: "));
+				Serial.println(player->villian.doubleTicketCount);
+			}
+			else
+			{
+				Serial.print(F(" - last villian position: "));
+				Serial.println(Game::GameManager::GetLastVillianPosition());
+			}
 		}
 
 		void updateSetup()

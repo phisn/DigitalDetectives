@@ -16,8 +16,6 @@ namespace Game
 			Blue
 
 		} color;
-
-		unsigned char order : 3; // ?
 	};
 
 	struct Villian
@@ -37,7 +35,7 @@ namespace Game
 		unsigned char greenTickets : 6;
 		unsigned char redTickets : 5;
 
-		enum class Type
+		enum class Type : unsigned char
 		{
 			Villian,
 			Detective

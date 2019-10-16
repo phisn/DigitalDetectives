@@ -65,6 +65,7 @@ namespace Communication
 	namespace InterfaceManager
 	{
 		void FaultNotifier(const Device::Fault fault);
+		void CollectInterfaces();
 
 		void Pop(Interface* const interface);
 		void Push(Interface* const interface);
@@ -99,6 +100,11 @@ namespace Communication
 
 		void Process(const bool update)
 		{
+			if (Game::Controller::GetState() == Game::GameState::Collect)
+			{
+				CollectInterfaces();
+			}
+
 			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
 			{
 				Interface* const interface = interfaces[i].Get();
@@ -110,6 +116,12 @@ namespace Communication
 
 				interface->process();
 			}
+		}
+
+		void CollectInterfaces()
+		{
+			Communication::SerialInterface::Collect();
+			Communication::WebInterface::Collect();
 		}
 
 		template <>

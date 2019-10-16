@@ -8,7 +8,7 @@ namespace Extern
 namespace
 {
 	bool isRestore = false;
-	bool needsUpdate = false;
+	bool needsUpdate = true;
 
 	// interface has the responsibility to ensure playercount
 	FlashString fault_player_overflow = DEVICE_FAULT_MESSAGE("Player overflow caused by INTF");
@@ -20,7 +20,11 @@ namespace Game
 	{
 		void Create()
 		{
-			if (!isRestore)
+			if (isRestore)
+			{
+
+			}
+			else
 			{
 				Extern::collectData->playerCount = 0;
 			}
@@ -44,6 +48,8 @@ namespace Game
 
 		PlayerId CreatePlayer()
 		{
+			DEBUG_MESSAGE("Creating new player");
+
 			if (Extern::collectData->playerCount >= COMMON_MAX_PLAYERCOUNT)
 			{
 				Device::FaultHandler::Handle(
@@ -54,8 +60,10 @@ namespace Game
 				}, true);
 			}
 
+			needsUpdate = true;
+
 			const PlayerId nextPlayerId = (PlayerId)rand();
-			Extern::collectData->playerIds[Extern::collectData->playerCount] = nextPlayerId;
+			Extern::collectData->playerIds[Extern::collectData->playerCount++] = nextPlayerId;
 			return nextPlayerId;
 		}
 
@@ -89,6 +97,24 @@ namespace Game
 		const CollectData* GetData()
 		{
 			return Extern::collectData;
+		}
+
+		bool Finish()
+		{
+			const bool result = Extern::collectData->playerCount >= 4;
+
+			if (result)
+			{
+				DEBUG_MESSAGE("Player count is over 4: ");
+			}
+			else
+			{
+				DEBUG_MESSAGE("Player count is not over 4: ");
+			}
+
+			DEBUG_MESSAGE(Extern::collectData->playerCount);
+
+			return result;
 		}
 	}
 }

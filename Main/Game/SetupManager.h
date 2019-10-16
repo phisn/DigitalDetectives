@@ -28,6 +28,8 @@ namespace Game
 		void AdjustVillianRedTickets(const int count);
 		void AdjustVillianBlackTickets(const int count);
 		void AdjustVillianDoubleTickets(const int count);
+
+		bool Finish();
 	}
 }
 
