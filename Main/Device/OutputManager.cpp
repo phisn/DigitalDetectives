@@ -79,6 +79,22 @@ namespace Device
 
 		namespace Lcd
 		{
+			void DisplayLineType(
+				const unsigned char row, 
+				const char* value, 
+				const unsigned int size)
+			{
+				_GetDisplay()->setCursor(0, row);
+				DEBUG_MESSAGE("ptr");
+				DEBUG_MESSAGE((int) value);
+				DEBUG_MESSAGE((int)((const uint8_t*) value));
+
+				DEBUG_MESSAGE((int)_GetDisplay);
+				DEBUG_MESSAGE((int)((Print*)_GetDisplay()));
+
+				((Print*) 1073677524)->write((const uint8_t*) value, size);
+			}
+
 			void Clear()
 			{
 				_GetDisplay()->clear();
@@ -87,11 +103,30 @@ namespace Device
 			LiquidCrystal_I2C* _GetDisplay()
 			{
 				// fix bug
-				static __attribute__((aligned(4))) LiquidCrystal_I2C lcdi2c(
+				// static __attribute__((aligned(4))) 
+				static LiquidCrystal_I2C* lcdi2c = new LiquidCrystal_I2C(
 					DEVICE_LCD_ADDRESS,
 					DEVICE_LCD_WIDTH, 4);
-				return &lcdi2c;
+				return lcdi2c;
 			}
 		}
 	}
+}
+
+void Device::OutputManager::FastLed::Clear()
+{
+	for (int i = 0; i < COMMON_MAP_SIZE; ++i)
+	{
+		mapLeds[i] = CRGB::Black;
+	}
+}
+
+void Device::OutputManager::FastLed::Show(const int pin, CRGB color)
+{
+	mapLeds[pin - 5] = color;
+}
+
+void Device::OutputManager::FastLed::Update()
+{
+	EOBJ::FastLED->show();
 }

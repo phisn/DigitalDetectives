@@ -107,9 +107,10 @@ namespace Device
 			
 			*/
 
-			DEBUG_MESSAGE("Inside FaultHandler (text / module / id / isFatal)");
+			DEBUG_MESSAGE("Inside FaultHandler (text / module / module name / id / isFatal)");
 			DEBUG_MESSAGE(fault.text);
 			DEBUG_MESSAGE((int) fault.module);
+			DEBUG_MESSAGE(emessageModuleNames[(int) fault.module]);
 			DEBUG_MESSAGE((int) fault.id);
 			DEBUG_MESSAGE((int) fatal);
 
@@ -207,14 +208,19 @@ namespace Device
 				DEVICE_EMESSAGE_ERROR_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
-				(const char*) fault.text, 
+				fault.text, 
 				DEVICE_EMESSAGE_MESSAGE_LEN_FL);
+
+			for (int i = 0; i < DEVICE_LCD_WIDTH + 1; ++i)
+			{
+				DEBUG_MESSAGE((int) buffer[i]);
+			}
 
 			OutputManager::Lcd::DisplayLineType(
 				0,
 				buffer);
 
-			// memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
+			memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
 
 			// print remaining error message
 			// ignore space on next line

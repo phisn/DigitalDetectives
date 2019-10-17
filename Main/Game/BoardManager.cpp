@@ -3,8 +3,12 @@
 
 namespace
 {
-	FlashString cmessage_common_0 = DEVICE_LCD_MESSAGE("Waiting for players ");
-	FlashString cmessage_common_1_part = FPSTR("Currently: ");
+	FlashString message_collect_0 = DEVICE_LCD_MESSAGE("Waiting for players ");
+	FlashString message_collect_1 = FPSTR("Currently: %d");
+
+	FlashString message_running_0 = DEVICE_LCD_MESSAGE("  - Running game -  ");
+	FlashString message_running_1 = FPSTR("Current round: %d");
+	FlashString message_running_2 = FPSTR("Current player: %x");
 }
 
 namespace Game
@@ -39,14 +43,14 @@ namespace Game
 			Device::OutputManager::Lcd::Clear();
 			Device::OutputManager::Lcd::DisplayLineType(
 				0,
-				cmessage_common_0
+				message_collect_0
 			);
 
 			char lcdBuffer[DEVICE_LCD_WIDTH];
 
 			sprintf_P(
-				lcdBuffer, PSTR("%s: %d"),
-				cmessage_common_1_part,
+				lcdBuffer, 
+				(char*) message_collect_1,
 				Collector::GetData()->playerCount
 			);
 
@@ -58,6 +62,49 @@ namespace Game
 
 		void UpdateRunning()
 		{
+			Device::OutputManager::FastLed::Clear();
+
+			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+			{
+				Device::OutputManager::FastLed::Show(
+					Device::MapManager::Translate(
+						GameManager::GetData()->player[i].position
+					),
+					CRGB::White
+				);
+			}
+
+			Device::OutputManager::FastLed::Update();
+
+			Device::OutputManager::Lcd::Clear();
+			Device::OutputManager::Lcd::DisplayLineType(
+				0,
+				message_running_0
+			);
+
+			char lcdBuffer[DEVICE_LCD_WIDTH];
+
+			sprintf_P(
+				lcdBuffer,
+				(char*) message_running_1,
+				Game::GameManager::GetData()->state.round + 1
+			);
+
+			Device::OutputManager::Lcd::DisplayLineType(
+				1,
+				lcdBuffer
+			);
+
+			sprintf_P(
+				lcdBuffer,
+				(char*) message_running_2,
+				Game::GameManager::GetData()->state.activePlayer
+			);
+
+			Device::OutputManager::Lcd::DisplayLineType(
+				2,
+				lcdBuffer
+			);
 		}
 
 		void UpdateSetup()

@@ -51,18 +51,21 @@ namespace Device
 			{
 				_GetDisplay()->setCursor(0, row);
 				_GetDisplay()->print(value);
-
-				if (_GetDisplay()->getWriteError())
-				{
-					FailureHandler::Handle(
-						Device::FailureModule::OutputManager,
-						FID::LCD_DISPLAY
-					);
-				}
-
 			}
 
+			void DisplayLineType(
+				const unsigned char row,
+				const char* value,
+				const unsigned int size);
+
 			void Clear();
+		}
+
+		namespace FastLed
+		{
+			void Clear();
+			void Show(const int pin, CRGB color);
+			void Update();
 		}
 	}
 }

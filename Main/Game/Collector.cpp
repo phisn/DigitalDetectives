@@ -54,7 +54,7 @@ namespace Game
 			{
 				Device::FaultHandler::Handle(
 				{
-					Device::FaultModule::NetworkManager,
+					Device::FaultModule::Collector,
 					(Device::FailureId) FID::PLAYER_OVERFLOW,
 					fault_player_overflow
 				}, true);
@@ -62,7 +62,7 @@ namespace Game
 
 			needsUpdate = true;
 
-			const PlayerId nextPlayerId = (PlayerId)rand();
+			const PlayerId nextPlayerId = (PlayerId) rand();
 			Extern::collectData->playerIds[Extern::collectData->playerCount++] = nextPlayerId;
 			return nextPlayerId;
 		}
