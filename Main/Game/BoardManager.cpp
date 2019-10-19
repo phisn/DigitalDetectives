@@ -19,6 +19,11 @@ namespace Game
 		void UpdateRunning();
 		void UpdateSetup();
 
+		void Process()
+		{
+			// make semi interactive elements like blinking
+		}
+
 		void Update()
 		{
 			switch (Controller::GetState())
@@ -75,6 +80,7 @@ namespace Game
 				);
 			}
 
+			// villian is shown as white
 			if (GameManager::IsShowVillianPositionRound())
 			{
 				Device::OutputManager::FastLed::Show(

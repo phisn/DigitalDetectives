@@ -33,7 +33,7 @@ namespace Game
 		// for heavy dynamic allocation
 		union
 		{
-			Detective detective; // how to determine if player is evil?
+			Detective detective;
 			Villian villian;
 		};
 	};
@@ -53,6 +53,8 @@ namespace Game
 		Color color;
 	};
 
+	// player container for READ outside from
+	// gamemanager and setupmanager
 	struct Player
 	{
 		const PlayerState* state;

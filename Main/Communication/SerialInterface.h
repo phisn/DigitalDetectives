@@ -257,7 +257,7 @@ namespace Communication
 
 		void updateRunning()
 		{
-			const Game::PlayerState* const player = Game::GameManager::ReadPlayer(playerId);
+			const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
 
 			if (player == NULL)
 			{
@@ -270,27 +270,27 @@ namespace Communication
 			Serial.println(F("You: "));
 
 			Serial.print(F(" - position: "));
-			Serial.println(player->position);
+			Serial.println(player->state->position);
 
 			Serial.print(F(" - active: "));
 			Serial.println(playerId == Game::GameManager::GetData()->state.activePlayer);
 
 			Serial.print(F(" - yellow count: "));
-			Serial.println(player->yellowTickets);
+			Serial.println(player->state->ticket.yellowTicketCount);
 
 			Serial.print(F(" - green count: "));
-			Serial.println(player->greenTickets);
+			Serial.println(player->state->ticket.greenTicketCount);
 
 			Serial.print(F(" - red count: "));
-			Serial.println(player->redTickets);
+			Serial.println(player->state->ticket.redTicketCount);
 
-			if (player->type == Game::PlayerState::Type::Villian)
+			if (player->data->type == Game::PlayerData::Type::Villian)
 			{
 				Serial.print(F(" - black count: "));
-				Serial.println(player->villian.blackTicketCount);
+				Serial.println(player->state->villian.ticket.blackTicketCount);
 
 				Serial.print(F(" - double count: "));
-				Serial.println(player->villian.doubleTicketCount);
+				Serial.println(player->state->villian.ticket.doubleTicketCount);
 			}
 			else
 			{
