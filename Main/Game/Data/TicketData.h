@@ -19,14 +19,6 @@ namespace Game
 		Double
 	};
 
-	namespace DefaultTickets
-	{
-		constexpr CommonTickets beginCommonDetective = { 10, 8, 4 };
-
-		constexpr CommonTickets beginCommonVillian = { 4, 3, 3 };
-		constexpr VillianTickets beginSpecialVillian = { 2, 0 };
-	}
-
 	// max 255 for all tickets
 	struct CommonTickets
 	{
@@ -40,6 +32,14 @@ namespace Game
 		unsigned char blackTicketCount;
 		unsigned char doubleTicketCount;
 	};
+
+	namespace DefaultTickets
+	{
+		constexpr CommonTickets beginCommonDetective = { 10, 8, 4 };
+
+		constexpr CommonTickets beginCommonVillian = { 4, 3, 3 };
+		constexpr VillianTickets beginSpecialVillian = { 2, 0 };
+	}
 }
 
 #pragma pack(pop)

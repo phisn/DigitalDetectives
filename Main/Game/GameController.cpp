@@ -18,10 +18,10 @@ namespace
 	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("Old session found,  ");
 	FlashString lcd_ask_restore_2 = DEVICE_LCD_MESSAGE("restore?            ");
 
-	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted      ");
-	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in invalid state");
-	FlashString fault_invalid_running_state = DEVICE_FAULT_MESSAGE("Got invalid running state     ");
-	FlashString fault_invalid_finish = DEVICE_FAULT_MESSAGE("Got invalid finish request    ");
+	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted         ");
+	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in an invalid state ");
+	FlashString fault_invalid_running_state = DEVICE_FAULT_MESSAGE("Got invalid running state        ");
+	FlashString fault_invalid_finish = DEVICE_FAULT_MESSAGE("Got invalid finish request       ");
 
 	bool requestFinish = false;
 }
@@ -101,6 +101,8 @@ namespace Game
 
 				if (FinishState())
 				{
+					BoardManager::OnStateChanged(sector.state);
+
 					return false;
 				}
 			}
@@ -156,6 +158,7 @@ namespace Game
 
 			sector.state = GameState::Collect;
 			Collector::Create();
+			BoardManager::OnStateChanged(GameState::Collect);
 		}
 
 		void RestoreSession()

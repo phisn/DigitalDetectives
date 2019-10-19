@@ -17,7 +17,7 @@ namespace Game
 		Purple,
 		Yellow,
 
-	} color;
+	};
 
 	CRGB ColorToCRGB(const Color color);
 }

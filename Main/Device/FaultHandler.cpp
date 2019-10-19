@@ -30,9 +30,9 @@ namespace
 		FPSTR("WebInterface\0")
 	};
 
-	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null       ");
-	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory         ");
-	FlashString fault_heap_frag = DEVICE_FAULT_MESSAGE("Device heap is fragmented     ");
+	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null          ");
+	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory            ");
+	FlashString fault_heap_frag = DEVICE_FAULT_MESSAGE("Device heap is fragmented        ");
 }
 
 // prevent accidential change of nonfatal
@@ -120,6 +120,10 @@ namespace Device
 			{
 				// interfaceNotifierCallback(fault);
 				HandleModuleFault(fault);
+			}
+			else
+			{
+				delay(5000);
 			}
 		}
 

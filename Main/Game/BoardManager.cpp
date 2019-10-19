@@ -3,6 +3,31 @@
 
 namespace
 {
+	struct
+	{
+		union
+		{
+			struct
+			{
+				unsigned long nextUpdate;
+				char flowingText[DEVICE_LCD_WIDTH * 2];
+
+			} collect;
+
+			struct
+			{
+			} setup;
+
+			struct
+			{
+			} running;
+		};
+
+		unsigned long lastTime = millis();
+		unsigned long timer = millis();
+
+	} dynamicStateData;
+
 	FlashString message_collect_0 = DEVICE_LCD_MESSAGE("Waiting for players ");
 	FlashString message_collect_1 = FPSTR("Currently: %d");
 
@@ -21,7 +46,49 @@ namespace Game
 
 		void Process()
 		{
-			// make semi interactive elements like blinking
+			const unsigned long time = millis();
+			dynamicStateData.timer += time - dynamicStateData.lastTime;
+			dynamicStateData.lastTime = time;
+
+			switch (Controller::GetState())
+			{
+			case GameState::Collect:
+				if (dynamicStateData.timer > dynamicStateData.collect.nextUpdate)
+				{
+					for (int i = DEVICE_LCD_WIDTH * 2 - 1; i > 0; --i)
+					{
+						if (i >= DEVICE_LCD_WIDTH)
+						{
+							const int source = i == DEVICE_LCD_WIDTH
+								? i - 1
+								: 20 + 40 - i;
+
+							const int target = 20 + 39 - i;
+
+							dynamicStateData.collect.flowingText[target] = dynamicStateData.collect.flowingText[source];
+						}
+						else
+						{
+							dynamicStateData.collect.flowingText[i] = dynamicStateData.collect.flowingText[i - 1];
+						}
+					}
+
+					dynamicStateData.collect.flowingText[0] = (random(0xffff) % 2 == 0) ? '+' : '-';
+
+					Device::OutputManager::Lcd::DisplayLineType(
+						2,
+						dynamicStateData.collect.flowingText,
+						DEVICE_LCD_WIDTH);
+					Device::OutputManager::Lcd::DisplayLineType(
+						3,
+						dynamicStateData.collect.flowingText + DEVICE_LCD_WIDTH,
+						DEVICE_LCD_WIDTH);
+
+					dynamicStateData.collect.nextUpdate = dynamicStateData.timer + 500;
+				}
+
+				break;
+			}
 		}
 
 		void Update()
@@ -125,6 +192,27 @@ namespace Game
 
 		void UpdateSetup()
 		{
+		}
+
+		void OnStateChanged(const Game::GameState newState)
+		{
+			DEBUG_MESSAGE("Boardmanager state changed");
+
+			switch (newState)
+			{
+			case GameState::Collect:
+				dynamicStateData.collect.nextUpdate = 0;
+				memset(
+					&dynamicStateData.collect.flowingText, 
+					' ', 
+					sizeof(dynamicStateData.collect.flowingText));
+				
+				break;
+			default:
+				memset(&dynamicStateData, 0, sizeof(dynamicStateData));
+
+				break;
+			}
 		}
 	}
 }

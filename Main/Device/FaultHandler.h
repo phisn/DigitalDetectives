@@ -13,10 +13,17 @@
 
 // minus null byte
 #define DEVICE_EMESSAGE_ERROR_LEN (sizeof(DEVICE_EMESSAGE_ERROR) - 1)
-#define DEVICE_EMESSAGE_MESSAGE_LEN (DEVICE_LCD_WIDTH * 2 - sizeof(DEVICE_EMESSAGE_ERROR) - 1)
+#define DEVICE_EMESSAGE_MESSAGE_LEN (DEVICE_LCD_WIDTH * 2 - DEVICE_EMESSAGE_ERROR_LEN)
+
+// device fault message has a special case. when the character after
+// last character of the first line is a space, then this space is omited
+// and therefore is not taken into account
+#define DEVICE_FAULT_ISLASTSPACE(txt) ((txt)[DEVICE_LCD_WIDTH - DEVICE_EMESSAGE_ERROR_LEN] == ' ')
+#define DEVICE_FAULT_GET_EXPECTED_LEN(txt) (DEVICE_FAULT_ISLASTSPACE(txt) \
+	? DEVICE_EMESSAGE_MESSAGE_LEN + 1 : DEVICE_EMESSAGE_MESSAGE_LEN)
 
 // usage: FlashString fault_xxx = DEVICE_FAULT_MESSAGE("xxx");
-#define DEVICE_FAULT_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) == DEVICE_EMESSAGE_MESSAGE_LEN, \
+#define DEVICE_FAULT_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_FAULT_GET_EXPECTED_LEN(txt), \
 	"Fault message has to be have full length (see DEVICE_EMESSAGE_MESSAGE_LEN)")
 
 #define DEVICE_MIN_REMAIN_MEMORY 128

@@ -13,9 +13,9 @@ namespace
 	FlashString ssid = FPSTR(DEVICE_NET_SSID);
 	FlashString pass = FPSTR(DEVICE_NET_PASS);
 
-	FlashString fault_soft_ap_mode = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode     ");
-	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config   ");
-	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP       ");
+	FlashString fault_soft_ap_mode = DEVICE_FAULT_MESSAGE("Failed to set SoftAP mode         ");
+	FlashString fault_soft_ap_config = DEVICE_FAULT_MESSAGE("Failed to set SoftAP config       ");
+	FlashString fault_soft_ap_create = DEVICE_FAULT_MESSAGE("Failed to create SoftAP          ");
 
 	// ESP8266WebServer server;
 }

@@ -57,7 +57,7 @@ namespace
 	char interfaces_buffer[sizeof(InterfaceBuffer) * COMMON_MAX_PLAYERCOUNT];
 	InterfaceBuffer* interfaces = (InterfaceBuffer*) interfaces_buffer;
 
-	FlashString fault_remove_invalid_playerid = DEVICE_FAULT_MESSAGE("Got invalid PlayerId in remove");
+	FlashString fault_remove_invalid_playerid = DEVICE_FAULT_MESSAGE("Got invalid PlayerId in remove   ");
 }
 
 namespace Communication

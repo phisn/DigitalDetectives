@@ -85,14 +85,11 @@ namespace Device
 				const unsigned int size)
 			{
 				_GetDisplay()->setCursor(0, row);
-				DEBUG_MESSAGE("ptr");
-				DEBUG_MESSAGE((int) value);
-				DEBUG_MESSAGE((int)((const uint8_t*) value));
 
-				DEBUG_MESSAGE((int)_GetDisplay);
-				DEBUG_MESSAGE((int)((Print*)_GetDisplay()));
-
-				((Print*) 1073677524)->write((const uint8_t*) value, size);
+				for (int i = 0; i < size; ++i)
+				{
+					_GetDisplay()->write((uint8_t)value[i]);
+				}
 			}
 
 			void Clear()

@@ -11,7 +11,7 @@ namespace
 	bool needsUpdate = true;
 
 	// interface has the responsibility to ensure playercount
-	FlashString fault_player_overflow = DEVICE_FAULT_MESSAGE("Player overflow caused by INTF");
+	FlashString fault_player_overflow = DEVICE_FAULT_MESSAGE("Player overflow caused by Interfc");
 }
 
 namespace Game
