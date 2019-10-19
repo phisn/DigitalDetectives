@@ -9,7 +9,10 @@ namespace EOBJ
 }
 
 /*
-Info:
+Info
+- Some position are different in two versions of
+  scotlandyard. These do not affect the starting
+  positions! more info(https://boardgamegeek.com/thread/77052/starting-places)
 - All data should be stored as PROGMEM and strings
   should use the definition FlashString defined in
   Common/Common.h

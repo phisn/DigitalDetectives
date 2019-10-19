@@ -257,7 +257,7 @@ namespace Communication
 
 		void updateRunning()
 		{
-			const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
+			const Game::PlayerState* const player = Game::GameManager::ReadPlayer(playerId);
 
 			if (player == NULL)
 			{
@@ -284,7 +284,7 @@ namespace Communication
 			Serial.print(F(" - red count: "));
 			Serial.println(player->redTickets);
 
-			if (player->type == Game::Player::Type::Villian)
+			if (player->type == Game::PlayerState::Type::Villian)
 			{
 				Serial.print(F(" - black count: "));
 				Serial.println(player->villian.blackTicketCount);

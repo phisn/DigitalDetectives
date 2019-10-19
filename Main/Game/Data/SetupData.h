@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Game/Data/CollectData.h"
+#include "../../Game/Data/PlayerData.h"
 #include "../../Game/Data/SettingsData.h"
 
 namespace Game
@@ -11,8 +12,9 @@ namespace Game
 
 		struct PlayerContext
 		{
+			// ordered
+			PlayerData data[COMMON_MAX_PLAYERCOUNT];
 			PlayerId villian;
-			PlayerId order[COMMON_MAX_PLAYERCOUNT];
 
 		} playerContext;
 	};

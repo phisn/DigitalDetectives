@@ -7,6 +7,7 @@ namespace Game
 {
 	namespace BoardManager
 	{
+		void Process();
 		void Update();
 	}
 }

@@ -115,10 +115,7 @@ namespace Device
 
 void Device::OutputManager::FastLed::Clear()
 {
-	for (int i = 0; i < COMMON_MAP_SIZE; ++i)
-	{
-		mapLeds[i] = CRGB::Black;
-	}
+	EOBJ::FastLED->clearData();
 }
 
 void Device::OutputManager::FastLed::Show(const int pin, CRGB color)

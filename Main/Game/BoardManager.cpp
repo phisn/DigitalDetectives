@@ -64,14 +64,24 @@ namespace Game
 		{
 			Device::OutputManager::FastLed::Clear();
 
-			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+			// skip villian (= 0)
+			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
 				Device::OutputManager::FastLed::Show(
 					Device::MapManager::Translate(
 						GameManager::GetData()->player[i].position
 					),
-					CRGB::White
+					ColorToCRGB(SetupManager::GetData()->playerContext.data[i].color)
 				);
+			}
+
+			if (GameManager::IsShowVillianPositionRound())
+			{
+				Device::OutputManager::FastLed::Show(
+					Device::MapManager::Translate(
+						GameManager::GetData()->player[0].position
+					),
+					CRGB::White);
 			}
 
 			Device::OutputManager::FastLed::Update();

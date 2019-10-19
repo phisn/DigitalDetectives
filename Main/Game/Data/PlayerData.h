@@ -1,7 +1,10 @@
 #pragma once
 
 #include "../../Common/Common.h"
+
 #include "../../Game/Data/CollectData.h"
+#include "../../Game/Data/ColorData.h"
+#include "../../Game/Data/TicketData.h"
 
 #pragma pack(push, 1)
 
@@ -9,37 +12,21 @@ namespace Game
 {
 	struct Detective
 	{
-		enum class Color : unsigned char
-		{
-			Yellow,
-			Red,
-			Blue
-
-		} color;
 	};
 
 	struct Villian
 	{
-		unsigned char blackTicketCount : 3;
-		unsigned char doubleTicketCount : 2;
+		VillianTickets ticket;
 	};
 
-	struct Player
+	// does changes while playing
+	// created in gamem
+	struct PlayerState
 	{
-		PlayerId player; // : 8
-
 		MapPosition path[24]; // : 8
 		MapPosition position; // : 8
 
-		unsigned char yellowTickets : 6;
-		unsigned char greenTickets : 6;
-		unsigned char redTickets : 5;
-
-		enum class Type : unsigned char
-		{
-			Villian,
-			Detective
-		} type : 1;
+		CommonTickets ticket;
 
 		// allow easy safe and load from
 		// game-data perspective and also no need
@@ -50,6 +37,29 @@ namespace Game
 			Villian villian;
 		};
 	};
+
+	// doesnt change while playing
+	// created in setupm
+	struct PlayerData
+	{
+		PlayerId player;
+
+		enum class Type : unsigned char
+		{
+			Villian,
+			Detective
+		} type : 1;
+
+		Color color;
+	};
+
+	struct Player
+	{
+		const PlayerState* state;
+		const PlayerData* data;
+	};
+
+	constexpr Color VillianColor = Color::Black;
 }
 
 #pragma pack(pop)

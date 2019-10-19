@@ -2,6 +2,8 @@
 
 #include "../Common/Common.h"
 
+#define GAME_START_POSITION_COUNT 18
+
 #pragma pack(push, 1)
 
 namespace Game
@@ -10,12 +12,12 @@ namespace Game
 	{
 		enum Type : unsigned char
 		{
-			TAXI = 0,
-			BUS = 1,
-			UNDERGROUND = 2,
-			FERRY = 3
+			Taxi = 0,
+			Bus = 1,
+			Underground = 2,
+			Ferry = 3
 
-		} type : 2;
+		} type : 6; // pad
 
 		unsigned char isFerry : 1;
 	};
@@ -30,11 +32,17 @@ namespace Game
 
 	namespace PathManager
 	{
+		struct FindRandomStartsResult
+		{
+			unsigned char starts[GAME_START_POSITION_COUNT];
+		};
+
+		FindRandomStartsResult FindRandomStarts();
+
 		struct FindOptionsSpecificResult
 		{
 			unsigned char station[6]; // highest possible number
 			unsigned char stationCount;
-
 		};
 		
 		FindOptionsSpecificResult FindOptionsSpecific(

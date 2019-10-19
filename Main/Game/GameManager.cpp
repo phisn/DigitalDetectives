@@ -16,15 +16,16 @@ namespace
 	FlashString turn_fail_ticketnotavaible = FPSTR("Villian ticket not avaiable");
 
 	Game::MapPosition lastVillianPosition;
+	Game::Player dynamicPlayer[COMMON_MAX_PLAYERCOUNT];
 }
 
 namespace Game
 {
 	namespace GameManager
 	{
-		// can return null
-		Player* FindPlayer(const PlayerId id);
-		Player* FindVillian();
+		// can fail (-1)
+		int FindPlayerIndex(const PlayerId id);
+		int FindVillianIndex();
 
 		bool ValidateTurn(
 			const MapPosition source,
@@ -33,10 +34,12 @@ namespace Game
 			const MapPosition source,
 			const MapPosition target);
 		bool RemovePlayerTicket(
-			Player* const player, 
+			const PlayerData::Type type,
+			PlayerState* const player, 
 			const Ticket ticket);
 		bool AddPlayerTicket(
-			Player* const player,
+			const PlayerData::Type type,
+			PlayerState* const player,
 			const Ticket ticket);
 
 		void Initialize()
@@ -51,34 +54,28 @@ namespace Game
 			Extern::gameData->state.activePlayer = SetupManager::GetData()->playerContext.villian;
 			Extern::gameData->state.activePlayerIndex = 0;
 
+			PathManager::FindRandomStartsResult randomStarts = PathManager::FindRandomStarts();
+
 			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
 			{
-				Player* const player = &Extern::gameData->player[i];
-				player->player = Collector::GetData()->playerIds[i];
-				
-				if (player->player == SetupManager::GetData()->playerContext.villian)
+				PlayerState* const player = &Extern::gameData->player[i];
+
+				// init ticketcount
+				if (SetupManager::GetData()->playerContext.data[i].type == PlayerData::Type::Villian)
 				{
-					player->type = Player::Type::Villian;
-
-					player->yellowTickets = SetupManager::GetData()->settings.beginVillianYellowCount;
-					player->greenTickets = SetupManager::GetData()->settings.beginVillianGreenCount;
-					player->redTickets = SetupManager::GetData()->settings.beginVillianRedCount;
-
-					player->villian.blackTicketCount = SetupManager::GetData()->settings.beginVillianBlackCount;
-					player->villian.doubleTicketCount = SetupManager::GetData()->settings.beginVillianDoubleCount;
+					player->ticket = SetupManager::GetData()->settings.beginCommonVillian;
+					player->villian.ticket = SetupManager::GetData()->settings.beginSpecialVillian;
 				}
 				else
 				{
-					player->type = Player::Type::Detective;
-
-					player->yellowTickets = SetupManager::GetData()->settings.beginDetectiveYellowCount;
-					player->greenTickets = SetupManager::GetData()->settings.beginDetectiveGreenCount;
-					player->redTickets = SetupManager::GetData()->settings.beginDetectiveRedCount;
-
-					player->detective.color;
+					player->ticket = SetupManager::GetData()->settings.beginCommonDetective;
 				}
 
-				player->position = random(200); // TODO: get defaults
+				// intit startposition
+				player->position = randomStarts.starts[i];
+
+				dynamicPlayer[i].state = player;
+				dynamicPlayer[i].data = &SetupManager::GetData()->playerContext.data[i];
 			}
 		}
 
@@ -106,74 +103,79 @@ namespace Game
 				return { false, turn_fail_activeplayer };
 			}
 
-			Player* const player = FindPlayer(playerId);
+			const int playerIndex = FindPlayerIndex(playerId);
 
-			if (player == NULL)
+			if (playerIndex == -1)
 			{
 				return { false, turn_fail_playernotfound };
 			}
 
-			int b = (int) player->type;
-			DEBUG_MESSAGE("Make turn as: ");
-			DEBUG_MESSAGE(b);
-
-			if (player->type == Player::Type::Detective &&
+			PlayerState* const playerState = &Extern::gameData->player[playerIndex];
+			const PlayerData* const playerData = &SetupManager::GetData()->playerContext.data[playerIndex];
+			
+			if (playerData->type == PlayerData::Type::Detective &&
 				   (turn.ticket == Ticket::Black ||
 					turn.ticket == Ticket::Double))
 			{
 				return { false, turn_fail_ticketnotavaible };
 			}
 
-			if (!ValidateTurn(player->position, turn))
+			if (!ValidateTurn(playerState->position, turn))
 			{
 				return { false, turn_fail_invalidturn };
 			}
 
 			// also checks if playe has ticket
-			if (!RemovePlayerTicket(player, turn.ticket))
+			if (!RemovePlayerTicket(
+					playerData->type, 
+					playerState, 
+					turn.ticket))
 			{
 				return { false, turn_fail_ticketnotfound };
 			}
 
-			player->path[Extern::gameData->state.round] = player->position;
-			player->position = turn.position;
+			playerState->path[Extern::gameData->state.round] = playerState->position;
+			playerState->position = turn.position;
 
-			if (player->type == Player::Type::Detective)
+			if (playerData->type == PlayerData::Type::Detective)
 			{
-				Player* const villian = FindVillian();
+				PlayerState* const villian = &Extern::gameData->player[FindVillianIndex()];
 
-				if (villian->position == player->position)
+				if (villian->position == playerState->position)
 				{
 					// ...
 				}
 
-				AddPlayerTicket(villian, turn.ticket);
+				AddPlayerTicket(
+					PlayerData::Type::Villian, 
+					villian, 
+					turn.ticket);
 			}
 			else
 			{
 				if (Extern::gameData->state.round == 24)
 				{
-					// game over
+					// game over for detectives
 				}
 
-				if (Extern::gameData->state.round % 5 == 3)
+				if (IsShowVillianPositionRound())
 				{
-					lastVillianPosition = player->position;
+					lastVillianPosition = playerState->position;
 				}
 			}
 
-			// select next player index as active player and check for finished round
+			// check for finished round
 			if (++Extern::gameData->state.activePlayerIndex >= Collector::GetData()->playerCount)
 			{
-				Extern::gameData->state.activePlayerIndex = 0;
 				++Extern::gameData->state.round;
+				Extern::gameData->state.activePlayerIndex = 0;
 				
 				// ...
 			}
 			
 			// select next playerId as active player
 			Extern::gameData->state.activePlayer = SetupManager::GetData()
-				->playerContext.order[Extern::gameData->state.activePlayerIndex];
+				->playerContext.data[Extern::gameData->state.activePlayerIndex].player;
 
 			needsUpdate = true;
 			return { true, NULL };
@@ -187,24 +189,25 @@ namespace Game
 			return { };
 		}
 
-		Player* FindPlayer(const PlayerId id)
+		int FindPlayerIndex(const PlayerId id)
 		{
 			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
-				if (Extern::gameData->player[i].player == id)
+				if (SetupManager::GetData()->playerContext.data[i].player == id)
 				{
-					return &Extern::gameData->player[i];
+					return i;
 				}
 
-			return NULL;
+			return -1;
 		}
 
-		Player* FindVillian()
+		int FindVillianIndex()
 		{
 			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
-				if (Extern::gameData->player[i].type == Player::Type::Villian)
+				if (SetupManager::GetData()->playerContext.data[i].type == PlayerData::Type::Villian)
 				{
-					return &Extern::gameData->player[i];
+					return i;
 				}
+
 			// unreachable
 		}
 
@@ -239,7 +242,7 @@ namespace Game
 
 			switch (sourceStation.type)
 			{ // fall though all
-			case Station::UNDERGROUND:
+			case Station::Underground:
 				for (int i = 0; result.undergroundStations[i]; ++i)
 					if (result.undergroundStations[i] == target)
 					{
@@ -247,14 +250,14 @@ namespace Game
 					}
 
 
-			case Station::BUS:
+			case Station::Bus:
 				for (int i = 0; result.busStations[i]; ++i)
 					if (result.busStations[i] == target)
 					{
 						return true;
 					}
 
-			case Station::TAXI:
+			case Station::Taxi:
 				for (int i = 0; result.taxiStations[i]; ++i)
 					if (result.taxiStations[i] == target)
 					{
@@ -275,58 +278,59 @@ namespace Game
 		}
 
 		bool RemovePlayerTicket(
-			Player* const player,
+			const PlayerData::Type type,
+			PlayerState* const player,
 			const Ticket ticket)
 		{
 			// optimizing not possible, bitfields are used
 			switch (ticket)
 			{
 			case Ticket::Yellow:
-				if (player->yellowTickets > 0)
+				if (player->ticket.yellowTicketCount > 0)
 				{
-					--player->yellowTickets;
+					--player->ticket.yellowTicketCount;
 					return true;
 				}
 
 				break;
 			case Ticket::Green:
-				if (player->greenTickets > 0)
+				if (player->ticket.greenTicketCount > 0)
 				{
-					--player->greenTickets;
+					--player->ticket.greenTicketCount;
 					return true;
 				}
 
 				break;
 			case Ticket::Red:
-				if (player->redTickets > 0)
+				if (player->ticket.redTicketCount > 0)
 				{
-					--player->redTickets;
+					--player->ticket.redTicketCount;
 					return true;
 				}
 
 				break;
 			case Ticket::Black:
-				if (player->type == Player::Type::Detective)
+				if (type == PlayerData::Type::Detective)
 				{
 					break;
 				}
 
-				if (player->villian.blackTicketCount > 0)
+				if (player->villian.ticket.blackTicketCount > 0)
 				{
-					--player->villian.blackTicketCount;
+					--player->villian.ticket.blackTicketCount;
 					return true;
 				}
 
 				break;
 			case Ticket::Double:
-				if (player->type == Player::Type::Detective)
+				if (type == PlayerData::Type::Detective)
 				{
 					break;
 				}
 
-				if (player->villian.doubleTicketCount > 0)
+				if (player->villian.ticket.doubleTicketCount > 0)
 				{
-					--player->villian.doubleTicketCount;
+					--player->villian.ticket.doubleTicketCount;
 					return true;
 				}
 
@@ -337,40 +341,41 @@ namespace Game
 		}
 
 		bool AddPlayerTicket(
-			Player* const player,
+			const PlayerData::Type type,
+			PlayerState* const player,
 			const Ticket ticket)
 		{
 			// optimizing not possible, bitfields are used
 			switch (ticket)
 			{
 			case Ticket::Yellow:
-				++player->yellowTickets;
+				++player->ticket.yellowTicketCount;
 
 				break;
 			case Ticket::Green:
-				++player->greenTickets;
+				++player->ticket.greenTicketCount;
 
 				break;
 			case Ticket::Red:
-				++player->redTickets;
+				++player->ticket.redTicketCount;
 
 				break;
 			case Ticket::Black:
-				if (player->type == Player::Type::Detective)
+				if (type == PlayerData::Type::Detective)
 				{
 					return false;
 				}
 
-				++player->villian.blackTicketCount;
+				++player->villian.ticket.blackTicketCount;
 
 				break;
 			case Ticket::Double:
-				if (player->type == Player::Type::Detective)
+				if (type == PlayerData::Type::Detective)
 				{
 					return false;
 				}
 
-				++player->villian.doubleTicketCount;
+				++player->villian.ticket.doubleTicketCount;
 
 				break;
 			}
@@ -380,7 +385,14 @@ namespace Game
 
 		const Player* ReadPlayer(const PlayerId id)
 		{
-			return FindPlayer(id);
+			const int index = FindPlayerIndex(id);
+
+			if (index == -1)
+			{
+				return NULL;
+			}
+
+			return &dynamicPlayer[index];
 		}
 
 		MapPosition GetLastVillianPosition()

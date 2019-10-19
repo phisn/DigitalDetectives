@@ -12,19 +12,6 @@
 
 namespace Game
 {
-	enum class Ticket
-	{
-		_Invalid = 255,
-
-		// sync with station to easily
-		// convert between them
-		Yellow = Station::TAXI,
-		Green = Station::BUS,
-		Red = Station::UNDERGROUND,
-		Black = Station::FERRY,
-		Double
-	};
-
 	struct Turn
 	{
 		Ticket ticket;

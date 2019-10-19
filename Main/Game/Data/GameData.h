@@ -6,7 +6,7 @@ namespace Game
 {
 	struct GameData
 	{
-		Player player[6];
+		PlayerState player[6];
 
 		struct GameState
 		{
@@ -21,5 +21,10 @@ namespace Game
 	namespace GameManager
 	{
 		const GameData* GetData();
+
+		inline bool IsShowVillianPositionRound()
+		{
+			return GetData()->state.round % 5 == 3;
+		}
 	}
 }

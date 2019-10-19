@@ -8,47 +8,80 @@ namespace Extern
 	extern Game::SetupData* setupData;
 }
 
+namespace
+{
+	bool needsUpdate = true;
+}
+
 namespace Game
 {
 	namespace SetupManager
 	{
+		void CreateTicketCount();
+		void CreatePlayerContext();
+
 		void Create()
 		{
-			DEBUG_MESSAGE("SetupManager create");
+			DEBUG_MESSAGE("SetupManager Create");
 
-			Extern::setupData->settings.beginDetectiveYellowCount = Default::beginDetectiveYellowCount;
-			Extern::setupData->settings.beginDetectiveGreenCount = Default::beginDetectiveGreenCount;
-			Extern::setupData->settings.beginDetectiveRedCount = Default::beginDetectiveRedCount;
-			
-			Extern::setupData->settings.beginVillianYellowCount = Default::beginVillianYellowCount;
-			Extern::setupData->settings.beginVillianGreenCount = Default::beginVillianGreenCount;
-			Extern::setupData->settings.beginVillianRedCount = Default::beginVillianRedCount;
-			Extern::setupData->settings.beginVillianBlackCount = Collector::GetData()->playerCount - 1; // for every detective
-			Extern::setupData->settings.beginVillianDoubleCount = Default::beginVillianDoubleCount;
+			CreateTicketCount();
 
-			// copy and shuffel for random order
-			memcpy(
-				Extern::setupData->playerContext.order, 
-				Collector::GetData()->playerIds, 
-				sizeof(PlayerId) * Collector::GetData()->playerCount);
+			// playercontext is first created
+			// at request finish, to take player
+			// perferences into account
+
+			// CreatePlayerContext();
+		}
+
+		void CreateTicketCount()
+		{
+			Extern::setupData->settings.beginCommonDetective = DefaultTickets::beginCommonDetective;
+			Extern::setupData->settings.beginCommonVillian = DefaultTickets::beginCommonVillian;
+			Extern::setupData->settings.beginSpecialVillian = DefaultTickets::beginSpecialVillian;
+
+			// for every detective
+			Extern::setupData->settings.beginSpecialVillian.blackTicketCount = Collector::GetData()->playerCount - 1;
+		}
+
+		void CreatePlayerContext()
+		{
+			// shuffle players for random order
+			PlayerId playerOrder[COMMON_MAX_PLAYERCOUNT];
+
+			memcpy(playerOrder,
+				Collector::GetData()->playerIds,
+				Collector::GetData()->playerCount * sizeof(PlayerId)
+			);
 
 			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
 			{
 				int randomIndex = random(Collector::GetData()->playerCount);
 
 				// swap
-				PlayerId temp = Extern::setupData->playerContext.order[randomIndex];
-				Extern::setupData->playerContext.order[randomIndex] = Extern::setupData->playerContext.order[i];
-				Extern::setupData->playerContext.order[i] = temp;
+				PlayerId temp = playerOrder[randomIndex];
+				playerOrder[randomIndex] = playerOrder[i];
+				playerOrder[i] = temp;
+			}
+
+			// create playerData
+			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+			{
+				Extern::setupData->playerContext.data[i].player = playerOrder[i];
+				Extern::setupData->playerContext.data[i].type = i == 0
+					? PlayerData::Type::Villian
+					: PlayerData::Type::Detective;
+
+				// change later by preference
+				Extern::setupData->playerContext.data[i].color = (Color) i;
 			}
 
 			// first is villian
-			Extern::setupData->playerContext.villian = Extern::setupData->playerContext.order[0];
+			Extern::setupData->playerContext.villian = playerOrder[0];
 		}
 
 		bool Process()
 		{
-			// TODO: change (debug)
+			// TODO: change late, currently in debug
 			DEBUG_MESSAGE("Setup auto request finish");
 			Game::Controller::RequestFinish();
 
@@ -59,44 +92,22 @@ namespace Game
 		{
 		}
 
-		void AdjustDetectiveYellowTickets(const int count)
+		void AdjustCommonDetectiveTickets(const CommonTickets ticketCount)
 		{
-			Extern::setupData->settings.beginDetectiveYellowCount = count;
+			Extern::setupData->settings.beginCommonDetective = ticketCount;
+			needsUpdate = true;
 		}
 
-		void AdjustDetectiveGreenTickets(const int count)
+		void AdjustCommonVillianTickets(const CommonTickets ticketCount)
 		{
-			Extern::setupData->settings.beginDetectiveGreenCount = count;
+			Extern::setupData->settings.beginCommonVillian = ticketCount;
+			needsUpdate = true;
 		}
 
-		void AdjustDetectiveRedTickets(const int count)
+		void AdjustSpecialVillianTickets(const VillianTickets ticketCount)
 		{
-			Extern::setupData->settings.beginDetectiveRedCount = count;
-		}
-
-		void AdjustVillianYellowTickets(const int count)
-		{
-			Extern::setupData->settings.beginVillianYellowCount = count;
-		}
-
-		void AdjustVillianGreenTickets(const int count)
-		{
-			Extern::setupData->settings.beginVillianGreenCount = count;
-		}
-
-		void AdjustVillianRedTickets(const int count)
-		{
-			Extern::setupData->settings.beginVillianRedCount = count;
-		}
-
-		void AdjustVillianBlackTickets(int count)
-		{
-			Extern::setupData->settings.beginVillianBlackCount = count;
-		}
-
-		void AdjustVillianDoubleTickets(int count)
-		{
-			Extern::setupData->settings.beginVillianDoubleCount = count;
+			Extern::setupData->settings.beginSpecialVillian = ticketCount;
+			needsUpdate = true;
 		}
 
 		const Game::SetupData* GetData()
@@ -106,6 +117,8 @@ namespace Game
 
 		bool Finish()
 		{
+			CreatePlayerContext();
+
 			return true;
 		}
 	}

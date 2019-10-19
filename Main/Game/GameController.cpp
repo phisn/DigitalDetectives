@@ -113,6 +113,8 @@ namespace Game
 				BoardManager::Update();
 			}
 
+			BoardManager::Process();
+
 			return result;
 		}
 

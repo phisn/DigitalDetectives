@@ -114,6 +114,12 @@
     <ClInclude Include="Game\Data\GameSector.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Data\TicketData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\ColorData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -188,6 +194,7 @@
     <ClCompile Include="Communication\WebInterface.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Data\ColorData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Docs\SY_Map.png">

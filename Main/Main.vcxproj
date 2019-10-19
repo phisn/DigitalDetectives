@@ -136,11 +136,13 @@
     <ClInclude Include="Game\BoardManager.h" />
     <ClInclude Include="Game\Collector.h" />
     <ClInclude Include="Game\Data\CollectData.h" />
+    <ClInclude Include="Game\Data\ColorData.h" />
     <ClInclude Include="Game\Data\GameData.h" />
     <ClInclude Include="Game\Data\GameSector.h" />
     <ClInclude Include="Game\Data\PlayerData.h" />
     <ClInclude Include="Game\Data\SettingsData.h" />
     <ClInclude Include="Game\Data\SetupData.h" />
+    <ClInclude Include="Game\Data\TicketData.h" />
     <ClInclude Include="Game\GameController.h" />
     <ClInclude Include="Game\PathManager.h" />
     <ClInclude Include="Game\GameManager.h" />
@@ -171,6 +173,7 @@
     <ClCompile Include="Device\StatusLED.cpp" />
     <ClCompile Include="Game\BoardManager.cpp" />
     <ClCompile Include="Game\Collector.cpp" />
+    <ClCompile Include="Game\Data\ColorData.cpp" />
     <ClCompile Include="Game\GameController.cpp" />
     <ClCompile Include="Game\PathManager.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
