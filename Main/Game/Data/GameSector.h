@@ -11,6 +11,8 @@ namespace Game
 		PreRunning = 255,
 
 		Shutdown = 0, // zero for fresh start / clean
+		
+		Finish,
 		Running,
 		Setup,
 		Collect,

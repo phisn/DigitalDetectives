@@ -25,6 +25,15 @@
     <Filter Include="Game\Data">
       <UniqueIdentifier>{cd69c715-9f04-49be-a397-d415925251b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Custom">
+      <UniqueIdentifier>{21648573-71e3-4700-a357-47fc11449342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Custom\ESP8266WiFi">
+      <UniqueIdentifier>{c7a92bd9-4850-4042-a8a6-7b0ee6965e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Custom\ESP8266WiFi\detail">
+      <UniqueIdentifier>{ac3d907c-eb63-4ea9-b4a2-93423532992b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -120,6 +129,18 @@
     <ClInclude Include="Game\Data\ColorData.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Custom\ESP8266WebServer\ESP8266WebServer.h">
+      <Filter>Custom\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="Custom\ESP8266WebServer\detail\mimetable.h">
+      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="Custom\ESP8266WebServer\detail\RequestHandler.h">
+      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="Custom\ESP8266WebServer\detail\RequestHandlersImpl.h">
+      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -195,6 +216,15 @@
       <Filter>Communication</Filter>
     </ClCompile>
     <ClCompile Include="Game\Data\ColorData.cpp" />
+    <ClCompile Include="Custom\ESP8266WebServer\ESP8266WebServer.cpp">
+      <Filter>Custom\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="Custom\ESP8266WebServer\Parsing.cpp">
+      <Filter>Custom\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="Custom\ESP8266WebServer\detail\mimetable.cpp">
+      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Docs\SY_Map.png">

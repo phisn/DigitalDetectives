@@ -29,6 +29,8 @@ namespace Device
 			};
 		};
 
+		ESP8266WebServer* _GetServer();
+
 		void Initialize();
 		void Unintialize();
 

@@ -7,7 +7,12 @@
 
 // wifi
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+
+// replaced webserver with a custom 
+// modified library to complete our requirements
+// #include <ESP8266WebServer.h>
+
+#include "../Custom/ESP8266WebServer/ESP8266WebServer.h"
 
 // lcd
 #include <Wire.h>
