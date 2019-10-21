@@ -51,5 +51,8 @@ void setup()
 
 void loop()
 {
+	// do some cleanup
+	// Communication::WebServerManager::_GetSocket()->cleanupClients();
+
 	Device::GameManager::Process();
 }

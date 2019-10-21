@@ -21,7 +21,7 @@ namespace Communication
 			Start = 's'
 		};
 
-		static void Collect();
+		static void UpdateCollect();
 
 		enum Command
 		{

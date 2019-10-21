@@ -26,15 +26,6 @@ namespace Device
 {
 	namespace NetworkManager
 	{
-		ESP8266WebServer* _GetServer()
-		{
-			static ESP8266WebServer* server = new ESP8266WebServer();
-			return server;
-		}
-
-		void InitializeWiFi();
-		void InitializeWebServer();
-
 		void RequestHandlerCommon();
 		void RequestHandlerNotFound();
 
@@ -45,15 +36,6 @@ namespace Device
 			DEBUG_MESSAGE(DEVICE_NET_SSID);
 			DEBUG_MESSAGE(DEVICE_NET_PASS);
 
-			InitializeWiFi();
-
-			DEBUG_MESSAGE("WebServer Init");
-
-			InitializeWebServer();
-		}
-
-		void InitializeWiFi()
-		{
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
 				FaultHandler::Handle(
@@ -110,14 +92,8 @@ namespace Device
 			}
 		}
 
-		void InitializeWebServer()
+		void Uninitialize()
 		{
-			_GetServer()->begin(80);
-		}
-
-		void Unintialize()
-		{
-			// WiFi.softAPdisconnect();
 		}
 
 		StationCount GetStationCount()
@@ -126,15 +102,6 @@ namespace Device
 		}
 
 		void Process()
-		{
-			_GetServer()->handleClient();
-		}
-
-		void RequestHandlerCommon()
-		{
-		}
-
-		void RequestHandlerNotFound()
 		{
 		}
 	}

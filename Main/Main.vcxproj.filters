@@ -25,14 +25,14 @@
     <Filter Include="Game\Data">
       <UniqueIdentifier>{cd69c715-9f04-49be-a397-d415925251b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Custom">
-      <UniqueIdentifier>{21648573-71e3-4700-a357-47fc11449342}</UniqueIdentifier>
+    <Filter Include="Communication\WebInterface">
+      <UniqueIdentifier>{3f312d83-764d-4385-b896-914884a0daee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Custom\ESP8266WiFi">
-      <UniqueIdentifier>{c7a92bd9-4850-4042-a8a6-7b0ee6965e89}</UniqueIdentifier>
+    <Filter Include="Communication\WebInterface\Website">
+      <UniqueIdentifier>{790c1245-33aa-4be6-a005-f65cc840864b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Custom\ESP8266WiFi\detail">
-      <UniqueIdentifier>{ac3d907c-eb63-4ea9-b4a2-93423532992b}</UniqueIdentifier>
+    <Filter Include="Communication\WebInterface\Handler">
+      <UniqueIdentifier>{31df3f44-a037-4f1e-b7bf-8b018423c96a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,9 +102,6 @@
     <ClInclude Include="Game\Settings.h">
       <Filter>Docs</Filter>
     </ClInclude>
-    <ClInclude Include="Communication\WebInterface.h">
-      <Filter>Communication</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Data\CollectData.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
@@ -129,17 +126,38 @@
     <ClInclude Include="Game\Data\ColorData.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Custom\ESP8266WebServer\ESP8266WebServer.h">
-      <Filter>Custom\ESP8266WiFi</Filter>
+    <ClInclude Include="Communication\WebInterface\WebInterface.h">
+      <Filter>Communication\WebInterface</Filter>
     </ClInclude>
-    <ClInclude Include="Custom\ESP8266WebServer\detail\mimetable.h">
-      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    <ClInclude Include="Communication\WebInterface\WebServerManager.h">
+      <Filter>Communication\WebInterface</Filter>
     </ClInclude>
-    <ClInclude Include="Custom\ESP8266WebServer\detail\RequestHandler.h">
-      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteCollect.h">
+      <Filter>Communication\WebInterface\Website</Filter>
     </ClInclude>
-    <ClInclude Include="Custom\ESP8266WebServer\detail\RequestHandlersImpl.h">
-      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteSetup.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteRunning.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteFinish.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteRequestPid.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerSetup.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerRunning.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerRequestPid.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerCollect.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,18 +230,12 @@
     <ClCompile Include="Device\FailureHandler.cpp">
       <Filter>Device</Filter>
     </ClCompile>
-    <ClCompile Include="Communication\WebInterface.cpp">
-      <Filter>Communication</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Data\ColorData.cpp" />
-    <ClCompile Include="Custom\ESP8266WebServer\ESP8266WebServer.cpp">
-      <Filter>Custom\ESP8266WiFi</Filter>
+    <ClCompile Include="Communication\WebInterface\WebInterface.cpp">
+      <Filter>Communication\WebInterface</Filter>
     </ClCompile>
-    <ClCompile Include="Custom\ESP8266WebServer\Parsing.cpp">
-      <Filter>Custom\ESP8266WiFi</Filter>
-    </ClCompile>
-    <ClCompile Include="Custom\ESP8266WebServer\detail\mimetable.cpp">
-      <Filter>Custom\ESP8266WiFi\detail</Filter>
+    <ClCompile Include="Communication\WebInterface\WebServerManager.cpp">
+      <Filter>Communication\WebInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

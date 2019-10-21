@@ -23,7 +23,8 @@ namespace Communication
 		void Process(const bool update);
 
 		template <typename InterfaceType>
-		void CreateInterface();
+		Interface* CreateInterface();
+
 		void RemoveInterface(const Game::PlayerId);
 	}
 }

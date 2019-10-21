@@ -1,7 +1,7 @@
 #include "InterfaceManager.h"
 
 #include "../Communication/SerialInterface.h"
-#include "../Communication/WebInterface.h"
+#include "../Communication/WebInterface/WebInterface.h"
 
 namespace
 {
@@ -118,30 +118,39 @@ namespace Communication
 			}
 		}
 
+		// not all interfaces are collectable 
+		// ex. webinterface because async
 		void CollectInterfaces()
 		{
-			Communication::SerialInterface::Collect();
-			Communication::WebInterface::Collect();
+			Communication::SerialInterface::UpdateCollect();
 		}
 
 		template <>
-		void CreateInterface<SerialInterfaceType>()
+		Interface* CreateInterface<SerialInterfaceType>()
 		{
-			Push((new (
+			Interface* const interface = (new (
 				&interfaces[
 					Game::Collector::GetData()->playerCount
 				]) InterfaceBuffer(Communication::SerialInterfaceType{})
-						)->Get());
+			)->Get();
+
+			Push(interface);
+
+			return interface;
 		}
 
 		template <>
-		void CreateInterface<WebInterfaceType>()
+		Interface* CreateInterface<WebInterfaceType>()
 		{
-			Push((new (
+			Interface* const interface = (new (
 				&interfaces[
 					Game::Collector::GetData()->playerCount
 				]) InterfaceBuffer(Communication::WebInterfaceType{})
-						)->Get());
+			)->Get();
+
+			Push(interface);
+
+			return interface;
 		}
 
 		void RemoveInterface(const Game::PlayerId playerId)
@@ -172,7 +181,7 @@ namespace Communication
 				}, true);
 		}
 
-		void Push(Interface * const interface)
+		void Push(Interface* const interface)
 		{
 			interface->initialize(
 				Game::Collector::CreatePlayer()

@@ -3,7 +3,7 @@
 
 char Communication::SerialInterface::playerCharacterCounter = 'a';
 
-void Communication::SerialInterface::Collect()
+void Communication::SerialInterface::UpdateCollect()
 {
 	const int size = Serial.available();
 
