@@ -114,7 +114,10 @@ namespace Communication
 					interface->update();
 				}
 
-				interface->process();
+				if (interface->process())
+				{
+					break;
+				}
 			}
 		}
 
@@ -165,13 +168,26 @@ namespace Communication
 
 					interfaces[i].~InterfaceBuffer();
 
-					for (int j = i; j < Game::Collector::GetData()->playerCount - 1; ++j)
+					// playercount is already one smaller from RemovePlayer
+					for (int j = i; j < Game::Collector::GetData()->playerCount; ++j)
 					{
 						memcpy(&interfaces[j], &interfaces[j + 1], sizeof(InterfaceBuffer));
 					}
 
 					return;
 				}
+			
+#ifdef VM_DEBUG
+			DEBUG_MESSAGE("GOT");
+			DEBUG_MESSAGE(playerId);
+			DEBUG_MESSAGE("HAVE");
+
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				DEBUG_MESSAGE(interfaces[i].Get()->getPlayerId());
+
+			DEBUG_MESSAGE("END HAVE");
+
+#endif
 
 			Device::FaultHandler::Handle(
 				{

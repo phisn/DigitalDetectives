@@ -64,21 +64,56 @@ namespace Game
 
 			const PlayerId nextPlayerId = (PlayerId) rand();
 			Extern::collectData->playerIds[Extern::collectData->playerCount++] = nextPlayerId;
+
+
+			DEBUG_MESSAGE("GOT GM INF");
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				DEBUG_MESSAGE(Extern::collectData->playerIds[i]);
+
+			DEBUG_MESSAGE("HAVE GM INF");
 			return nextPlayerId;
 		}
 
 		bool RemovePlayer(const PlayerId playerId)
 		{
+			DEBUG_MESSAGE("PCOUNT");
+			DEBUG_MESSAGE(Extern::collectData->playerCount);
+
+			DEBUG_MESSAGE("GOT GM PRE");
+
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				DEBUG_MESSAGE(Extern::collectData->playerIds[i]);
+
+			DEBUG_MESSAGE("HAVE GM PRE");
+
 			for (int i = 0; i < Extern::collectData->playerCount; ++i)
 				if (Extern::collectData->playerIds[i] == playerId)
 				{
+					DEBUG_MESSAGE("FOUND");
+
 					for (int j = i; j < Extern::collectData->playerCount - 1; ++j)
 					{
 						Extern::collectData->playerIds[j] = Extern::collectData->playerIds[j + 1];
 					}
 
+					--Extern::collectData->playerCount;
+
+					needsUpdate = true;
 					return true;
 				}
+
+			DEBUG_MESSAGE("REMOVE_PLAYER_COLLECT_FORBID");
+
+#ifdef VM_DEBUG
+			DEBUG_MESSAGE("GOT GM");
+			DEBUG_MESSAGE(playerId);
+			DEBUG_MESSAGE("HAVE GM");
+
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				DEBUG_MESSAGE(Extern::collectData->playerIds[i]);
+
+			DEBUG_MESSAGE("END HAVE GM");
+#endif
 
 			return false;
 		}

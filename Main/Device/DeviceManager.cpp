@@ -1,6 +1,8 @@
 #include "DeviceManager.h"
 
 #include "../Communication/InterfaceManager.h"
+#include "../Communication/WebInterface/WebServerManager.h"
+
 #include "../Device/MapManager.h"
 #include "../Device/NetworkManager.h"
 
@@ -52,6 +54,7 @@ namespace Device
 		void InitializeCommunication()
 		{
 			Communication::InterfaceManager::Initialize();
+			Communication::WebServerManager::Initialize();
 		}
 
 		void Process()

@@ -159,6 +159,9 @@
     <ClInclude Include="Communication\WebInterface\WebHandlerCollect.h">
       <Filter>Communication\WebInterface\Handler</Filter>
     </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebSocketData.h">
+      <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />

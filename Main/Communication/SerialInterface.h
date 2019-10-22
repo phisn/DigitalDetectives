@@ -65,11 +65,11 @@ namespace Communication
 			Serial.println(fault.id, 16);
 		}
 
-		void process() override
+		bool process() override
 		{
 			if (Game::Controller::GetState() != Game::GameState::Running)
 			{
-				return;
+				return false;
 			}
 
 			if (Serial.available() > 0)
@@ -100,7 +100,7 @@ namespace Communication
 					DEBUG_MESSAGE("Ignoring character: ");
 					DEBUG_MESSAGE(inputCharacter);
 
-					return;
+					return false;
 				}
 				else
 				{
@@ -135,6 +135,8 @@ namespace Communication
 		CLEAR_BUFFER:
 			while (Serial.available())
 				Serial.read();
+
+			return false;
 		}
 
 		void update() override

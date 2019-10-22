@@ -134,6 +134,7 @@
     <ClInclude Include="Communication\WebInterface\Website\WebsiteRunning.h" />
     <ClInclude Include="Communication\WebInterface\Website\WebsiteSetup.h" />
     <ClInclude Include="Communication\WebInterface\WebHandlerSetup.h" />
+    <ClInclude Include="Communication\WebInterface\WebSocketData.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\DevicePins.h" />
     <ClInclude Include="Device\FailureHandler.h" />

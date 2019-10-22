@@ -16,9 +16,13 @@ namespace
 		AsyncWebServerResponse* const response,
 		const Game::PlayerId playerId)
 	{
-		char pidBuffer[4];
-		itoa(playerId, pidBuffer, 10);
-		pidBuffer[3] = '\0';
+		// pid: + number + \0
+		char pidBuffer[3 + 4 + 1] = "pid=";
+		itoa(playerId, pidBuffer + 4, 10);
+		pidBuffer[sizeof(pidBuffer) - 1] = '\0';
+
+		DEBUG_MESSAGE("Sending new cookie");
+		DEBUG_MESSAGE(pidBuffer);
 
 		response->addHeader(F("Set-Cookie"), pidBuffer);
 	}
@@ -41,6 +45,7 @@ namespace Communication
 			if (playerId == 0 && Game::Collector::GetData()->playerCount >= COMMON_MAX_PLAYERCOUNT)
 			{
 				request->redirect(WEB_DIR_REQPID);
+
 				return;
 			}
 

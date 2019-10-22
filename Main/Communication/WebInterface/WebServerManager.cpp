@@ -43,10 +43,14 @@ namespace Communication
 
 			server->onNotFound([](AsyncWebServerRequest* const request) 
 			{
+				DEBUG_MESSAGE("Request not found");
+				DEBUG_MESSAGE(request->url());
+
 				request->redirect(WEB_DIR_COMMON);
 			});
 
 			socket->onEvent(HandleWebSocketEvent);
+			server->addHandler(socket);
 
 			server->begin();
 		}
@@ -81,15 +85,41 @@ namespace Communication
 
 			if (cookieHeader != nullptr) // nullptr on fail
 			{
-				const Game::PlayerId pid = cookieHeader->value().toInt();
+				const String& cookie = cookieHeader->value();
 
-				for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
-					if (Game::Collector::GetData()->playerIds[i] == pid)
-					{
-						return pid;
-					}
+				DEBUG_MESSAGE("Got Cookie");
+				DEBUG_MESSAGE(cookie);
+
+				if (cookie.length() > 5)
+				{
+					const int position = cookie.indexOf("pid:");
+
+					return FindPlayerId(
+						cookie.substring(position, position + 4).toInt()
+					);
+				}
 			}
 
+			DEBUG_MESSAGE("NO PID FOUND");
+
+			return 0;
+		}
+
+		Game::PlayerId FindPlayerId(const Game::PlayerId suspected)
+		{
+			DEBUG_MESSAGE("SUSPECTED");
+			DEBUG_MESSAGE(suspected);
+
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+				if (Game::Collector::GetData()->playerIds[i] == suspected)
+				{
+					DEBUG_MESSAGE("PID FOUND");
+					DEBUG_MESSAGE(suspected);
+
+					return suspected;
+				}
+
+			DEBUG_MESSAGE("NO PID FOUND");
 			return 0;
 		}
 
@@ -107,29 +137,52 @@ namespace Communication
 				// arg: request (AsyncWebServerRequest*)
 				// data: NULL
 				// length: 0
+			{
+				DEBUG_MESSAGE("CONNECT");
 
-				const Game::PlayerId pid = FindPlayerId((AsyncWebServerRequest*) arg);
+				AsyncWebParameter* const pidParam = ((AsyncWebServerRequest*) arg)->getParam("pid");
+
+				if (pidParam == NULL)
+				{
+					DEBUG_MESSAGE("INVALID PARAM CONNECT");
+
+					client->close(WebCode::WebSocketInvalidParam);
+					return;
+				}
+
+				const Game::PlayerId pid = FindPlayerId(pidParam->value().toInt());
 
 				if (pid == 0)
 				{
+					DEBUG_MESSAGE("NO PID CONNECT");
+
 					client->close(WebCode::WebSocketInvalidPid);
-				}
-				else
-				{
-					for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
-						if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
-						{
-							interfaces[i]->registerWebSocket(client->id());
-
-							break;
-						}
+					return;
 				}
 
+				DEBUG_MESSAGE("CORRECT PID CONNECT");
+
+				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
+					if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
+					{
+						DEBUG_MESSAGE("Found interface -> register");
+
+						interfaces[i]->registerWebSocket(client->id());
+						interfaces[i]->update();
+
+						break;
+					}
+				DEBUG_MESSAGE("Searching end!");
+
+			}
 				break;
 			case WS_EVT_DISCONNECT:
 				// arg: NULL
 				// data: NULL
 				// length: 0
+
+				DEBUG_MESSAGE("DISCONNECT");
+
 
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
 					if (interfaces[i] && interfaces[i]->getWebSocketId() == client->id())
@@ -179,6 +232,7 @@ namespace Communication
 				if (interfaces[i] == NULL)
 				{
 					interfaces[i] = interface;
+					return;
 				}
 		}
 
@@ -187,8 +241,25 @@ namespace Communication
 			for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
 				if (interfaces[i] == interface)
 				{
+					DEBUG_MESSAGE("UNREGISTER");
+					DEBUG_MESSAGE(i);
+
+					if (interfaces[i]->getWebSocketId() != NULL)
+					{
+						_GetSocket()->close(interfaces[i]->getWebSocketId(), WebCode::WebSocketUnregister);
+					}
+
 					interfaces[i] = NULL;
+					return;
 				}
+		}
+
+		void SendWebSocketData(
+			WebsocketId wid,
+			const char* const data,
+			const int length)
+		{
+			_GetSocket()->binary(wid, data, length);
 		}
 	}
 }
