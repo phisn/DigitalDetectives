@@ -132,13 +132,7 @@
     <ClInclude Include="Communication\WebInterface\WebServerManager.h">
       <Filter>Communication\WebInterface</Filter>
     </ClInclude>
-    <ClInclude Include="Communication\WebInterface\Website\WebsiteCollect.h">
-      <Filter>Communication\WebInterface\Website</Filter>
-    </ClInclude>
     <ClInclude Include="Communication\WebInterface\Website\WebsiteSetup.h">
-      <Filter>Communication\WebInterface\Website</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\WebInterface\Website\WebsiteRunning.h">
       <Filter>Communication\WebInterface\Website</Filter>
     </ClInclude>
     <ClInclude Include="Communication\WebInterface\Website\WebsiteFinish.h">
@@ -161,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="Communication\WebInterface\WebSocketData.h">
       <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\FinishManager.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,12 +230,17 @@
     <ClCompile Include="Device\FailureHandler.cpp">
       <Filter>Device</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Data\ColorData.cpp" />
     <ClCompile Include="Communication\WebInterface\WebInterface.cpp">
       <Filter>Communication\WebInterface</Filter>
     </ClCompile>
     <ClCompile Include="Communication\WebInterface\WebServerManager.cpp">
       <Filter>Communication\WebInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Data\ColorData.cpp">
+      <Filter>Game\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\FinishManager.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

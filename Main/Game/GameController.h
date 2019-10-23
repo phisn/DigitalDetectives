@@ -5,12 +5,12 @@
 #include "../Game/Data/GameSector.h"
 
 #include "../Game/Collector.h"
-#include "../Game/GameManager.h"
 #include "../Game/SetupManager.h"
+#include "../Game/GameManager.h"
+#include "../Game/FinishManager.h"
 
 namespace Game
 {
-
 	namespace Controller
 	{
 		struct FID

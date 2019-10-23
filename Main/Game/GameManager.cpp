@@ -1,5 +1,7 @@
 #include "GameManager.h"
 
+#include "../Game/GameController.h"
+
 namespace Extern
 {
 	extern Game::GameData* gameData;
@@ -26,6 +28,11 @@ namespace Game
 		// can fail (-1)
 		int FindPlayerIndex(const PlayerId id);
 		int FindVillianIndex();
+
+		TurnResult MakeBasicTurn(
+			PlayerState* const playerState,
+			const PlayerData* const playerData,
+			const Turn turn);
 
 		bool ValidateTurn(
 			const MapPosition source,
@@ -143,7 +150,10 @@ namespace Game
 
 				if (villian->position == playerState->position)
 				{
-					// ...
+					Extern::gameData->result.winner = playerData->type;
+					Game::Controller::RequestFinish();
+
+					return;
 				}
 
 				AddPlayerTicket(
@@ -153,9 +163,22 @@ namespace Game
 			}
 			else
 			{
+				// skip villian
+				for (int i = 1; i < Collector::GetData()->playerCount; ++i)
+					if (Extern::gameData->player[i].position == playerState->position)
+					{
+						Extern::gameData->result.winner = playerData->type;
+						Game::Controller::RequestFinish();
+
+						return;
+					}
+
 				if (Extern::gameData->state.round == 24)
 				{
-					// game over for detectives
+					Extern::gameData->result.winner = playerData->type;
+					Game::Controller::RequestFinish();
+
+					return;
 				}
 
 				if (IsShowVillianPositionRound())
@@ -187,6 +210,88 @@ namespace Game
 			const Turn secondTurn)
 		{
 			return { };
+		}
+
+		TurnResult MakeBasicTurn(
+			PlayerState* const playerState,
+			const PlayerData* const playerData,
+			const Turn turn)
+		{
+			if (!ValidateTurn(playerState->position, turn))
+			{
+				return { false, turn_fail_invalidturn };
+			}
+
+			// also checks if playe has ticket
+			if (!RemovePlayerTicket(
+				playerData->type,
+				playerState,
+				turn.ticket))
+			{
+				return { false, turn_fail_ticketnotfound };
+			}
+
+			playerState->path[Extern::gameData->state.round] = playerState->position;
+			playerState->position = turn.position;
+
+			if (playerData->type == PlayerData::Type::Detective)
+			{
+				PlayerState* const villian = &Extern::gameData->player[FindVillianIndex()];
+
+				if (villian->position == playerState->position)
+				{
+					Extern::gameData->result.winner = playerData->type;
+					Game::Controller::RequestFinish();
+
+					return { false, NULL };
+				}
+
+				AddPlayerTicket(
+					PlayerData::Type::Villian,
+					villian,
+					turn.ticket);
+			}
+			else
+			{
+				// skip villian
+				for (int i = 1; i < Collector::GetData()->playerCount; ++i)
+					if (Extern::gameData->player[i].position == playerState->position)
+					{
+						Extern::gameData->result.winner = playerData->type;
+						Game::Controller::RequestFinish();
+
+						return { false, NULL };;
+					}
+
+				if (Extern::gameData->state.round == 24)
+				{
+					Extern::gameData->result.winner = playerData->type;
+					Game::Controller::RequestFinish();
+
+					return { false, NULL };
+				}
+
+				if (IsShowVillianPositionRound())
+				{
+					lastVillianPosition = playerState->position;
+				}
+			}
+
+			// check for finished round
+			if (++Extern::gameData->state.activePlayerIndex >= Collector::GetData()->playerCount)
+			{
+				++Extern::gameData->state.round;
+				Extern::gameData->state.activePlayerIndex = 0;
+
+				// ...
+			}
+
+			// select next playerId as active player
+			Extern::gameData->state.activePlayer = SetupManager::GetData()
+				->playerContext.data[Extern::gameData->state.activePlayerIndex].player;
+
+			needsUpdate = true;
+			return { true, NULL };
 		}
 
 		int FindPlayerIndex(const PlayerId id)
