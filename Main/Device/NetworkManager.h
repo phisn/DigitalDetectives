@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Device/FaultHandler.h"
-#include "../Device/Logger.h"
 #include "../Device/OutputManager.h"
 
 #define DEVICE_NET_SSID "nodemcu"
@@ -31,7 +30,7 @@ namespace Device
 		};
 
 		void Initialize();
-		void Unintialize();
+		void Uninitialize();
 
 		StationCount GetStationCount();
 

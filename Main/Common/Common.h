@@ -7,15 +7,24 @@
 
 // wifi
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+#include <ESPAsyncWebServer.h>
 
 // lcd
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// common definitions
+// general string type
 typedef const __FlashStringHelper* FlashString;
 
+#ifdef __INTELLISENSE__
+// placement new fix
+inline void* operator new(unsigned, void* ptr)
+{
+	return ptr;
+}
+#endif
+
+// common definitions
 namespace Game
 {
 	typedef unsigned char MapPosition;
@@ -29,8 +38,10 @@ namespace Device
 	};
 }
 
+#define COMMON_MAX_PLAYERCOUNT 6
 #define COMMON_MAP_SIZE 199
 
+// wrong intellisense include fix
 #ifdef __INTELLISENSE__
 #define INCL_ARDU(intel, real) intel
 #else

@@ -1,34 +1,34 @@
 #pragma once
 
+#include "../Device/FaultHandler.h"
+
+#include "../Game/Data/CollectData.h"
+
 #pragma pack(push, 1)
 
 namespace Game
 {
-	// dynamic
-	struct CollectData
-	{
-		struct StaticContext
-		{
-			unsigned char playerCount : 3;
-
-		} context;
-	};
-
 	namespace Collector
 	{
-		struct DynamicContext
+		struct FID
 		{
-
-
+			enum
+			{
+				// interface has the responsibility to ensure playercount
+				PLAYER_OVERFLOW = 2
+			};
 		};
 
-		static DynamicContext getDynamicContext()
-		{
-			return { };
-		}
+		void Create();
+		bool Process();
+		void Restore();
 
-		void Begin();
-		bool Restore();
+		PlayerId CreatePlayer();
+
+		bool RemovePlayer(const PlayerId playerId);
+		bool ExistsPlayer(const PlayerId playerId);
+		
+		bool Finish();
 	}
 }
 

@@ -1,20 +1,29 @@
 #pragma once
 
-#include "../Game/Settings.h"
+#include "../Game/Data/SetupData.h"
 
 #pragma pack(push, 1)
 
 namespace Game
 {
-	struct SetupData
-	{
-		Settings settings;
-	};
-
 	namespace SetupManager
 	{
-		void Begin(SetupData* const data);
-		bool Restore(SetupData* const data);
+		struct FID
+		{
+			enum
+			{
+			};
+		};
+
+		void Create();
+		bool Process();
+		void Restore();
+
+		void AdjustCommonDetectiveTickets(const CommonTickets);
+		void AdjustCommonVillianTickets(const CommonTickets);
+		void AdjustSpecialVillianTickets(const VillianTickets);
+
+		bool Finish();
 	}
 }
 

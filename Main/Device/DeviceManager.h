@@ -2,9 +2,9 @@
 
 namespace Device
 {
-	namespace Manager
+	namespace GameManager
 	{
-		enum class State
+		enum class GameState
 		{
 			Collect,
 			Setup,
@@ -17,7 +17,6 @@ namespace Device
 
 		void Process();
 
-		State GetCurrentState();
-		void SetCurrentState(const State);
+		void SetCurrentState(const GameState);
 	}
 }

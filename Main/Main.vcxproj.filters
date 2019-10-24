@@ -22,6 +22,18 @@
     <Filter Include="Web">
       <UniqueIdentifier>{e5c0706c-d201-4927-852e-9562cb89d0ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Data">
+      <UniqueIdentifier>{cd69c715-9f04-49be-a397-d415925251b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication\WebInterface">
+      <UniqueIdentifier>{3f312d83-764d-4385-b896-914884a0daee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication\WebInterface\Website">
+      <UniqueIdentifier>{790c1245-33aa-4be6-a005-f65cc840864b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication\WebInterface\Handler">
+      <UniqueIdentifier>{31df3f44-a037-4f1e-b7bf-8b018423c96a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -63,22 +75,10 @@
     <ClInclude Include="Game\GameManager.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\StaticGameData.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Communication\Interface.h">
       <Filter>Communication</Filter>
     </ClInclude>
     <ClInclude Include="Communication\InterfaceManager.h">
-      <Filter>Communication</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\Request.h">
-      <Filter>Communication</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\RequestHandler.h">
       <Filter>Communication</Filter>
     </ClInclude>
     <ClInclude Include="Communication\SerialInterface.h">
@@ -101,6 +101,63 @@
     </ClInclude>
     <ClInclude Include="Game\Settings.h">
       <Filter>Docs</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\CollectData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\GameData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\PlayerData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\SettingsData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\SetupData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\GameSector.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\TicketData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Data\ColorData.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebInterface.h">
+      <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebServerManager.h">
+      <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteSetup.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteFinish.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Website\WebsiteRequestPid.h">
+      <Filter>Communication\WebInterface\Website</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerSetup.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerRunning.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerRequestPid.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebHandlerCollect.h">
+      <Filter>Communication\WebInterface\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebSocketData.h">
+      <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\FinishManager.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device\DeviceManager.cpp">
-      <Filter>Device</Filter>
-    </ClCompile>
-    <ClCompile Include="Device\FailureHandler.cpp">
       <Filter>Device</Filter>
     </ClCompile>
     <ClCompile Include="Device\FaultHandler.cpp">
@@ -158,9 +212,6 @@
     <ClCompile Include="Communication\InterfaceManager.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="Communication\RequestHandler.cpp">
-      <Filter>Communication</Filter>
-    </ClCompile>
     <ClCompile Include="Communication\SerialInterface.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
@@ -174,6 +225,21 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameController.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\FailureHandler.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\WebInterface\WebInterface.cpp">
+      <Filter>Communication\WebInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\WebInterface\WebServerManager.cpp">
+      <Filter>Communication\WebInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Data\ColorData.cpp">
+      <Filter>Game\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\FinishManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -208,10 +274,5 @@
     <Image Include="..\Architecture\Game_Layer2.jpeg.jpg">
       <Filter>Architecture</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Documents\Projekte\Scotland Yard\SCOTMAP.TXT">
-      <Filter>Docs</Filter>
-    </Text>
   </ItemGroup>
 </Project>

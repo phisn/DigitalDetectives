@@ -1,37 +1,17 @@
 #include "DeviceManager.h"
 
 #include "../Communication/InterfaceManager.h"
-#include "../Communication/RequestHandler.h"
+#include "../Communication/WebInterface/WebServerManager.h"
 
-#include "../Device/Logger.h"
 #include "../Device/MapManager.h"
 #include "../Device/NetworkManager.h"
 
 #include "../Game/GameController.h"
 
-namespace
-{
-	Device::Manager::State currentState;
-}
-
 namespace Device
 {
-	namespace Manager
+	namespace GameManager
 	{
-		State GetCurrentState()
-		{
-			return currentState;
-		}
-
-		void SetCurrentState(const State state)
-		{
-			currentState = state;
-		}
-
-		void ProcessCollect();
-		void ProcessSetup();
-		void ProcessRunning();
-
 		void InitializeDevice();
 		void InitializeGame();
 		void InitializeCommunication();
@@ -41,11 +21,6 @@ namespace Device
 			InitializeDevice();
 			InitializeGame();
 			InitializeCommunication();
-
-			// old
-			// currentState = State::Collect;
-
-			// BootManager::Boot();
 		}
 
 		void Uninitialize()
@@ -79,42 +54,17 @@ namespace Device
 		void InitializeCommunication()
 		{
 			Communication::InterfaceManager::Initialize();
-			Communication::RequestHandler::Initialize();
+			Communication::WebServerManager::Initialize();
 		}
 
 		void Process()
 		{
-			/*
-			switch (currentState)
-			{
-			case State::Collect:
-				ProcessCollect();
-
-				break;
-			case State::Setup:
-				ProcessSetup();
-
-				break;
-			case State::Running:
-				ProcessRunning();
-
-				break;
-			}
-			*/
+			NetworkManager::Process();
+			
+			const bool update = Game::Controller::Process();
+			Communication::InterfaceManager::Process(update);
 
 			FaultHandler::ValidateDeviceState();
-		}
-
-		void ProcessCollect()
-		{
-		}
-
-		void ProcessSetup()
-		{
-		}
-
-		void ProcessRunning()
-		{
 		}
 	}
 }

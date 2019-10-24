@@ -30,8 +30,9 @@ namespace
 		FPSTR("WebInterface\0")
 	};
 
-	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null       ");
-	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory         ");
+	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null          ");
+	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory            ");
+	FlashString fault_heap_frag = DEVICE_FAULT_MESSAGE("Device heap is fragmented        ");
 }
 
 // prevent accidential change of nonfatal
@@ -72,7 +73,7 @@ namespace Device
 		void HandleCommonFault(const Fault fault);
 		void HandleNetworkFault(const Fault fault);
 
-		void RegisterInterfaceNotifier(
+		void RegisterFaultInterfaceNotifier(
 			const InterfaceNotifierCallback callback)
 		{
 			interfaceNotifierCallback = callback;
@@ -106,9 +107,10 @@ namespace Device
 			
 			*/
 
-			DEBUG_MESSAGE("Inside FaultHandler (text / module / id / isFatal)");
+			DEBUG_MESSAGE("Inside FaultHandler (text / module / module name / id / isFatal)");
 			DEBUG_MESSAGE(fault.text);
 			DEBUG_MESSAGE((int) fault.module);
+			DEBUG_MESSAGE(emessageModuleNames[(int) fault.module]);
 			DEBUG_MESSAGE((int) fault.id);
 			DEBUG_MESSAGE((int) fatal);
 
@@ -118,6 +120,10 @@ namespace Device
 			{
 				// interfaceNotifierCallback(fault);
 				HandleModuleFault(fault);
+			}
+			else
+			{
+				delay(5000);
 			}
 		}
 
@@ -174,26 +180,23 @@ namespace Device
 				FaultHandler::Handle(
 				{
 					FaultModule::FaultHandler,
-					(FailureId)FID::LOW_MEMORY,
+					(FailureId) FID::LOW_MEMORY,
 					fault_low_memory
 				}, true);
 			}
 
-			/*
-				if (ESP.getHeapFragmentation() > 90)
+			if (ESP.getHeapFragmentation() > DEVICE_MAX_HEAP_FRAGMENT)
+			{
+				FaultHandler::Handle(
 				{
-					// high frag
-				}
-			*/
+					FaultModule::FaultHandler,
+					(FailureId) FID::HEAP_FRAG,
+					fault_heap_frag
+				}, true);
+			}
 
-			/*
-				ESP.getFreeHeap();
-				ESP.getFreeContStack();
-
-				// ESP.getFreeSketchSpace();
-				ESP.getHeapFragmentation();
-				ESP.getHeapStats();
-				ESP.getMaxFreeBlockSize();
+			/* use to determine eeprom max size?
+				ESP.getFreeSketchSpace();
 			*/
 		}
 
@@ -209,14 +212,19 @@ namespace Device
 				DEVICE_EMESSAGE_ERROR_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
-				(const char*) fault.text, 
+				fault.text, 
 				DEVICE_EMESSAGE_MESSAGE_LEN_FL);
+
+			for (int i = 0; i < DEVICE_LCD_WIDTH + 1; ++i)
+			{
+				DEBUG_MESSAGE((int) buffer[i]);
+			}
 
 			OutputManager::Lcd::DisplayLineType(
 				0,
 				buffer);
 
-			// memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
+			memset(buffer, 0, DEVICE_LCD_WIDTH + 1);
 
 			// print remaining error message
 			// ignore space on next line
@@ -236,7 +244,7 @@ namespace Device
 			memcpy_P(buffer, emessageModule, DEVICE_EMESSAGE_MODULE_LEN);
 			memcpy_P(
 				buffer + DEVICE_EMESSAGE_MODULE_LEN, 
-				emessageModuleNames[(int) fault.module], 
+				GetModuleName(fault.module), 
 				DEVICE_EMESSAGE_MODULE_NAME_LEN);
 			
 			OutputManager::Lcd::DisplayLineType(
@@ -253,6 +261,11 @@ namespace Device
 			OutputManager::Lcd::DisplayLineType(
 				3,
 				buffer);
+		}
+
+		FlashString GetModuleName(const FaultModule module)
+		{
+			return emessageModuleNames[(int) module];
 		}
 	}
 }

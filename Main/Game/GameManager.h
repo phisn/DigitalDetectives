@@ -3,28 +3,22 @@
 #include "../Device/MemoryManager.h"
 
 #include "../Game/BoardManager.h"
-#include "../Game/Player.h"
+#include "../Game/Collector.h"
+#include "../Game/Data/GameData.h"
+#include "../Game/PathManager.h"
+#include "../Game/SetupManager.h"
 
 #pragma pack(push, 1)
 
 namespace Game
 {
-	/*struct Sector
+	struct Turn
 	{
-		unsigned char check; // prevent use of corrupted data
-		Game::Data data;
-	};*/
-
-	struct GameData
-	{
-		Player player[6];
-
-		struct State
-		{
-		} state;
+		Ticket ticket;
+		MapPosition position;
 	};
 
-	namespace Manager
+	namespace GameManager
 	{
 		struct FID
 		{
@@ -34,9 +28,27 @@ namespace Game
 			};
 		};
 
-		void Begin(GameData* const gameData);
-		// TODO: restore in game cant fail?
-		void Restore(GameData* const gameData);
+		void Create();
+		bool Process();
+		void Restore();
+
+		struct TurnResult
+		{
+			bool success;
+			FlashString message;
+		};
+		
+		TurnResult MakeTurn(
+			const PlayerId player,
+			const Turn turn);
+		TurnResult MakeTurnDouble(
+			const PlayerId player,
+			const Turn firstTurn,
+			const Turn secondTurn);
+
+		// avoid multiple calls!
+		const Player* ReadPlayer(const PlayerId id);
+		MapPosition GetLastVillianPosition();
 	}
 }
 
