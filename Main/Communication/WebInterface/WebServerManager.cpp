@@ -43,8 +43,8 @@ namespace Communication
 
 			server->onNotFound([](AsyncWebServerRequest* const request) 
 			{
-				DEBUG_MESSAGE("Request not found");
-				DEBUG_MESSAGE(request->url());
+			//	DEBUG_MESSAGE("Request not found");
+			//	DEBUG_MESSAGE(request->url());
 
 				request->redirect(WEB_DIR_COMMON);
 			});
@@ -60,7 +60,11 @@ namespace Communication
 			switch (Game::Controller::GetState())
 			{
 			case Game::GameState::Collect:
-				request->redirect(WEB_DIR_COMMON);
+				request->redirect(WEB_DIR_COLLECT);
+
+				break;
+			case Game::GameState::Running:
+
 
 				break;
 			}
@@ -92,10 +96,13 @@ namespace Communication
 
 				if (cookie.length() > 5)
 				{
-					const int position = cookie.indexOf("pid:");
+					const int position = cookie.indexOf("pid=");
+					DEBUG_MESSAGE("COOKIE POS AND COOKIE");
+					DEBUG_MESSAGE(cookie.substring(position + 4, position + 4 + 3));
+					DEBUG_MESSAGE(cookie.substring(position + 4, position + 4 + 3));
 
 					return FindPlayerId(
-						cookie.substring(position, position + 4).toInt()
+						cookie.substring(position + 4, position + 4 + 3).toInt()
 					);
 				}
 			}

@@ -216,6 +216,19 @@ namespace Game
 				}
 
 				break;
+			case GameState::Running:
+				if (SetupManager::Finish())
+				{
+
+					DEBUG_MESSAGE("Finishing Running, starting finish");
+
+					sector.state = GameState::Finish;
+					FinishManager::Create();
+
+					return true;
+				}
+
+				break;
 			default:
 				Device::FaultHandler::Handle(
 				{

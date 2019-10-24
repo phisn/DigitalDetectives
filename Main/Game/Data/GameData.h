@@ -11,11 +11,17 @@ namespace Game
 		struct GameState
 		{
 			unsigned char round; // max 24
+
 			// index in playersetup order
 			unsigned char activePlayerIndex;
 			PlayerId activePlayer;
-
 		} state;
+
+		struct
+		{
+			Game::PlayerData::Type winner;
+
+		} result;
 	};
 
 	namespace GameManager
