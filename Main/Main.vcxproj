@@ -185,6 +185,7 @@
     <ClCompile Include="Game\BoardManager.cpp" />
     <ClCompile Include="Game\Collector.cpp" />
     <ClCompile Include="Game\Data\ColorData.cpp" />
+    <ClCompile Include="Game\Data\TicketData.cpp" />
     <ClCompile Include="Game\FinishManager.cpp" />
     <ClCompile Include="Game\GameController.cpp" />
     <ClCompile Include="Game\PathManager.cpp" />

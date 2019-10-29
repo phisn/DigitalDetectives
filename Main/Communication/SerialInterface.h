@@ -4,7 +4,7 @@
 #include "../Game/GameController.h"
 
 #define COM_SERIAL_TURN_SIZE_MIN 3
-#define COM_SERIAL_TURN_SIZE_MAX 5
+#define COM_SERIAL_TURN_SIZE_MAX 6
 
 namespace Communication
 {
@@ -170,12 +170,24 @@ namespace Communication
 		void processTurn()
 		{
 			Game::Turn turn;
+
 			turn.ticket = parseTicket();
+
+			if (turn.ticket == Game::Ticket::Double)
+			{
+				turn.doubleTicket = true;
+				turn.ticket = parseTicket();
+			}
 
 			if (turn.ticket == Game::Ticket::_Invalid)
 			{
 				Serial.println(F("Got invalid ticket"));
 				return;
+			}
+
+			if (Serial.available() <= 0)
+			{
+				Serial.println(F("Got empty target"));
 			}
 
 			turn.position = parseTarget();
@@ -186,19 +198,27 @@ namespace Communication
 				return;
 			}
 
-			Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
-			
-			if (!result.success)
-			{
-				Serial.println(result.message);
-				return;
-			}
+			const Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
 
-			Serial.println(F("Turn successfully made"));
+			if (result == Game::GameManager::TurnResult::Success)
+			{
+				Serial.println(F("Turn successfully made"));
+			}
+			else
+			{
+				Serial.println(
+					Game::GameManager::GetTurnFailReason(result)
+				);
+			}
 		}
 
 		Game::Ticket parseTicket() const
 		{
+			if (Serial.available() <= 0)
+			{
+				return Game::Ticket::_Invalid;
+			}
+
 			switch (Serial.read())
 			{
 			case Yellow:
@@ -228,7 +248,14 @@ namespace Communication
 			int target = 0;
 			for (int i = 0;;)
 			{
-				target += Serial.read() - '0'; // convert char to int
+				char input = Serial.read();
+
+				if (input == '\n' || input == '\r')
+				{
+					break;
+				}
+
+				target += input - '0'; // convert char to int
 
 				if (++i >= targetLength)
 				{
@@ -259,23 +286,32 @@ namespace Communication
 
 		void updateRunning()
 		{
+			if (Game::GameManager::GetData()->state.activePlayer != playerId)
+			{
+				return;
+			}
+
 			const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
 
 			if (player == NULL)
 			{
 				Serial.print(F("PlayerId not found"));
+				return;
 			}
 
-			Serial.print(F("Running update for "));
-			Serial.println(playerCharacter);
+			Serial.print(F("Next player: "));
+			Serial.print(Game::ColorToFlash(player->data->color));
+			Serial.print(F(" ("));
+			Serial.print(player->data->player, 16);
+			Serial.println(F(") ... Enter to view data"));
 
-			Serial.println(F("You: "));
+			while (Serial.available() == 0) delay(250);
+
+			Serial.print(F("Your character: "));
+			Serial.println(playerCharacter);
 
 			Serial.print(F(" - position: "));
 			Serial.println(player->state->position);
-
-			Serial.print(F(" - active: "));
-			Serial.println(playerId == Game::GameManager::GetData()->state.activePlayer);
 
 			Serial.print(F(" - yellow count: "));
 			Serial.println(player->state->ticket.yellowTicketCount);
@@ -285,6 +321,38 @@ namespace Communication
 
 			Serial.print(F(" - red count: "));
 			Serial.println(player->state->ticket.redTicketCount);
+
+			Serial.print(F(" - villian reveal: "));
+			Serial.println(Game::GameManager::GetShowVillianPositionRound());
+
+			Serial.println(F(" -> other tickets: "));
+
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+			{
+				const Game::Player* const player = Game::GameManager::ReadPlayer(Game::SetupManager::GetData()->playerContext.data[i].player);
+
+				Serial.print(F(" - -> ("));
+				Serial.print(Game::ColorToFlash(player->data->color));
+				Serial.println(')');
+
+				Serial.print(F(" - -> yellow count: "));
+				Serial.println(player->state->ticket.yellowTicketCount);
+
+				Serial.print(F(" - -> green count: "));
+				Serial.println(player->state->ticket.greenTicketCount);
+
+				Serial.print(F(" - -> red count: "));
+				Serial.println(player->state->ticket.redTicketCount);
+
+				if (player->data->type == Game::PlayerData::Type::Villian)
+				{
+					Serial.print(F(" - -> black count: "));
+					Serial.println(player->state->villian.ticket.blackTicketCount);
+
+					Serial.print(F(" - -> double count: "));
+					Serial.println(player->state->villian.ticket.doubleTicketCount);
+				}
+			}
 
 			if (player->data->type == Game::PlayerData::Type::Villian)
 			{
@@ -296,8 +364,18 @@ namespace Communication
 			}
 			else
 			{
-				Serial.print(F(" - last villian position: "));
+				Serial.print(F(" -> last villian position: "));
 				Serial.println(Game::GameManager::GetLastVillianPosition());
+
+				Serial.println(" - -> villian last used:");
+
+				for (int j = 0; j < Game::GameManager::GetData()->state.round; ++j)
+				{
+					Serial.print(" - -> (");
+					Serial.print(j);
+					Serial.print(") ");
+					Serial.println(Game::TicketToFlash(Game::GameManager::GetData()->state.villianTicketUse[j]));
+				}
 			}
 		}
 

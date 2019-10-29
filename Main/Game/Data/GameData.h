@@ -15,6 +15,8 @@ namespace Game
 			// index in playersetup order
 			unsigned char activePlayerIndex;
 			PlayerId activePlayer;
+
+			Game::Ticket villianTicketUse[24];
 		} state;
 
 		struct
@@ -31,6 +33,11 @@ namespace Game
 		inline bool IsShowVillianPositionRound()
 		{
 			return GetData()->state.round % 5 == 3;
+		}
+
+		inline int GetShowVillianPositionRound()
+		{
+			return 5 - (GetData()->state.round + 2) % 5;
 		}
 	}
 }
