@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link href="style.css" rel="stylesheet" type="text/css">
+    <title></title>
+  
+  </head>
+  <body>
+    <div id="playerdata"></div>
+    <h3>Move:</h3>
+	<p><b>Taxi</b></p>
+    <div class="taxi" id="taxi">
+    </div>
+	<p><b>Bus</b></p>
+    <div class="bus" id="bus"> 
+    </div>
+	<p><b>Underground</b></p>
+    <div class="underground" id="underground"> 
+	</div>
+  </body>
+  <script language="javascript">
+    let d = new DataView(new Uint8Array([
+3, //Type
+1, //PlayerType
+4,  //PlayerCount
+1, //Position
+3, //yellowTicketCount
+3, //greenTicketCount
+2, //redTicketCount
+2, //positionVillianReveal
+1, //positionVillian
+2, //villianYellowTicketCount
+3, //villianGreenTicketCount
+4, //villianRedTicketCount
+5,//villianBlackTicketCount
+2,//villianDoubleTicketCount
+0,0,0,0,0,0,0,0,0,0,0,0,0, //offset
+2,//turnYellowCount
+3,//turnGreenCount
+4,//turnRedCount
+7,6,5,4,3,2,//turnYellow
+4,3,2,3,4,//turnGreen
+6,5,4,3//turnRed
+]).buffer);
+
+  var html = '';
+
+  html += '<p><b>Tickets: </b>' + d.getUint8(4) + ' Taxi, ' + d.getUint8(5) + ' Bus, ' + d.getUint8(6) + ' Underground</p>';
+  html += '\n';
+  html += '<p><i><b>Tickets of Mr. X: </b> ' + d.getUint8(12) + ' Black, ' + d.getUint8(13) + ' Double, ' + d.getUint8(11) + ' Underground, ' + d.getUint8(10) + ' Bus, ' + d.getUint8(9) + ' Taxi</i></p>';
+  html += '\n';
+  html += '<p>Position of Mr. X revealed in <b>' + d.getUint8(7) + '</b> moves</p>';
+
+  document.getElementById('playerdata').innerHTML = html;
+
+  var turnYellowCount = d.getUint8(27);
+  var turnGreenCount = d.getUint8(28);
+  var turnRedCount = d.getUint8(29);
+  for(i = 0; i < turnYellowCount; i++){
+    var tHtml = '';
+    var station = d.getUint8(30 + i);
+    tHtml += '<button name=\"' + station + '\" formmethod="post">' + station + '</button>';
+    document.getElementById('taxi').innerHTML = tHtml; 
+    console.log(i);
+  }
+  for(i = 0; i < turnGreenCount; i++){
+    var bHtml = '';
+    var station = d.getUint8(36 + i);
+    bHtml += '<button name=\"' + station + '\" formmethod="post">' + station + '</button>';
+    document.getElementById('bus').innerHTML = bHtml; 
+  }
+   for(i = 0; i < turnRedCount; i++){
+    var uHtml = '';
+    var station = d.getUint8(41 + i);
+    uHtml += '<button name=\"' + station + '\" formmethod="post">' + station + '</button>';
+    document.getElementById('underground').innerHTML = uHtml; 
+  }
+  </script>
+</html>
