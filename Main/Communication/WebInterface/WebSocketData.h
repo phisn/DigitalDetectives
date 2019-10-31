@@ -9,9 +9,13 @@ namespace Communication
 			enum : unsigned char
 			{
 				Invalid,
+				
 				Collect = 1,
 				Setup = 2,
-				Running = 3
+				Running = 3,
+
+				Redirect = 4,
+
 			} type;
 		};
 

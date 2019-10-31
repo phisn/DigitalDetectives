@@ -64,7 +64,7 @@ namespace Communication
 
 				break;
 			case Game::GameState::Running:
-
+				request->redirect(WEB_DIR_RUNNING);
 
 				break;
 			}
