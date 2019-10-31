@@ -33,12 +33,14 @@ namespace Game
 		unsigned char doubleTicketCount;
 	};
 
+	FlashString TicketToFlash(const Ticket ticket);
+
 	namespace DefaultTickets
 	{
 		constexpr CommonTickets beginCommonDetective = { 10, 8, 4 };
 
 		constexpr CommonTickets beginCommonVillian = { 4, 3, 3 };
-		constexpr VillianTickets beginSpecialVillian = { 2, 0 };
+		constexpr VillianTickets beginSpecialVillian = { 0, 2 };
 	}
 }
 

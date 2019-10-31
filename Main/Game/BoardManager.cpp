@@ -1,5 +1,6 @@
 #include "BoardManager.h"
 #include "../Game/Data/GameSector.h"
+#include "../Game/GameManager.h"
 
 namespace
 {
@@ -136,6 +137,16 @@ namespace Game
 		{
 			Device::OutputManager::FastLed::Clear();
 
+			// villian is shown as white
+			if (Game::GameManager::GetData()->state.round >= 3)
+			{
+				Device::OutputManager::FastLed::Show(
+					Device::MapManager::Translate(
+						Game::GameManager::GetLastVillianPosition()
+					),
+					CRGB::White);
+			}
+
 			// skip villian (= 0)
 			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
@@ -145,16 +156,6 @@ namespace Game
 					),
 					ColorToCRGB(SetupManager::GetData()->playerContext.data[i].color)
 				);
-			}
-
-			// villian is shown as white
-			if (GameManager::IsShowVillianPositionRound())
-			{
-				Device::OutputManager::FastLed::Show(
-					Device::MapManager::Translate(
-						GameManager::GetData()->player[0].position
-					),
-					CRGB::White);
 			}
 
 			Device::OutputManager::FastLed::Update();

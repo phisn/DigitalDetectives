@@ -16,6 +16,7 @@ namespace Game
 	{
 		Ticket ticket;
 		MapPosition position;
+		bool doubleTicket; 
 	};
 
 	namespace GameManager
@@ -32,22 +33,33 @@ namespace Game
 		bool Process();
 		void Restore();
 
-		struct TurnResult
+		enum class TurnResult
 		{
-			bool success;
-			FlashString message;
+			Success = 0,
+
+			WinDetective,
+			WinVillian,
+
+			ActivePlayer,
+			PlayerNotFound,
+			InvalidTurn,
+			TicketNotFound,
+			TicketNotAvailable,
+
+			_Length
 		};
 		
 		TurnResult MakeTurn(
 			const PlayerId player,
 			const Turn turn);
-		TurnResult MakeTurnDouble(
-			const PlayerId player,
-			const Turn firstTurn,
-			const Turn secondTurn);
+
+		FlashString GetTurnFailReason(
+			const TurnResult result);
 
 		// avoid multiple calls!
 		const Player* ReadPlayer(const PlayerId id);
+		const Player* ReadPlayerByIndex(const int index);
+
 		MapPosition GetLastVillianPosition();
 	}
 }

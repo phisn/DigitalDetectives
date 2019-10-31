@@ -117,6 +117,12 @@ void Device::OutputManager::FastLed::Clear()
 
 void Device::OutputManager::FastLed::Show(const int pin, CRGB color)
 {
+	if (pin - 5 < 0)
+	{
+		Serial.println("Invalid pin");
+		return;
+	}
+
 	mapLeds[pin - 5] = color;
 }
 

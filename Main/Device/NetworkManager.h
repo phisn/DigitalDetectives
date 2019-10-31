@@ -11,7 +11,7 @@
 
 #define DEVICE_NET_CHANNEL 1
 #define DEVICE_NET_SSID_HIDDEN 0
-#define DEVICE_NET_MAX_CONN 4
+#define DEVICE_NET_MAX_CONN 6
 
 namespace Device
 {
