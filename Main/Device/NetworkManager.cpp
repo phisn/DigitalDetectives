@@ -35,7 +35,7 @@ namespace Device
 
 			DEBUG_MESSAGE(DEVICE_NET_SSID);
 			DEBUG_MESSAGE(DEVICE_NET_PASS);
-
+			
 			if (!WiFi.mode(WiFiMode::WIFI_AP))
 			{
 				FaultHandler::Handle(
@@ -52,9 +52,9 @@ namespace Device
 			IPAddress subnet_mask DEVICE_NET_SUBNET_MASK;
 
 			if (!WiFi.softAPConfig(
-				local_ip,
-				local_ip,
-				subnet_mask))
+					local_ip,
+					local_ip,
+					subnet_mask))
 			{
 				FaultHandler::Handle(
 					{
@@ -65,6 +65,7 @@ namespace Device
 
 				return; // retry
 			}
+
 
 			char ssidBuffer[sizeof(DEVICE_NET_SSID)];
 			char passBuffer[sizeof(DEVICE_NET_PASS)];
@@ -90,6 +91,8 @@ namespace Device
 
 				return; // retry
 			}
+
+			espconn_tcp_set_max_con(10);
 		}
 
 		void Uninitialize()

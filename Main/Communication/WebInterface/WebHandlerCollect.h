@@ -74,7 +74,8 @@ R"(
 
 					break;
 				default:
-					alert("Got invalid type");
+					// alert("Got invalid type");
+					window.location = "/";					
 
 					break;
 			}

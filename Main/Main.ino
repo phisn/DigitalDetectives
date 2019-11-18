@@ -43,14 +43,38 @@ Info
 void setup()
 {
 	Serial.begin(9600);
-
 	DEBUG_MESSAGE("ESP8266 Boot");
 
 	Device::GameManager::Initialize();
 }
 
+unsigned long _time = millis();
+
 void loop()
 {
+	if (_time + 200 < millis())
+	{
+		_time = millis();
+
+		Serial.print("free heap: ");
+		Serial.println(ESP.getFreeHeap());
+
+		Serial.print("free cont stack: ");
+		Serial.println(ESP.getFreeContStack());
+
+		Serial.print("heap frag: ");
+		Serial.println(ESP.getHeapFragmentation());
+
+		Serial.print("max block size: ");
+		Serial.println(ESP.getMaxFreeBlockSize());
+		
+		Serial.print("con: ");
+		Serial.println(WiFi.softAPgetStationNum());
+
+		Serial.print("tcp con: ");
+		Serial.println(espconn_tcp_get_max_con());
+	}
+
 	// do some cleanup
 	// Communication::WebServerManager::_GetSocket()->cleanupClients();
 

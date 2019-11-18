@@ -2,12 +2,27 @@
 
 // internal
 #include <Arduino.h>
-#include <Esp.h>
 #include <EEPROM.h>
+#include <Esp.h>
 
 // wifi
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWebServer.h>
+
+extern "C"
+{
+	#include <espconn.h>
+}
+
+// force use of lwip v1.4
+
+#ifndef ipv4_addr_t
+#error "ipv4_addr_t has to be defined as ip_addr_t in IPAddress.h in line 35"
+#endif
+
+#if !(LWIP_VERSION_MAJOR == 1 && LWIP_VERSION_MINOR == 4)
+#error "lwip is currently not set to v1.4"
+#endif
 
 // lcd
 #include <Wire.h>
