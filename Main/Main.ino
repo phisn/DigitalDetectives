@@ -4,7 +4,7 @@
 namespace EOBJ
 {
 	EEPROMClass* EEPROM = &::EEPROM;
-	ESP8266WiFiClass* WiFi = &::WiFi;
+	WiFiClass* WiFi = &::WiFi;
 	CFastLED* FastLED = &::FastLED;
 }
 
@@ -58,7 +58,7 @@ void loop()
 
 		Serial.print("free heap: ");
 		Serial.println(ESP.getFreeHeap());
-
+/*
 		Serial.print("free cont stack: ");
 		Serial.println(ESP.getFreeContStack());
 
@@ -67,12 +67,9 @@ void loop()
 
 		Serial.print("max block size: ");
 		Serial.println(ESP.getMaxFreeBlockSize());
-		
+*/
 		Serial.print("con: ");
 		Serial.println(WiFi.softAPgetStationNum());
-
-		Serial.print("tcp con: ");
-		Serial.println(espconn_tcp_get_max_con());
 	}
 
 	// do some cleanup

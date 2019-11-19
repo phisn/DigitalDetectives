@@ -36,7 +36,7 @@ namespace Device
 			DEBUG_MESSAGE(DEVICE_NET_SSID);
 			DEBUG_MESSAGE(DEVICE_NET_PASS);
 			
-			if (!WiFi.mode(WiFiMode::WIFI_AP))
+			if (!WiFi.mode(WiFiMode_t::WIFI_AP))
 			{
 				FaultHandler::Handle(
 					{
@@ -91,8 +91,6 @@ namespace Device
 
 				return; // retry
 			}
-
-			espconn_tcp_set_max_con(10);
 		}
 
 		void Uninitialize()

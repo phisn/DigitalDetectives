@@ -30,7 +30,7 @@ namespace Device
 		{
 			DEBUG_MESSAGE("LCD Init");
 
-			Wire.begin(D5, D4);
+			Wire.begin(DEVICE_PIN_LCD_SDA, DEVICE_PIN_LCD_SCL);
 			
 			Lcd::_GetDisplay()->init();
 			Lcd::_GetDisplay()->backlight();
@@ -41,7 +41,7 @@ namespace Device
 		void InitializeFastLed()
 		{
 			DEBUG_MESSAGE("FastLED Init");
-
+			
 			EOBJ::FastLED->addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED>(
 				mapLeds, DEVICE_FASTLED_MAP_LEDCOUNT
 			);

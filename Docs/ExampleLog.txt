@@ -1,0 +1,48 @@
+Opening port
+Port open
+VMDPR_||||�ESP8266 Boot
+Device Init (low)
+Memory Init
+EEPROM begin
+ValidateEEPROM (expected / created):
+65535
+13
+EEPROM_CORRUPTED
+Inside FailureHandler
+0
+5
+SignEEPROM (created):
+13
+��z��
+�ڔ�d3��6 VMDPR_||||�ESP8266 Boot
+Device Init (low)
+Memory Init
+EEPROM begin
+ValidateEEPROM (expected / created):
+13
+13
+Output Init
+LCD Init
+FastLED Init
+Device Init (high)
+WiFi Init (ssid / pass)
+nodemcu
+nodemcu________
+Device Init finished
+Found shutdown, continuing normally
+Starting session
+Boardmanager state changed
+Saving current session
+SignEEPROM (created):
+18
+free heap: 238984
+con: 0
+Saving current session
+SignEEPROM (created):
+18
+free heap: 238984
+con: 0
+free heap: 238984
+con: 0
+free heap: 238968
+con: 0

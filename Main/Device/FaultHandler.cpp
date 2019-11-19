@@ -174,8 +174,8 @@ namespace Device
 		{
 			// ex. check if device memory overflows
 
-			if (ESP.getFreeHeap() < DEVICE_MIN_REMAIN_MEMORY || 
-				ESP.getFreeContStack() < DEVICE_MIN_REMAIN_MEMORY)
+			if (ESP.getFreeHeap() < DEVICE_MIN_REMAIN_MEMORY) // || 
+//				ESP.getFreeContStack() < DEVICE_MIN_REMAIN_MEMORY)
 			{
 				FaultHandler::Handle(
 				{
@@ -185,7 +185,7 @@ namespace Device
 				}, true);
 			}
 
-			if (ESP.getHeapFragmentation() > DEVICE_MAX_HEAP_FRAGMENT)
+			/*if (ESP.getHeapFragmentation() > DEVICE_MAX_HEAP_FRAGMENT)
 			{
 				FaultHandler::Handle(
 				{
@@ -193,7 +193,7 @@ namespace Device
 					(FailureId) FID::HEAP_FRAG,
 					fault_heap_frag
 				}, true);
-			}
+			}*/
 
 			/* use to determine eeprom max size?
 				ESP.getFreeSketchSpace();
