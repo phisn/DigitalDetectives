@@ -15,6 +15,7 @@ namespace Communication
 				Running = 3,
 
 				Redirect = 4,
+				Error
 
 			} type;
 		};

@@ -82,7 +82,7 @@ R"(
 		};
 
 		socket.onclose = function (event) {
-			alert("Lost Connection!");
+			alert("Lost Connection!" + event.code + " " + event.reason + " " + event.wasClean);
 		};
     </script>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -100,6 +100,8 @@ R"(
 	{
 		void HandleCollectRequest(AsyncWebServerRequest* const request)
 		{
+			randomSeed(millis() + random(LONG_MAX));
+
 			if (Game::Controller::GetState() != Game::GameState::Collect)
 			{
 				request->redirect(WEB_DIR_COMMON);

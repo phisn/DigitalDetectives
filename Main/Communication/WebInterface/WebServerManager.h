@@ -26,7 +26,8 @@ namespace Communication
 
 			WebSocketUnregister,
 			WebSocketInvalidParam,
-			WebSocketInvalidPid
+			WebSocketInvalidPid,
+			WebSocketPidInUsage
 		};
 	};
 

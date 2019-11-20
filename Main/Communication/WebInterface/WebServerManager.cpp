@@ -174,13 +174,23 @@ namespace Communication
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
 					if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
 					{
-						DEBUG_MESSAGE("Found interface -> register");
+						if (interfaces[i]->getWebSocketId() == NULL)
+						{
+							DEBUG_MESSAGE(F("Found interface -> register"));
 
-						interfaces[i]->registerWebSocket(client->id());
-						interfaces[i]->update();
+							interfaces[i]->registerWebSocket(client->id());
+							interfaces[i]->update();
+						}
+						else
+						{
+							DEBUG_MESSAGE(F("PID already in usage, closing websocket"));
+
+							client->close(WebCode::WebSocketPidInUsage);
+						}
 
 						break;
 					}
+
 				DEBUG_MESSAGE("Searching end!");
 
 			}
