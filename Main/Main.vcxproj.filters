@@ -242,6 +242,9 @@
     <ClCompile Include="Game\FinishManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Data\TicketData.cpp">
+      <Filter>Game\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Docs\SY_Map.png">
@@ -274,5 +277,8 @@
     <Image Include="..\Architecture\Game_Layer2.jpeg.jpg">
       <Filter>Architecture</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="board.txt" />
   </ItemGroup>
 </Project>

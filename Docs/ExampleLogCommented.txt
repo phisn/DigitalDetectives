@@ -1,0 +1,100 @@
+# simple explaination of the bootup
+# process using the debug logs
+# comments are shown with a '#'
+
+ESP8266 Boot
+# inside arduino setup
+# nothing happened yet
+Device Init (low)
+# starting to initialize
+# low level devices
+	Memory Init
+		EEPROM begin
+		# EEPROM is the harddrive of arduino
+		# it is used to save memory beyond sessions
+		# internally unused flash is used
+			ValidateEEPROM (expected / created):
+			# Checking if EEPROM is good (signed properly)
+			65535 # current sign
+			13    # expected sign with current memory
+			EEPROM_CORRUPTED
+			# obviously the expected does not equal to the
+			# current sign, so the EEPROM is corrupted
+				Inside FailureHandler
+				0 # module = memorymanager
+				5 # failureid
+				# info from the failurehandle, which would normally
+				# be shown though a RGB status led
+				# this would result in blue blink 5 times repeated
+				# 3 times		
+			# because the failurehandler knows that the memorymanager
+			# can fix this failure by himself, he lets him handle it
+			# instead of restarting
+			SignEEPROM (created):
+			# because be eeprom before was corrupted, we clear it and
+			# write the now computed sign to the eeprom
+			13
+			# because it is the same as before, we can assume that the
+			# memory was properly empty before already
+# the device restarts
+ESP8266 Boot
+Device Init (low)
+	Memory Init
+		EEPROM begin
+			ValidateEEPROM (expected / created):
+			13 # current sign
+			13 # expected sign
+			# now we clearly see that both signs
+			# are identical so the eeprom is not
+			# corrupted			
+	Output Init
+		# nothing here should normally not be able
+		# to fail but for debug purposes this will 
+		# stay here
+		LCD Init
+		FastLED Init
+Device Init (high)
+# after the low level devices are initialized
+# the more highlevel devices can use the lcd to
+# show faults (not failures anymore) instead
+# of an RGB led
+	WiFi Init (ssid / pass)
+		nodemcu			# SSID
+		nodemcu________ # PASS
+		# the ssid and password are currently hardcoded
+		# but will be created randomly in the future
+# now should normally be the wifi initialized
+# but this is not logged currently		
+Device Init finished
+# after the device layer is initialized the
+# game is instantly started
+Found shutdown, continuing normally
+# the eeprom is currently completly empty and the
+# game loads all the zeros and checks the last saved state
+# because the number for shutdown is also zero, it 
+# assumes that the last game was shutdown and will
+# ignore all other data (empty) and start a new game
+Starting session
+# this part is currently not logged at all but will be
+# in future. the game does load itself and a new state 
+# and will try to save it
+Boardmanager state changed
+# this is currently one of the only log and is not directly
+# connected to the start of a session
+Saving current session
+# the game is now trying to save its newly created session
+	SignEEPROM (created):
+	# memorymanager is generating a new sign for the eeprom
+	# and writing it
+	18 # new sign
+	# no error message, the initializing succeeded
+	
+# from now on there arent currently many more
+# logs asside from the repeating information for
+# the free heap and current wifi connections
+	
+free heap: 238984
+con: 0
+
+# additional info: none of these logs are serial written
+# in realese mode

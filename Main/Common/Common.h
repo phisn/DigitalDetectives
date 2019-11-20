@@ -2,11 +2,11 @@
 
 // internal
 #include <Arduino.h>
-#include <Esp.h>
 #include <EEPROM.h>
+#include <Esp.h>
 
 // wifi
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 
 // lcd

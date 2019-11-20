@@ -5,6 +5,7 @@
 
 #define WEB_DIR_COMMON ("/")
 #define WEB_DIR_COLLECT ("/collect")
+#define WEB_DIR_RUNNING ("/running")
 #define WEB_DIR_REQPID ("/requestpid")
 
 #define WEB_PARAM_PLAYERID ("playerid")

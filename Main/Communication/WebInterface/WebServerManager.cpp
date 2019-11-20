@@ -1,6 +1,7 @@
 #include "WebServerManager.h"
 
 #include "../../Communication/WebInterface/WebHandlerCollect.h"
+#include "../../Communication/WebInterface/WebHandlerRunning.h"
 
 namespace
 {
@@ -40,6 +41,7 @@ namespace Communication
 
 			server->on(WEB_DIR_COMMON, HTTP_GET, HandleCommonRequest);
 			server->on(WEB_DIR_COLLECT, HTTP_GET, WebHandler::HandleCollectRequest);
+			server->on(WEB_DIR_RUNNING, HTTP_GET, WebHandler::HandleRunningRequest);
 
 			server->onNotFound([](AsyncWebServerRequest* const request) 
 			{
@@ -64,7 +66,7 @@ namespace Communication
 
 				break;
 			case Game::GameState::Running:
-
+				request->redirect(WEB_DIR_RUNNING);
 
 				break;
 			}

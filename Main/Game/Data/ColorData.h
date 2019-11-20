@@ -16,8 +16,8 @@ namespace Game
 
 		Purple,
 		Yellow,
-
 	};
 
+	FlashString ColorToFlash(const Color color);
 	CRGB ColorToCRGB(const Color color);
 }

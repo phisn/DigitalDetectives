@@ -69,6 +69,15 @@ R"(
 					document.getElementById("pcount").innerHTML = playerCount;
 
 					break;
+				case 4:
+					window.location = "/";					
+
+					break;
+				default:
+					// alert("Got invalid type");
+					window.location = "/";					
+
+					break;
 			}
 		};
 
