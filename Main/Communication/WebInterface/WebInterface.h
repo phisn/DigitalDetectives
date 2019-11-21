@@ -63,15 +63,31 @@ namespace Communication
 
 		void update() override
 		{
+			DEBUG_MESSAGE("Update");
+
 			if (webSocketId == 0)
 			{
+				DEBUG_MESSAGE("Fail 0");
 				return;
 			}
 
-			switch (Game::Controller::GetState())
+			const Game::GameState currentState = Game::Controller::GetState();
+			if (lastState != currentState)
+			{
+				DEBUG_MESSAGE("Update, change state");
+
+				lastState = currentState;
+
+				WebSocketData::RedirectData data;
+				sendData((const char*) &data, sizeof(data));
+			}
+
+			switch (lastState)
 			{
 			case Game::GameState::Collect:
 			{
+				DEBUG_MESSAGE("State collect");
+
 				WebSocketData::CollectData data;
 				data.playerCount = Game::Collector::GetData()->playerCount;
 				sendData((const char*) &data, sizeof(data));
@@ -79,11 +95,14 @@ namespace Communication
 				break;
 			case Game::GameState::Running:
 			{
+				DEBUG_MESSAGE("State running");
+
 				const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
 
 				WebSocketData::RunningData data;
 
 				data.playerCount = Game::Collector::GetData()->playerCount;
+				data.currentPlayer = Game::GameManager::GetData()->state.activePlayer;
 
 				data.playerType = player->data->type;
 				data.position = player->state->position;
@@ -179,6 +198,7 @@ namespace Communication
 		unsigned long webSocketTimeoutCounter = 0;
 		unsigned long webSocketTimeoutLast = 0;
 
+		Game::GameState lastState;
 		Game::PlayerId playerId;
 	};
 }

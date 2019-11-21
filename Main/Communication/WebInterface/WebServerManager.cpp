@@ -40,8 +40,11 @@ namespace Communication
 			AsyncWebSocket* const socket = _GetSocket();
 
 			server->on(WEB_DIR_COMMON, HTTP_GET, HandleCommonRequest);
+
 			server->on(WEB_DIR_COLLECT, HTTP_GET, WebHandler::HandleCollectRequest);
 			server->on(WEB_DIR_RUNNING, HTTP_GET, WebHandler::HandleRunningRequest);
+
+			server->on(WEB_DIR_RUNNING, HTTP_POST, WebHandler::HandleRunningPost);
 
 			server->onNotFound([](AsyncWebServerRequest* const request) 
 			{

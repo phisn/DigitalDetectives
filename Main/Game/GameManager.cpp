@@ -88,9 +88,14 @@ namespace Game
 
 		bool Process()
 		{
+			Serial.print("cgm");
+			Serial.println(needsUpdate);
+
 			if (needsUpdate)
 			{
 				needsUpdate = false;
+				DEBUG_MESSAGE("SEND NEEDS UPDATE");
+
 				return true;
 			}
 
@@ -155,6 +160,7 @@ namespace Game
 			
 			// needs update, data changed
 			needsUpdate = true;
+			DEBUG_MESSAGE("NEEDS UPDATE SET");
 
 			if (playerData->type == PlayerData::Type::Detective)
 			{
