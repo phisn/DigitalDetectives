@@ -111,6 +111,8 @@ namespace Communication
 
 				if (update)
 				{
+					DEBUG_MESSAGE("DOIN UPDATE");
+
 					interface->update();
 				}
 

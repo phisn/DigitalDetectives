@@ -28,9 +28,6 @@
     <Filter Include="Communication\WebInterface">
       <UniqueIdentifier>{3f312d83-764d-4385-b896-914884a0daee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Communication\WebInterface\Website">
-      <UniqueIdentifier>{790c1245-33aa-4be6-a005-f65cc840864b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Communication\WebInterface\Handler">
       <UniqueIdentifier>{31df3f44-a037-4f1e-b7bf-8b018423c96a}</UniqueIdentifier>
     </Filter>
@@ -131,15 +128,6 @@
     </ClInclude>
     <ClInclude Include="Communication\WebInterface\WebServerManager.h">
       <Filter>Communication\WebInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\WebInterface\Website\WebsiteSetup.h">
-      <Filter>Communication\WebInterface\Website</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\WebInterface\Website\WebsiteFinish.h">
-      <Filter>Communication\WebInterface\Website</Filter>
-    </ClInclude>
-    <ClInclude Include="Communication\WebInterface\Website\WebsiteRequestPid.h">
-      <Filter>Communication\WebInterface\Website</Filter>
     </ClInclude>
     <ClInclude Include="Communication\WebInterface\WebHandlerSetup.h">
       <Filter>Communication\WebInterface\Handler</Filter>

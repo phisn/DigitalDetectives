@@ -94,6 +94,9 @@ namespace Game
 
 		void Update()
 		{
+			DEBUG_MESSAGE("Update boardmanager");
+			DEBUG_MESSAGE((int) Controller::GetState());
+
 			switch (Controller::GetState())
 			{
 			case GameState::Collect:
@@ -135,8 +138,11 @@ namespace Game
 
 		void UpdateRunning()
 		{
+			DEBUG_MESSAGE("FLED Clear");
 			Device::OutputManager::FastLed::Clear();
 
+
+			DEBUG_MESSAGE("FLED Show1");
 			// villian is shown as white
 			if (Game::GameManager::GetData()->state.round >= 3)
 			{
@@ -147,6 +153,7 @@ namespace Game
 					CRGB::White);
 			}
 
+			DEBUG_MESSAGE("FLED Show2");
 			// skip villian (= 0)
 			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
@@ -158,8 +165,10 @@ namespace Game
 				);
 			}
 
-			Device::OutputManager::FastLed::Update();
+			DEBUG_MESSAGE("FLED Update");
+			// Device::OutputManager::FastLed::Update();
 
+			DEBUG_MESSAGE("Lcd Update");
 			Device::OutputManager::Lcd::Clear();
 			Device::OutputManager::Lcd::DisplayLineType(
 				0,

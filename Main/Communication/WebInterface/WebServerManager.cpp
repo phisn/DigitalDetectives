@@ -40,8 +40,11 @@ namespace Communication
 			AsyncWebSocket* const socket = _GetSocket();
 
 			server->on(WEB_DIR_COMMON, HTTP_GET, HandleCommonRequest);
+
 			server->on(WEB_DIR_COLLECT, HTTP_GET, WebHandler::HandleCollectRequest);
 			server->on(WEB_DIR_RUNNING, HTTP_GET, WebHandler::HandleRunningRequest);
+
+			server->on(WEB_DIR_RUNNING, HTTP_POST, WebHandler::HandleRunningPost);
 
 			server->onNotFound([](AsyncWebServerRequest* const request) 
 			{
@@ -174,13 +177,23 @@ namespace Communication
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
 					if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
 					{
-						DEBUG_MESSAGE("Found interface -> register");
+						if (interfaces[i]->getWebSocketId() == NULL)
+						{
+							DEBUG_MESSAGE(F("Found interface -> register"));
 
-						interfaces[i]->registerWebSocket(client->id());
-						interfaces[i]->update();
+							interfaces[i]->registerWebSocket(client->id());
+							interfaces[i]->update();
+						}
+						else
+						{
+							DEBUG_MESSAGE(F("PID already in usage, closing websocket"));
+
+							client->close(WebCode::WebSocketPidInUsage);
+						}
 
 						break;
 					}
+
 				DEBUG_MESSAGE("Searching end!");
 
 			}

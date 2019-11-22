@@ -57,6 +57,5 @@ namespace Device
 // ws2812b
 // #define FASTLED_ALLOW_INTERRUPTS 0
 #define FASTLED_INTERNAL
-#define FASTLED_ESP8266_RAW_PIN_ORDER
 
 #include <FastLED.h>

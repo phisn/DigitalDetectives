@@ -87,6 +87,8 @@ namespace Game
 				Device::MemorySector::Game,
 				(char*)& sector
 			);
+
+			DEBUG_MESSAGE("Current Session Saved");
 		}
 
 		void Uninitialize()
