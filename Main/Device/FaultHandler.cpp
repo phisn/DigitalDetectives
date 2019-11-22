@@ -17,22 +17,35 @@ namespace
 	FlashString emessageModule = FPSTR(DEVICE_EMESSAGE_MODULE);
 	FlashString emessageFID = FPSTR(DEVICE_EMESSAGE_FID);
 
-	FlashString emessageModuleNames[(int) Device::FaultModule::_Length] PROGMEM = // 11 + \0
+	FlashString emessageModuleNames[] PROGMEM = // 11 + \0
 	{
-		FPSTR("FaultHandler\0"),
+		FPSTR("FaultHandler\0"), // device
 		FPSTR("NetworkMng  \0"),
 		FPSTR("MapManager  \0"),
-		FPSTR("BoardManager\0"),
+
+		FPSTR("BoardManager\0"), // game
+		FPSTR("Collector   \0"),
+		FPSTR("SetupManager\0"),
 		FPSTR("GameManager \0"),
-		FPSTR("GameAccess  \0"),
-		FPSTR("InterfaceMng\0"),
-		FPSTR("RequestHndlr\0"),
+		FPSTR("GameCntrller\0"),
+
+		FPSTR("InterfaceMng\0"), // communication
 		FPSTR("WebInterface\0")
 	};
+
+	static_assert(sizeof(emessageModuleNames) / sizeof(*emessageModuleNames) == (int) Device::FaultModule::_Length,
+		"Faultmodule length changed, adjust emessageModuleNames module names");
 
 	FlashString fault_intmg_null = DEVICE_FAULT_MESSAGE("IntMg callback was null          ");
 	FlashString fault_low_memory = DEVICE_FAULT_MESSAGE("Device has low memory            ");
 	FlashString fault_heap_frag = DEVICE_FAULT_MESSAGE("Device heap is fragmented        ");
+
+	namespace ScheduledFault
+	{
+		bool hasData = false;
+		Device::Fault fault;
+		bool isFatal;
+	}
 }
 
 // prevent accidential change of nonfatal
@@ -87,14 +100,19 @@ namespace Device
 		{
 		}
 
-		void Report()
-		{
-		}
-
 		void Handle(const Fault fault, const bool fatal)
 		{
+			// schedule fault if current thread is not the loop thread
+			if (!ExecutionManager::IsLoopThread())
+			{
+				ScheduledFault::hasData = true;
+				ScheduledFault::fault = fault;
+				ScheduledFault::isFatal = fatal;
+
+				return;
+			}
+
 			/*
-			
 			if (interfaceNotifierCallback == NULL)
 			{
 				Handle(
@@ -103,8 +121,7 @@ namespace Device
 					(FailureId) FID::INC_NULL,
 					fault_intmg_null
 				});
-			/}
-			
+			}
 			*/
 
 			DEBUG_MESSAGE("Inside FaultHandler (text / module / module name / id / isFatal)");
@@ -185,6 +202,15 @@ namespace Device
 				}, true);
 			}
 
+			if (ScheduledFault::hasData)
+			{
+				FaultHandler::Handle(
+					ScheduledFault::fault,
+					ScheduledFault::isFatal);
+
+				return;
+			}
+
 			/*if (ESP.getHeapFragmentation() > DEVICE_MAX_HEAP_FRAGMENT)
 			{
 				FaultHandler::Handle(
@@ -204,6 +230,12 @@ namespace Device
 		{
 			OutputManager::Lcd::Clear();
 			char buffer[DEVICE_LCD_WIDTH + 1] = { };
+
+			Serial.println(fatal);
+			Serial.println(fault.id);
+			Serial.println((int) fault.module);
+			Serial.println(GetModuleName(fault.module));
+			Serial.println(fault.text);
 
 			// print error message
 			memcpy_P(

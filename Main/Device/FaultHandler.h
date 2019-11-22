@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Device/ExecutionManager.h"
 #include "../Device/FailureHandler.h"
 #include "../Device/MemoryManager.h"
 #include "../Device/OutputManager.h"
@@ -26,7 +27,7 @@
 #define DEVICE_FAULT_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_FAULT_GET_EXPECTED_LEN(txt), \
 	"Fault message has to be have full length (see DEVICE_EMESSAGE_MESSAGE_LEN)")
 
-#define DEVICE_MIN_REMAIN_MEMORY 128
+#define DEVICE_MIN_REMAIN_MEMORY 50000
 #define DEVICE_MAX_HEAP_FRAGMENT 50 // in percent
 
 namespace Device
@@ -44,7 +45,6 @@ namespace Device
 		GameController,
 
 		InterfaceManager,
-		RequestHandler,
 		WebInterface,
 
 		_Length
