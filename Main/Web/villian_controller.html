@@ -150,7 +150,7 @@ function generateButtons(useDoubleTicket){
     var _html = '';
     for(var i = 0; i < blackTurns.length; i++){
       var station = blackTurns[i];
-      _html += '<button value=\"' + station + '\" type=\"submit\" name=\"b' + dname + '\" formmethod="post">' + station + '</button>';
+      _html += '<button value=\"' + station + '\" type=\"submit\" name=\"' + dname + 'b\" formmethod="post">' + station + '</button>';
     }
     document.getElementById('black').innerHTML = _html;
   }
@@ -158,7 +158,7 @@ function generateButtons(useDoubleTicket){
     document.getElementById('taxititle').innerHTML = 'Taxi';
     var _html = '';
     for(var i = 32; i <= 37; i++){
-      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"y' + dname + '\" formmethod="post">' + i + '</button>';
+      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"' + dname + 'y\" formmethod="post">' + i + '</button>';
     }
     document.getElementById('taxi').innerHTML = _html;
   }
@@ -166,7 +166,7 @@ function generateButtons(useDoubleTicket){
     document.getElementById('bustitle').innerHTML = 'Bus';
     var _html = '';
     for(var i = 38; i <= 42; i++){
-      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"g' + dname + '\" formmethod="post">' + i + '</button>';
+      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"' + dname + 'g\" formmethod="post">' + i + '</button>';
     }
     document.getElementById('bus').innerHTML = _html;
   }
@@ -174,7 +174,7 @@ function generateButtons(useDoubleTicket){
     document.getElementById('undergroundtitle').innerHTML = 'Underground';
     var _html = '';
     for(var i = 43; i <= 46; i++){
-      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"r' + dname + '\" formmethod="post">' + i + '</button>';
+      _html += '<button value=\"' + i + '\" type=\"submit\" name=\"' + dname + 'r\" formmethod="post">' + i + '</button>';
     }
     document.getElementById('underground').innerHTML = _html;
   }
