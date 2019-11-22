@@ -9,8 +9,8 @@
     "\\Main\\Device",
     "\\Main\\Game",
     "\\Main\\Game\\Data",
-    "\\Main\\__vm"
+    "\\Main\\Web"
   ],
-  "SelectedNode": "\\Main\\Communication\\WebInterface\\WebSocketData.h",
+  "SelectedNode": "\\Main\\Web\\collecting_phase.html",
   "PreviewInSolutionExplorer": false
 }
