@@ -3,7 +3,7 @@
 namespace Game
 {
 #pragma region Data
-	Station stations[199] PROGMEM =
+	Station stations[] PROGMEM =
 	{
 		Station {Station::Type::Underground, 0},
 		Station {Station::Type::Taxi, 0},
@@ -206,7 +206,7 @@ namespace Game
 		Station {Station::Type::Bus, 0}
 	};
 
-	Connection connections[472] PROGMEM =
+	Connection connections[] PROGMEM =
 	{
 		Connection { 1, 8, Station::Type::Taxi },
 		Connection { 1, 9, Station::Type::Taxi },
@@ -262,14 +262,12 @@ namespace Game
 		Connection { 19, 32, Station::Type::Taxi },
 		Connection { 20, 33, Station::Type::Taxi },
 		Connection { 21, 33, Station::Type::Taxi },
-
 		Connection { 22, 34, Station::Type::Taxi },
 		Connection { 22, 23, Station::Type::Taxi },
 		Connection { 22, 35, Station::Type::Taxi },
 		Connection { 22, 34, Station::Type::Bus },
 		Connection { 22, 23, Station::Type::Bus },
 		Connection { 22, 65, Station::Type::Bus },
-		
 		Connection { 23, 37, Station::Type::Taxi },
 		Connection { 23, 67, Station::Type::Bus },
 		Connection { 24, 37, Station::Type::Taxi },
@@ -281,7 +279,6 @@ namespace Game
 		Connection { 27, 28, Station::Type::Taxi },
 		Connection { 27, 40, Station::Type::Taxi },
 		Connection { 28, 41, Station::Type::Taxi },
-		28 - 41
 		Connection { 29, 41, Station::Type::Taxi },
 		Connection { 29, 42, Station::Type::Taxi },
 		Connection { 29, 41, Station::Type::Bus },
@@ -317,8 +314,6 @@ namespace Game
 		Connection { 42, 56, Station::Type::Taxi },
 		Connection { 42, 72, Station::Type::Taxi },
 		Connection { 42, 72, Station::Type::Bus },
-		
-		
 		Connection { 43, 57, Station::Type::Taxi },
 		Connection { 44, 58, Station::Type::Taxi },
 		Connection { 45, 58, Station::Type::Taxi },
@@ -682,6 +677,12 @@ namespace Game
 		Connection { 198, 199, Station::Type::Taxi }
 	};
 
+	static_assert(sizeof(connections) / sizeof(*conections) == 467,
+		"Connections size has changed, adjustment to pathfinder algorithm needed");
+	static_assert(sizeof(stations) / sizeof(*stations) == 199,
+		"Stations size has changed, adjustment to pathfinder algorithm needed");
+
+
 	MapPosition starts[GAME_START_POSITION_COUNT] PROGMEM =
 	{
 		103, 112, 34,
@@ -721,7 +722,10 @@ namespace Game
 	{
 		FindOptionsSpecificResult result{ };
 
-		for (int i = 0; i < 472; ++i)
+		// speedup possible: only search until stationId,
+		// because stations always only contain higher connections
+		// -> higher connection can not have stationId
+		for (int i = 0; i < 467; ++i)
 			if (connections[i].type == type)
 			{
 				const bool isStation1 = connections[i].station1 == stationId;
