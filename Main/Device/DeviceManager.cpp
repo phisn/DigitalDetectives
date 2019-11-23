@@ -36,6 +36,8 @@ namespace Device
 			FailureHandler::Initialize();
 			MemoryManager::Initialize();
 			OutputManager::Initialize();
+			ExecutionManager::Initialize();
+			
 
 			DEBUG_MESSAGE("Device Init (high)");
 

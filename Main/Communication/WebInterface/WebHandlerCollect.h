@@ -100,6 +100,9 @@ R"(
 	{
 		void HandleCollectRequest(AsyncWebServerRequest* const request)
 		{
+			Serial.print("HANDLE: ");
+			Serial.print((int)xTaskGetCurrentTaskHandle());
+
 			randomSeed(millis() + random(LONG_MAX));
 
 			if (Game::Controller::GetState() != Game::GameState::Collect)

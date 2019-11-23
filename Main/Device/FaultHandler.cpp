@@ -204,6 +204,8 @@ namespace Device
 
 			if (ScheduledFault::hasData)
 			{
+				ScheduledFault::hasData = false;
+
 				FaultHandler::Handle(
 					ScheduledFault::fault,
 					ScheduledFault::isFatal);
@@ -231,12 +233,6 @@ namespace Device
 			OutputManager::Lcd::Clear();
 			char buffer[DEVICE_LCD_WIDTH + 1] = { };
 
-			Serial.println(fatal);
-			Serial.println(fault.id);
-			Serial.println((int) fault.module);
-			Serial.println(GetModuleName(fault.module));
-			Serial.println(fault.text);
-
 			// print error message
 			memcpy_P(
 				buffer,  
@@ -246,11 +242,6 @@ namespace Device
 				buffer + DEVICE_EMESSAGE_ERROR_LEN, 
 				fault.text, 
 				DEVICE_EMESSAGE_MESSAGE_LEN_FL);
-
-			for (int i = 0; i < DEVICE_LCD_WIDTH + 1; ++i)
-			{
-				DEBUG_MESSAGE((int) buffer[i]);
-			}
 
 			OutputManager::Lcd::DisplayLineType(
 				0,

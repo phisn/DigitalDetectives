@@ -1,6 +1,7 @@
 #include "Common/Common.h"
 #include "Device/DeviceManager.h"
 
+
 namespace EOBJ
 {
 	EEPROMClass* EEPROM = &::EEPROM;
@@ -43,8 +44,11 @@ Info
 void setup()
 {
 	Serial.begin(9600);
-	DEBUG_MESSAGE("ESP8266 Boot");
 
+	Serial.print("HANDLE: ");
+	Serial.print((int)xTaskGetCurrentTaskHandle());
+
+	DEBUG_MESSAGE("ESP8266 Boot");
 	Device::GameManager::Initialize();
 }
 
@@ -54,6 +58,9 @@ void loop()
 {
 	if (_time + 200 < millis())
 	{
+		Serial.print("HANDLE: ");
+		Serial.println((int)xTaskGetCurrentTaskHandle());
+
 		_time = millis();
 
 		Serial.print("free heap: ");

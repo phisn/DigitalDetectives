@@ -132,6 +132,7 @@
     <ClInclude Include="Communication\WebInterface\WebSocketData.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\DevicePins.h" />
+    <ClInclude Include="Device\ExecutionManager.h" />
     <ClInclude Include="Device\FailureHandler.h" />
     <ClInclude Include="Device\FaultHandler.h" />
     <ClInclude Include="Device\MapManager.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Communication\WebInterface\WebInterface.cpp" />
     <ClCompile Include="Communication\WebInterface\WebServerManager.cpp" />
     <ClCompile Include="Device\DeviceManager.cpp" />
+    <ClCompile Include="Device\ExecutionManager.cpp" />
     <ClCompile Include="Device\FailureHandler.cpp" />
     <ClCompile Include="Device\FaultHandler.cpp" />
     <ClCompile Include="Device\MapManager.cpp" />

@@ -667,7 +667,7 @@ namespace Game
 		Connection { 186, 198, Station::Type::Taxi },
 		Connection { 187, 188, Station::Type::Taxi },
 		Connection { 187, 198, Station::Type::Taxi },
-		Connection { 187, 199, Station::Type::Bus },
+		Connection { 187, 199, Station::Type::Bus }, // wrong
 		Connection { 188, 199, Station::Type::Taxi },
 		Connection { 189, 190, Station::Type::Taxi },
 		Connection { 190, 191, Station::Type::Taxi },

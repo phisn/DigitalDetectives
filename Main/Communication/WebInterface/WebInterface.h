@@ -99,6 +99,23 @@ namespace Communication
 
 				const Game::Player* const player = Game::GameManager::ReadPlayer(playerId);
 
+				if (player == NULL)
+				{
+					DEBUG_MESSAGE("Got empty player (players)");
+
+#ifdef VM_DEBUG
+					for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+					{
+						DEBUG_MESSAGE(Game::SetupManager::GetData()->playerContext.data[i].player);
+					}
+#endif
+
+					DEBUG_MESSAGE("Searching: ");
+					DEBUG_MESSAGE(playerId);
+
+					break;
+				}
+
 				WebSocketData::RunningData data;
 
 				data.playerCount = Game::Collector::GetData()->playerCount;
@@ -150,7 +167,7 @@ namespace Communication
 					data.detective.villianRedTicketCount = villian->state->ticket.redTicketCount;
 
 					data.detective.villianBlackTicketCount = villian->state->villian.ticket.blackTicketCount;
-					data.detective.villianDoubleTicketCount = villian->state->villian.ticket.blackTicketCount;
+					data.detective.villianDoubleTicketCount = villian->state->villian.ticket.doubleTicketCount;
 
 					data.detective.color = player->data->color;
 				}
@@ -171,8 +188,8 @@ namespace Communication
 				data.turnRedCount = undergroundResult.stationCount;
 
 				memcpy(data.turnYellow, taxiResult.station, taxiResult.stationCount);
-				memcpy(data.turnGreen, taxiResult.station, busResult.stationCount);
-				memcpy(data.turnRed, taxiResult.station, undergroundResult.stationCount);
+				memcpy(data.turnGreen, busResult.station, busResult.stationCount);
+				memcpy(data.turnRed, undergroundResult.station, undergroundResult.stationCount);
 
 				sendData((const char*) &data, sizeof(data));
 			}

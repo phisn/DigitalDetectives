@@ -147,6 +147,9 @@
     <ClInclude Include="Game\FinishManager.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Device\ExecutionManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -232,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="Game\Data\TicketData.cpp">
       <Filter>Game\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\ExecutionManager.cpp">
+      <Filter>Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
