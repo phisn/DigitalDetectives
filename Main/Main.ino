@@ -1,6 +1,6 @@
 #include "Common/Common.h"
 #include "Device/DeviceManager.h"
-
+#include "Device/OutputManager.h"
 
 namespace EOBJ
 {
@@ -18,11 +18,11 @@ Info
   should use the definition FlashString defined in
   Common/Common.h
   -> Data stored in PROGMEM cant just be read
-  -> FlashString do have to be either used in function 
-     with the suffix "_P" (preferred) or be converted into 
+  -> FlashString do have to be either used in function
+	 with the suffix "_P" (preferred) or be converted into
 	 normal readable char arrays
   -> Raw data has to be read using pgm_read_xxx byte by byte
-     or retrieved with memcpy_P [usally a good idea if u have
+	 or retrieved with memcpy_P [usally a good idea if u have
 	 many same size PROGMEM data and want to load in a buffer
 	 (not parrallel)]
   -> more info at (https://arduino-esp8266.readthedocs.io/en/latest/PROGMEM.html)
@@ -36,7 +36,7 @@ Info
 	 joined gets first place because the order does not matter.
 	 It is simply used to process player interfaces
   -> The second order exists in the Collector. This on is used to
-     identify the order of players in the game. It is semi random
+	 identify the order of players in the game. It is semi random
 	 because the villian always gets a specific place and the
 	 detectives are places randomly
 */
@@ -44,9 +44,6 @@ Info
 void setup()
 {
 	Serial.begin(9600);
-
-	Serial.print("HANDLE: ");
-	Serial.print((int)xTaskGetCurrentTaskHandle());
 
 	DEBUG_MESSAGE("ESP8266 Boot");
 	Device::GameManager::Initialize();
@@ -65,16 +62,6 @@ void loop()
 
 		Serial.print("free heap: ");
 		Serial.println(ESP.getFreeHeap());
-/*
-		Serial.print("free cont stack: ");
-		Serial.println(ESP.getFreeContStack());
-
-		Serial.print("heap frag: ");
-		Serial.println(ESP.getHeapFragmentation());
-
-		Serial.print("max block size: ");
-		Serial.println(ESP.getMaxFreeBlockSize());
-*/
 		Serial.print("con: ");
 		Serial.println(WiFi.softAPgetStationNum());
 	}
@@ -83,4 +70,15 @@ void loop()
 	// Communication::WebServerManager::_GetSocket()->cleanupClients();
 
 	Device::GameManager::Process();
+}
+
+// external functions needed to be run in ino main file
+void Device::OutputManager::_InitializeFastLed()
+{
+	DEBUG_MESSAGE("FastLED Init");
+	memset(Device::OutputManager::FastLed::_GetData(), 0,
+		sizeof(CRGB) * DEVICE_FASTLED_MAP_LEDCOUNT);
+
+	FastLED.addLeds<WS2812B, 19, GRB>(Device::OutputManager::FastLed::_GetData(), 199);
+	FastLED.show();
 }

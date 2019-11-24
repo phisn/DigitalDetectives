@@ -56,7 +56,5 @@ namespace Device
 #endif
 
 // ws2812b
-// #define FASTLED_ALLOW_INTERRUPTS 0
-#define FASTLED_INTERNAL
-
-#include <FastLED.h>
+#define FASTLED_ALLOW_INTERRUPTS 0
+#include "FastLED.h"

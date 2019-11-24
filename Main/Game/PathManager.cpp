@@ -677,7 +677,7 @@ namespace Game
 		Connection { 198, 199, Station::Type::Taxi }
 	};
 
-	static_assert(sizeof(connections) / sizeof(*conections) == 467,
+	static_assert(sizeof(connections) / sizeof(*connections) == 467,
 		"Connections size has changed, adjustment to pathfinder algorithm needed");
 	static_assert(sizeof(stations) / sizeof(*stations) == 199,
 		"Stations size has changed, adjustment to pathfinder algorithm needed");

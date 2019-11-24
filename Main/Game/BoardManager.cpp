@@ -141,7 +141,6 @@ namespace Game
 			DEBUG_MESSAGE("FLED Clear");
 			Device::OutputManager::FastLed::Clear();
 
-
 			DEBUG_MESSAGE("FLED Show1");
 			// villian is shown as white
 			if (Game::GameManager::GetData()->state.round >= 3)
@@ -166,7 +165,7 @@ namespace Game
 			}
 
 			DEBUG_MESSAGE("FLED Update");
-			// Device::OutputManager::FastLed::Update();
+			Device::OutputManager::FastLed::Update();
 
 			DEBUG_MESSAGE("Lcd Update");
 			Device::OutputManager::Lcd::Clear();

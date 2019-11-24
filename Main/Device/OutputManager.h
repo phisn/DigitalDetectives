@@ -10,7 +10,6 @@
 #define DEVICE_LCD_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_LCD_WIDTH, \
 	"LCD message has to be have the length of LCD width (see DEVICE_LCD_WIDTH)")
 
-
 namespace Device
 {
 	namespace OutputManager
@@ -65,7 +64,12 @@ namespace Device
 		{
 			void Clear();
 			void Show(const int pin, CRGB color);
+
 			void Update();
+			CRGB* _GetData();
 		}
+
+		// external
+		void _InitializeFastLed();
 	}
 }

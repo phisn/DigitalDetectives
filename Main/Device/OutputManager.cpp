@@ -8,7 +8,7 @@ namespace EOBJ
 
 namespace
 {
-	CRGB mapLeds[DEVICE_FASTLED_MAP_LEDCOUNT];
+	CRGB data[DEVICE_FASTLED_MAP_LEDCOUNT];
 }
 
 namespace Device
@@ -16,14 +16,13 @@ namespace Device
 	namespace OutputManager
 	{
 		void InitializeLcd();
-		void InitializeFastLed();
 
 		void Initialize()
 		{
 			DEBUG_MESSAGE("Output Init");
 
 			InitializeLcd();
-			InitializeFastLed();
+			_InitializeFastLed();
 		}
 
 		void InitializeLcd()
@@ -36,15 +35,6 @@ namespace Device
 			Lcd::_GetDisplay()->backlight();
 
 			Lcd::Clear();
-		}
-
-		void InitializeFastLed()
-		{
-			DEBUG_MESSAGE("FastLED Init");
-			
-			EOBJ::FastLED->addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED>(
-				mapLeds, DEVICE_FASTLED_MAP_LEDCOUNT
-			);
 		}
 
 		void Uninitialize()
@@ -107,26 +97,28 @@ namespace Device
 				return lcdi2c;
 			}
 		}
+
+		namespace FastLed
+		{
+			void Clear()
+			{
+				EOBJ::FastLED->clearData();
+			}
+
+			void Show(const int pin, CRGB color)
+			{
+				data[pin] = color;
+			}
+
+			void Update()
+			{
+				FastLED.show();
+			}
+
+			CRGB* _GetData()
+			{
+				return data;
+			}
+		}
 	}
-}
-
-void Device::OutputManager::FastLed::Clear()
-{
-	EOBJ::FastLED->clearData();
-}
-
-void Device::OutputManager::FastLed::Show(const int pin, CRGB color)
-{
-	if (pin - 5 < 0)
-	{
-		Serial.println("Invalid pin");
-		return;
-	}
-
-	mapLeds[pin - 5] = color;
-}
-
-void Device::OutputManager::FastLed::Update()
-{
-	EOBJ::FastLED->show();
 }
