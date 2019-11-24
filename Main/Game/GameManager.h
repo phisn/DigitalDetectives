@@ -50,7 +50,7 @@ namespace Game
 		};
 		
 		TurnResult MakeTurn(
-			const PlayerId player,
+			const PlayerId playerId,
 			const Turn turn);
 
 		FlashString GetTurnFailReason(

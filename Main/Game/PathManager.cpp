@@ -779,6 +779,6 @@ namespace Game
 	const Station& Game::PathManager::GetStationType(
 		const unsigned char stationId)
 	{
-		return stations[stationId];
+		return stations[stationId - 1];
 	}
 }

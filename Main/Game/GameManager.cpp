@@ -275,6 +275,10 @@ namespace Game
 			Station sourceStation = PathManager::GetStationType(source);
 			PathManager::FindOptionsSpecificResult result;
 
+			DEBUG_MESSAGE(source);
+			DEBUG_MESSAGE(target);
+			DEBUG_MESSAGE((int) sourceStation.type);
+
 			switch (sourceStation.type)
 			{ // fall though all
 			case Station::Underground:

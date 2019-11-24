@@ -17,17 +17,17 @@ namespace Game
 			Underground = 2,
 			Ferry = 3
 
-		} type : 6; // pad
+		} type; // pad
 
-		unsigned char isFerry : 1;
+		unsigned char isFerry;
 	};
 
 	struct Connection // 472
 	{
-		unsigned char station1 : 8;
-		unsigned char station2 : 8;
+		unsigned char station1;
+		unsigned char station2;
 
-		Station::Type type : 3;
+		Station::Type type;
 	};
 
 	namespace PathManager

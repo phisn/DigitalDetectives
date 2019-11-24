@@ -163,7 +163,7 @@ namespace Communication
 			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
 				if (interfaces[i].Get()->getPlayerId() == playerId)
 				{
-					if (!Game::Collector::RemovePlayer(playerId))
+					if (Game::Controller::GetState() == Game::GameState::Collect && !Game::Collector::RemovePlayer(playerId))
 					{
 						break; // throw common removeinterface failure
 					}
@@ -188,7 +188,6 @@ namespace Communication
 				DEBUG_MESSAGE(interfaces[i].Get()->getPlayerId());
 
 			DEBUG_MESSAGE("END HAVE");
-
 #endif
 
 			Device::FaultHandler::Handle(

@@ -17,7 +17,7 @@ namespace Communication
 	namespace Website
 	{
 		const char* RunningDetective PROGMEM =
-			R"(
+			R"__(
 <!DOCTYPE html>
 <html>
 <head>
@@ -188,10 +188,10 @@ button {
 	}
 </script>
 </html>
-)";	
+)__";
 
 		const char* RunningVillian PROGMEM =
-			R"(
+			R"__(
 <!DOCTYPE html>
 <html>
 
@@ -429,9 +429,9 @@ button {
 
 </html>
 
-			)";
+			)__";
 	}
-	
+
 	namespace
 	{
 		Game::Ticket CharacterToTicket(const char character)
@@ -472,10 +472,10 @@ button {
 				return;
 			}
 
-			request->send_P(200,WEB_RESPONSE_TYPE,
+			request->send_P(200, WEB_RESPONSE_TYPE,
 				IsPlayerDetective(playerId)
-					? Website::RunningDetective
-					: Website::RunningVillian);
+				? Website::RunningDetective
+				: Website::RunningVillian);
 		}
 
 		void HandleRunningPost(AsyncWebServerRequest* const request)
@@ -522,7 +522,7 @@ button {
 
 					return;
 				}
-				
+
 				turn.ticket = CharacterToTicket(parameter->name().charAt(1));
 
 				if (turn.ticket == Game::Ticket::_Invalid)
@@ -550,15 +550,14 @@ button {
 			}
 
 			DEBUG_MESSAGE("MAKE TURN");
-			const Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
-
+			Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
 			if (result != Game::GameManager::TurnResult::Success)
 			{
 				DEBUG_MESSAGE("FAIL");
 				DEBUG_MESSAGE(Game::GameManager::GetTurnFailReason(result));
 				DEBUG_MESSAGE(turn.doubleTicket);
 				DEBUG_MESSAGE(turn.position);
-				DEBUG_MESSAGE((int) turn.ticket);
+				DEBUG_MESSAGE((int)turn.ticket);
 
 				Device::FaultHandler::Handle(
 					{
