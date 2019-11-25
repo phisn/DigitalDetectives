@@ -27,8 +27,6 @@ namespace Game
 {
 	namespace GameManager
 	{
-		// can fail (-1)
-		int FindPlayerIndex(const PlayerId id);
 		int FindVillianIndex();
 
 		bool ValidateTurn(
@@ -119,7 +117,7 @@ namespace Game
 
 			const int playerIndex = FindPlayerIndex(playerId);
 
-			if (playerIndex == -1)
+			if (playerIndex == NULL)
 			{
 				return TurnResult::PlayerNotFound;
 			}
@@ -235,7 +233,7 @@ namespace Game
 					return i;
 				}
 
-			return -1;
+			return NULL;
 		}
 
 		int FindVillianIndex()
@@ -559,13 +557,7 @@ namespace Game
 		const Player* ReadPlayer(const PlayerId id)
 		{
 			const int index = FindPlayerIndex(id);
-
-			if (index == -1)
-			{
-				return NULL;
-			}
-
-			return ReadPlayerByIndex(index);
+			return index == NULL ? NULL : ReadPlayerByIndex(index);
 		}
 
 		const Player* ReadPlayerByIndex(const int index)

@@ -469,7 +469,14 @@ button {
 
 			if (playerId == 0)
 			{
+				request->redirect(WEB_DIR_REQPID);
 				return;
+			}
+
+			if (!InterfaceManager::ExistsInterface(playerId))
+			{
+				// shouldnt be null
+				InterfaceManager::CreateLinkedInterface<WebInterface>(playerId);
 			}
 
 			request->send_P(200, WEB_RESPONSE_TYPE,

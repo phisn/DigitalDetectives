@@ -129,7 +129,7 @@ R"(
 			{
 				WritePlayerId(
 					response, 
-					InterfaceManager::CreateInterface<WebInterfaceType>()->getPlayerId()
+					InterfaceManager::CreatePushedInterface<WebInterface>()->getPlayerId()
 				);
 			}
 

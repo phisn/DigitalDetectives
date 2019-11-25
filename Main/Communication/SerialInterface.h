@@ -8,7 +8,6 @@
 
 namespace Communication
 {
-	struct SerialInterfaceType {};
 	class SerialInterface
 		:
 		public Interface

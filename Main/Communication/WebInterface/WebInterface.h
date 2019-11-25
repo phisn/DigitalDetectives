@@ -9,7 +9,6 @@
 
 namespace Communication
 {
-	struct WebInterfaceType {};
 	class WebInterface
 		:
 		public Interface
