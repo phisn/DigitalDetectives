@@ -117,7 +117,7 @@ namespace Game
 
 			const int playerIndex = FindPlayerIndex(playerId);
 
-			if (playerIndex == NULL)
+			if (playerIndex == -1)
 			{
 				return TurnResult::PlayerNotFound;
 			}
@@ -233,7 +233,7 @@ namespace Game
 					return i;
 				}
 
-			return NULL;
+			return -1;
 		}
 
 		int FindVillianIndex()
@@ -557,7 +557,7 @@ namespace Game
 		const Player* ReadPlayer(const PlayerId id)
 		{
 			const int index = FindPlayerIndex(id);
-			return index == NULL ? NULL : ReadPlayerByIndex(index);
+			return index == -1 ? NULL : ReadPlayerByIndex(index);
 		}
 
 		const Player* ReadPlayerByIndex(const int index)

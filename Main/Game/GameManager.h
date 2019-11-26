@@ -60,7 +60,7 @@ namespace Game
 		const Player* ReadPlayer(const PlayerId id);
 		const Player* ReadPlayerByIndex(const int index);
 
-		// can fail (NULL)
+		// can fail (-1)
 		int FindPlayerIndex(const PlayerId id);
 
 		MapPosition GetLastVillianPosition();

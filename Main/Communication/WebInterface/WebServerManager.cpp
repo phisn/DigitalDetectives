@@ -175,6 +175,11 @@ namespace Communication
 				DEBUG_MESSAGE("CORRECT PID CONNECT");
 
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
+				{
+					DEBUG_MESSAGE("CHECKING");
+					DEBUG_MESSAGE(i);
+					DEBUG_MESSAGE((int) interfaces[i]);
+
 					if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
 					{
 						if (interfaces[i]->getWebSocketId() == NULL)
@@ -193,6 +198,7 @@ namespace Communication
 
 						break;
 					}
+				}
 
 				DEBUG_MESSAGE("Searching end!");
 

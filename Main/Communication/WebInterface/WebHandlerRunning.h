@@ -475,7 +475,7 @@ button {
 
 			if (!InterfaceManager::ExistsInterface(playerId))
 			{
-				// shouldnt be null
+				// normally cant be null
 				InterfaceManager::CreateLinkedInterface<WebInterface>(playerId);
 			}
 

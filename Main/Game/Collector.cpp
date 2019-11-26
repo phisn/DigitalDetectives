@@ -129,6 +129,23 @@ namespace Game
 			return false;
 		}
 
+		int FindPlayerIndex(const PlayerId playerId)
+		{
+			DEBUG_MESSAGE("FIND_PINDEX");
+			for (int i = 0; i < Extern::collectData->playerCount; ++i)
+				if (Extern::collectData->playerIds[i] == playerId)
+				{
+					DEBUG_MESSAGE("PINDEX");
+					DEBUG_MESSAGE(i);
+
+					return i;
+				}
+
+			DEBUG_MESSAGE("NO PINDEX");
+
+			return -1;
+		}
+
 		const CollectData* GetData()
 		{
 			return Extern::collectData;

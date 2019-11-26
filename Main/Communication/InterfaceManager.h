@@ -37,10 +37,10 @@ namespace Communication
 		}
 
 		template <typename InterfaceT>
-		Interface* CreateLinkedInterface(const int playerIndex)
+		Interface* CreateLinkedInterface(const Game::PlayerId playerId)
 		{
 			Interface* const interface = new InterfaceT();
-			LinkInterface(interface, playerIndex);
+			LinkInterface(interface, Game::Collector::FindPlayerIndex(playerId));
 			return interface;
 		}
 

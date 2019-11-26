@@ -89,20 +89,20 @@ namespace Communication
 		void PushInterface(Interface* const interface)
 		{
 			interfaces[Game::Collector::GetData()->playerCount] = interface;
-			InitializeInterface(interface);
+			interface->initialize(Game::Collector::CreatePlayer());
 		}
 
 		void LinkInterface(Interface* const interface, const int playerIndex)
 		{
 			interfaces[playerIndex] = interface;
-			InitializeInterface(interface);
+			interface->initialize(Game::Collector::GetData()->playerIds[playerIndex]);
 		}
 
 		void RemoveInterface(const Game::PlayerId playerId)
 		{
 			if (Game::Controller::GetState() == Game::GameState::Collect
-				? RemoveInterfaceCollect(playerId)
-				: RemoveInterfaceCommon(playerId))
+					? RemoveInterfaceCollect(playerId)
+					: RemoveInterfaceCommon(playerId))
 			{
 				return;
 			}
@@ -131,8 +131,8 @@ namespace Communication
 
 		bool RemoveInterfaceCollect(const Game::PlayerId playerId)
 		{
-			const int playerIndex = Game::GameManager::FindPlayerIndex(playerId);
-			if (playerIndex == NULL || !Game::Collector::RemovePlayer(playerId))
+			const int playerIndex = Game::Collector::FindPlayerIndex(playerId);
+			if (playerIndex == -1 || !Game::Collector::RemovePlayer(playerId))
 			{
 				return false; // throw common removeinterface failure
 			}
@@ -150,25 +150,22 @@ namespace Communication
 
 		bool RemoveInterfaceCommon(const Game::PlayerId playerId)
 		{
-			const int playerIndex = Game::GameManager::FindPlayerIndex(playerId);
+			const int playerIndex = Game::Collector::FindPlayerIndex(playerId);
 
-			if (playerIndex == NULL)
+			if (playerIndex == -1)
 			{
 				return false;
 			}
 
 			delete interfaces[playerIndex];
 			interfaces[playerIndex] = NULL;
+
+			return true;
 		}
 
 		bool ExistsInterface(const Game::PlayerId playerId)
 		{
-			return interfaces[Game::GameManager::FindPlayerIndex(playerId)] != NULL;
-		}
-
-		void InitializeInterface(Interface* const interface)
-		{
-			interface->initialize(Game::Collector::CreatePlayer());
+			return interfaces[Game::Collector::FindPlayerIndex(playerId)] != NULL;
 		}
 	}
 }

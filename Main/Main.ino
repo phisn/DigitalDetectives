@@ -1,6 +1,7 @@
 #include "Common/Common.h"
 #include "Device/DeviceManager.h"
 #include "Device/OutputManager.h"
+#include "Device/DevicePins.h"
 
 namespace EOBJ
 {
@@ -35,10 +36,10 @@ Info
   -> The first order exists in InterfaceManager. First player
 	 joined gets first place because the order does not matter.
 	 It is simply used to process player interfaces
-  -> The second order exists in the Collector. This on is used to
-	 identify the order of players in the game. It is semi random
+  -> The second order exists in the Setup / Game. This on is used to
+	 identify the order of players in the running game. It is semi random
 	 because the villian always gets a specific place and the
-	 detectives are places randomly
+	 detectives are placed randomly
 */
 
 void setup()
@@ -53,8 +54,9 @@ unsigned long _time = millis();
 
 void loop()
 {
-	if (_time + 200 < millis())
+/*	if (_time + 200 < millis())
 	{
+		
 		Serial.print("HANDLE: ");
 		Serial.println((int)xTaskGetCurrentTaskHandle());
 
@@ -64,10 +66,7 @@ void loop()
 		Serial.println(ESP.getFreeHeap());
 		Serial.print("con: ");
 		Serial.println(WiFi.softAPgetStationNum());
-	}
-
-	// do some cleanup
-	// Communication::WebServerManager::_GetSocket()->cleanupClients();
+	}*/
 
 	Device::GameManager::Process();
 }
@@ -79,6 +78,7 @@ void Device::OutputManager::_InitializeFastLed()
 	memset(Device::OutputManager::FastLed::_GetData(), 0,
 		sizeof(CRGB) * DEVICE_FASTLED_MAP_LEDCOUNT);
 
-	FastLED.addLeds<WS2812B, 19, GRB>(Device::OutputManager::FastLed::_GetData(), 199);
+	FastLED.addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED, GRB>(
+		Device::OutputManager::FastLed::_GetData(), DEVICE_FASTLED_MAP_LEDCOUNT);
 	FastLED.show();
 }

@@ -187,7 +187,7 @@ namespace Game
 			Device::OutputManager::Lcd::Clear();
 
 			return Device::OutputManager::Interact::ForceGetChoice()
-				== Device::OutputManager::Interact::Choice::Yes;
+				== Device::OutputManager::Interact::Choice::Enter;
 		}
 
 		bool FinishState()

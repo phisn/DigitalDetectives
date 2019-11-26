@@ -6,6 +6,10 @@ namespace Communication
 {
 	struct Interface
 	{
+		virtual ~Interface()
+		{
+		}
+
 		virtual void initialize(const Game::PlayerId id) = 0;
 		virtual const Game::PlayerId getPlayerId() const = 0;
 

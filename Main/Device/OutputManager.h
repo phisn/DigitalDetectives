@@ -5,10 +5,15 @@
 
 #define DEVICE_LCD_ADDRESS 0x27
 #define DEVICE_LCD_WIDTH 20
+#define DEVICE_LCD_HEIGHT 4
 #define DEVICE_FASTLED_MAP_LEDCOUNT 199
 
+#define DEVICE_SELECTION_SIZE (DEVICE_LCD_WIDTH - 3)
+
 #define DEVICE_LCD_MESSAGE(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_LCD_WIDTH, \
-	"LCD message has to be have the length of LCD width (see DEVICE_LCD_WIDTH)")
+	"LCD message has to have the length of LCD width (see DEVICE_LCD_WIDTH)")
+#define DEVICE_SELECTION(txt) FPSTR(txt); static_assert(sizeof(txt) - 1 == DEVICE_SELECTION_SIZE), \
+	"Selection has to have the length of LCD width minus 2"
 
 namespace Device
 {
@@ -27,12 +32,14 @@ namespace Device
 
 		namespace Interact
 		{
+			int Select(FlashString* const selection, const int size);
+
 			enum Choice
 			{
 				Empty	= 0b00000000,
-				Yes		= 0b00000001,
-				No		= 0b00000010,
-				Cancel	= 0b00000100
+				Left	= 0b00000001,
+				Enter	= 0b00000010,
+				Right	= 0b00000100
 			};
 
 			Choice GetChoice();
