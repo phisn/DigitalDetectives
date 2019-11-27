@@ -101,8 +101,15 @@ namespace Game
 			return false;
 		}
 
-		void Restore()
+		bool Restore()
 		{
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+			{
+				dynamicPlayer[i].state = &Extern::gameData->player[i];
+				dynamicPlayer[i].data = &SetupManager::GetData()->playerContext.data[i];
+			}
+
+			return true;
 		}
 
 		TurnResult SelectNextPlayer();

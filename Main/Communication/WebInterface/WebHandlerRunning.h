@@ -475,8 +475,16 @@ button {
 
 			if (!InterfaceManager::ExistsInterface(playerId))
 			{
-				// normally cant be null
 				InterfaceManager::CreateLinkedInterface<WebInterface>(playerId);
+			}
+			else
+			{
+				Communication::WebInterface* const interface = WebServerManager::FindWebInterface(playerId);
+
+				if (interface == NULL || interface->getWebSocketId() != NULL)
+				{
+					request->redirect(WEB_DIR_REQPID);
+				}
 			}
 
 			request->send_P(200, WEB_RESPONSE_TYPE,
@@ -497,6 +505,7 @@ button {
 
 			if (playerId == 0)
 			{
+				request->redirect(WEB_DIR_REQPID);
 				return;
 			}
 

@@ -31,7 +31,7 @@ namespace Game
 
 		void Create();
 		bool Process();
-		void Restore();
+		bool Restore();
 
 		enum class TurnResult
 		{

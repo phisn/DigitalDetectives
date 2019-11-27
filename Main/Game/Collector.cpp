@@ -7,7 +7,6 @@ namespace Extern
 
 namespace
 {
-	bool isRestore = false;
 	bool needsUpdate = true;
 
 	// interface has the responsibility to ensure playercount
@@ -20,14 +19,7 @@ namespace Game
 	{
 		void Create()
 		{
-			if (isRestore)
-			{
-
-			}
-			else
-			{
-				Extern::collectData->playerCount = 0;
-			}
+			Extern::collectData->playerCount = 0;
 		}
 
 		bool Process()
@@ -41,9 +33,10 @@ namespace Game
 			return false;
 		}
 
-		void Restore()
+		bool Restore()
 		{
-			isRestore = true;
+			// TODO: Implement check
+			return true;
 		}
 
 		PlayerId CreatePlayer()

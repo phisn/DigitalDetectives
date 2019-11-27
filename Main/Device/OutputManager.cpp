@@ -9,6 +9,8 @@ namespace EOBJ
 namespace
 {
 	CRGB data[DEVICE_FASTLED_MAP_LEDCOUNT];
+
+	FlashString common_yesno = DEVICE_LCD_MESSAGE(" Yes             NO ");
 }
 
 namespace Device
@@ -50,6 +52,11 @@ namespace Device
 
 		namespace Interact
 		{
+			FlashString GetCommonYesNo()
+			{
+				return common_yesno;
+			}
+
 			int Select(FlashString* const selection, const int size)
 			{
 				int index = 0, cursor = 0;
@@ -66,8 +73,11 @@ namespace Device
 					if (needsUpdate)
 					{
 						needsUpdate = false;
+
 						for (int i = 0; i < 4; ++i)
 						{
+							lcdBuffer[DEVICE_LCD_WIDTH - 3] = ' ';
+
 							if (cursor == i)
 							{
 								lcdBuffer[0] = '>';
@@ -238,6 +248,10 @@ namespace Device
 					DEVICE_LCD_ADDRESS,
 					DEVICE_LCD_WIDTH, 4);
 				return lcdi2c;
+			}
+			FlashString GetCommonYesNo()
+			{
+				return FlashString();
 			}
 		}
 

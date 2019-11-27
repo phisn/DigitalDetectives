@@ -32,6 +32,8 @@ namespace Device
 
 		namespace Interact
 		{
+			FlashString GetCommonYesNo();
+
 			int Select(FlashString* const selection, const int size);
 
 			enum Choice
@@ -39,7 +41,12 @@ namespace Device
 				Empty	= 0b00000000,
 				Left	= 0b00000001,
 				Enter	= 0b00000010,
-				Right	= 0b00000100
+				Right	= 0b00000100,
+
+				Yes = Left,
+				No = Right,
+				Up = Left,
+				Down = Right
 			};
 
 			Choice GetChoice();

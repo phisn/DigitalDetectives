@@ -15,14 +15,19 @@ namespace
 {
 	Game::GameSector sector;
 
-	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("Old session found,  ");
-	FlashString lcd_ask_restore_2 = DEVICE_LCD_MESSAGE("restore?            ");
+	FlashString lcd_ask_restore_0 = DEVICE_LCD_MESSAGE("Old session found,  ");
+	FlashString lcd_ask_restore_1 = DEVICE_LCD_MESSAGE("restore?            ");
+
+	FlashString lcd_ask_restore_ensure_0 = DEVICE_LCD_MESSAGE("Are you sure you do ");
+	FlashString lcd_ask_restore_ensure_1 = DEVICE_LCD_MESSAGE("not want to restore ");
+	FlashString lcd_ask_restore_ensure_2 = DEVICE_LCD_MESSAGE("the old session?    ");
 
 	FlashString fault_sector_corrupted = DEVICE_FAULT_MESSAGE("Game Sector is corrupted         ");
 	FlashString fault_invalid_state = DEVICE_FAULT_MESSAGE("Game was left in an invalid state ");
 	FlashString fault_invalid_running_state = DEVICE_FAULT_MESSAGE("Got invalid running state        ");
 	FlashString fault_invalid_finish = DEVICE_FAULT_MESSAGE("Got invalid finish request       ");
 
+	bool restored = false;
 	bool requestFinish = false;
 }
 
@@ -57,8 +62,11 @@ namespace Game
 			case GameState::Running:
 				DEBUG_MESSAGE("Found old session, asking for restore");
 
-				// getchoice not implemented
-				// RestoreSession();
+				if (AskRestore())
+				{
+					RestoreSession();
+					return;
+				}
 
 				break;
 			default:
@@ -69,6 +77,7 @@ namespace Game
 					fault_invalid_state
 				}, false);
 
+				break;
 			case GameState::Shutdown:
 				DEBUG_MESSAGE("Found shutdown, continuing normally");
 
@@ -165,29 +174,46 @@ namespace Game
 
 		void RestoreSession()
 		{
-			if (AskRestore())
-			{
-				Collector::Restore();
-				SetupManager::Restore();
-				GameManager::Restore();
+			DEBUG_MESSAGE("Restoring session");
 
-				DEBUG_MESSAGE("Restore accepted");
-			}
-			else
-			{
-				DEBUG_MESSAGE("Restore canceled");
-			}
+			Collector::Restore();
+			SetupManager::Restore();
+			GameManager::Restore();
+
+			BoardManager::OnStateChanged(GameState::Running);
+
+			restored = true;
+			DEBUG_MESSAGE("Session restored");
 		}
 
 		bool AskRestore()
 		{
-			Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_1);
-			Device::OutputManager::Lcd::DisplayLineType(2, lcd_ask_restore_2);
-
 			Device::OutputManager::Lcd::Clear();
 
-			return Device::OutputManager::Interact::ForceGetChoice()
-				== Device::OutputManager::Interact::Choice::Enter;
+			Device::OutputManager::Lcd::DisplayLineType(0, lcd_ask_restore_0);
+			Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_1);
+			Device::OutputManager::Lcd::DisplayLineType(3, Device::OutputManager::Interact::GetCommonYesNo());
+			
+			if (Device::OutputManager::Interact::ForceGetChoice() 
+				== Device::OutputManager::Interact::Choice::Yes)
+			{
+				return true;
+			}
+			else
+			{
+				// no refresh needed
+				Device::OutputManager::Lcd::DisplayLineType(0, lcd_ask_restore_ensure_0);
+				Device::OutputManager::Lcd::DisplayLineType(1, lcd_ask_restore_ensure_1);
+				Device::OutputManager::Lcd::DisplayLineType(2, lcd_ask_restore_ensure_2);
+
+				Device::OutputManager::Lcd::DisplayLineType(3, Device::OutputManager::Interact::GetCommonYesNo());
+
+				// important delay to prevent accidental press
+				delay(1000);
+
+				return Device::OutputManager::Interact::ForceGetChoice()
+					== Device::OutputManager::Interact::Choice::No;
+			}
 		}
 
 		bool FinishState()
@@ -251,6 +277,11 @@ namespace Game
 		{
 			DEBUG_MESSAGE("Finish requested");
 			requestFinish = true;
+		}
+
+		bool IsRestored()
+		{
+			return restored;
 		}
 	}
 }

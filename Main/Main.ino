@@ -50,24 +50,8 @@ void setup()
 	Device::GameManager::Initialize();
 }
 
-unsigned long _time = millis();
-
 void loop()
 {
-/*	if (_time + 200 < millis())
-	{
-		
-		Serial.print("HANDLE: ");
-		Serial.println((int)xTaskGetCurrentTaskHandle());
-
-		_time = millis();
-
-		Serial.print("free heap: ");
-		Serial.println(ESP.getFreeHeap());
-		Serial.print("con: ");
-		Serial.println(WiFi.softAPgetStationNum());
-	}*/
-
 	Device::GameManager::Process();
 }
 
