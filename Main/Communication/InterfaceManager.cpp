@@ -77,6 +77,11 @@ namespace Communication
 					break;
 				}
 			}
+
+			if (Game::Controller::GetState() == Game::GameState::Running)
+			{
+				LcdAccess::Process();
+			}
 		}
 
 		// not all interfaces are collectable 

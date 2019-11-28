@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Communication/Interface.h"
+#include "../Communication/LcdAccess.h"
 #include "../Game/GameController.h"
 
 namespace Communication

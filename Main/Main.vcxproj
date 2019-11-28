@@ -122,6 +122,7 @@
     <ClInclude Include="Common\EspInclude.h" />
     <ClInclude Include="Communication\Interface.h" />
     <ClInclude Include="Communication\InterfaceManager.h" />
+    <ClInclude Include="Communication\LcdAccess.h" />
     <ClInclude Include="Communication\SerialInterface.h" />
     <ClInclude Include="Communication\WebInterface\WebHandlerCollect.h" />
     <ClInclude Include="Communication\WebInterface\WebHandlerRequestPid.h" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communication\InterfaceManager.cpp" />
+    <ClCompile Include="Communication\LcdAccess.cpp" />
     <ClCompile Include="Communication\SerialInterface.cpp" />
     <ClCompile Include="Communication\WebInterface\WebInterface.cpp" />
     <ClCompile Include="Communication\WebInterface\WebServerManager.cpp" />

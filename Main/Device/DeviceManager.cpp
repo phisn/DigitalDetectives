@@ -57,6 +57,7 @@ namespace Device
 		{
 			Communication::InterfaceManager::Initialize();
 			Communication::WebServerManager::Initialize();
+			Communication::LcdAccess::Initialize();
 		}
 
 		void Process()

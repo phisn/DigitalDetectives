@@ -33,6 +33,7 @@ namespace Device
 		namespace Interact
 		{
 			FlashString GetCommonYesNo();
+			FlashString GetCommonPressExit();
 
 			int Select(FlashString* const selection, const int size);
 

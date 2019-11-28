@@ -11,6 +11,7 @@ namespace
 	CRGB data[DEVICE_FASTLED_MAP_LEDCOUNT];
 
 	FlashString common_yesno = DEVICE_LCD_MESSAGE(" Yes             NO ");
+	FlashString common_pressexit = DEVICE_LCD_MESSAGE("Enter to continue   ");
 }
 
 namespace Device
@@ -52,9 +53,19 @@ namespace Device
 
 		namespace Interact
 		{
+			void LazyMemoryCopy(
+				char* const destination,
+				const char* const source,
+				const int length);
+
 			FlashString GetCommonYesNo()
 			{
 				return common_yesno;
+			}
+
+			FlashString GetCommonPressExit()
+			{
+				return common_pressexit;
 			}
 
 			int Select(FlashString* const selection, const int size)
@@ -76,16 +87,19 @@ namespace Device
 
 						for (int i = 0; i < 4; ++i)
 						{
-							lcdBuffer[DEVICE_LCD_WIDTH - 3] = ' ';
+							for (int i = 0; i < DEVICE_LCD_WIDTH; ++i)
+							{
+								lcdBuffer[i] = ' ';
+							}
 
 							if (cursor == i)
 							{
 								lcdBuffer[0] = '>';
-								memcpy_P(lcdBuffer + 1, (const char*)(selection[index + i]), DEVICE_SELECTION_SIZE);
+								LazyMemoryCopy(lcdBuffer + 1, (char*)selection[index + i], DEVICE_SELECTION_SIZE);
 							}
 							else
 							{
-								memcpy_P(lcdBuffer, (const char*)(selection[index + i]), DEVICE_SELECTION_SIZE);
+								LazyMemoryCopy(lcdBuffer, (char*)selection[index + i], DEVICE_SELECTION_SIZE);
 							}
 
 							if (size > 4)
@@ -173,6 +187,22 @@ namespace Device
 				}
 
 				return index;
+			}
+
+			void LazyMemoryCopy(
+				char* const destination,
+				const char* const source,
+				const int length)
+			{
+				for (int i = 0; i < length; ++i)
+					if (source[i])
+					{
+						destination[i] = source[i];
+					}
+					else
+					{
+						break;
+					}
 			}
 
 			Choice GetChoice()

@@ -194,6 +194,7 @@ namespace Communication
 
 							WebSocketData::RawData data{ WebSocketData::Type::InvalidPid };
 							client->binary((const char*) &data, sizeof(data));
+							client->close();
 						}
 
 						break;

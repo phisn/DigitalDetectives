@@ -98,8 +98,26 @@ button {
 	socket.onmessage = function (event) {
 		var d = new DataView(event.data);
     
-		var type					= d.getUint8(0), 
-			playerID				= d.getUint8(2), 
+		var type					= d.getUint8(0);
+
+		switch (type)
+		{
+		case 3:
+			break;
+		
+		default:
+			alert("invalid type");
+			location.reload();
+ 	    case 4:
+			alert('ERROR 4');
+			window.location = "/";
+			return;
+		case 5:
+			window.location = "/requestpid";		
+			return;
+		}
+			
+		var playerID				= d.getUint8(2), 
 			playerType				= d.getUint8(3), 
 			playerCount				= d.getUint8(1), 
 			position				= d.getUint8(4), 			

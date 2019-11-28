@@ -150,6 +150,9 @@
     <ClInclude Include="Device\ExecutionManager.h">
       <Filter>Device</Filter>
     </ClInclude>
+    <ClInclude Include="Communication\LcdAccess.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -238,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="Device\ExecutionManager.cpp">
       <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\LcdAccess.cpp">
+      <Filter>Communication</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
