@@ -12,12 +12,13 @@ namespace Communication
 			{
 				Invalid,
 				
-				Collect = 1,
-				Setup = 2,
-				Running = 3,
+				Collect,
+				Setup,
+				Running,
 
-				Redirect = 4,
-				Error = 5
+				Redirect,
+				InvalidPid,
+				Error
 
 			} type;
 		};
@@ -104,9 +105,15 @@ namespace Communication
 			uint8_t turnRed[4];
 		}; // max is 46
 
-		struct RedirectData
+		struct RawData
 		{
-			Type type{ Type::Redirect };
+			RawData(const int type)
+				:
+				type(type)
+			{
+			}
+
+			int type;
 		};
 
 		// ensure size to prevent breaking js

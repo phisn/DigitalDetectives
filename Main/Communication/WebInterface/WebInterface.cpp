@@ -10,6 +10,8 @@ namespace Communication
 
 	void WebInterface::initialize(const Game::PlayerId id)
 	{
+		lastState = Game::Controller::GetState();
+
 		playerId = id;
 		unregisterWebSocket();
 
@@ -52,8 +54,8 @@ namespace Communication
 
 			lastState = currentState;
 
-			WebSocketData::RedirectData data;
-			sendData((const char*)&data, sizeof(data));
+			WebSocketData::RawData data{ WebSocketData::Type::Redirect };
+			sendData((const char*) &data, sizeof(data));
 		}
 
 		switch (lastState)

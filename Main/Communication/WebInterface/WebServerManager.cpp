@@ -190,9 +190,10 @@ namespace Communication
 						}
 						else
 						{
-							DEBUG_MESSAGE(F("PID already in usage, closing websocket"));
+							DEBUG_MESSAGE(F("PID already in usage, redirecting websocket"));
 
-							client->close(WebCode::WebSocketPidInUsage);
+							WebSocketData::RawData data{ WebSocketData::Type::InvalidPid };
+							client->binary((const char*) &data, sizeof(data));
 						}
 
 						break;

@@ -337,6 +337,10 @@ button {
         alert('ERROR 4');
         window.location = "/";
         break;
+      case 5:
+		window.location = "/requestpid";		
+
+		break;
     }
   }
 
@@ -459,6 +463,8 @@ button {
 	{
 		void HandleRunningRequest(AsyncWebServerRequest* const request)
 		{
+			DEBUG_MESSAGE("GET running");
+
 			if (Game::Controller::GetState() != Game::GameState::Running)
 			{
 				request->redirect(WEB_DIR_COMMON);
@@ -476,15 +482,6 @@ button {
 			if (!InterfaceManager::ExistsInterface(playerId))
 			{
 				InterfaceManager::CreateLinkedInterface<WebInterface>(playerId);
-			}
-			else
-			{
-				Communication::WebInterface* const interface = WebServerManager::FindWebInterface(playerId);
-
-				if (interface == NULL || interface->getWebSocketId() != NULL)
-				{
-					request->redirect(WEB_DIR_REQPID);
-				}
 			}
 
 			request->send_P(200, WEB_RESPONSE_TYPE,
@@ -509,6 +506,7 @@ button {
 				return;
 			}
 
+			request->redirect(WEB_DIR_RUNNING);
 			AsyncWebParameter* const parameter = request->getParam(0);
 
 			Game::Turn turn;
@@ -520,10 +518,6 @@ button {
 
 			if (turn.ticket == Game::Ticket::_Invalid)
 			{
-				// E1
-				DEBUG_MESSAGE("E1");
-				request->redirect(WEB_DIR_RUNNING);
-
 				return;
 			}
 
@@ -533,9 +527,6 @@ button {
 
 				if (parameter->name().length() != 2)
 				{
-					DEBUG_MESSAGE("E4");
-					request->redirect(WEB_DIR_RUNNING);
-
 					return;
 				}
 
@@ -543,9 +534,6 @@ button {
 
 				if (turn.ticket == Game::Ticket::_Invalid)
 				{
-					DEBUG_MESSAGE("E3");
-					request->redirect(WEB_DIR_RUNNING);
-
 					return;
 				}
 			}
@@ -558,23 +546,12 @@ button {
 
 			if (turn.position < 1 || turn.position > 199)
 			{
-				// E2
-				DEBUG_MESSAGE("E2");
-				request->redirect(WEB_DIR_RUNNING);
-
 				return;
 			}
 
-			DEBUG_MESSAGE("MAKE TURN");
 			Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
 			if (result != Game::GameManager::TurnResult::Success)
 			{
-				DEBUG_MESSAGE("FAIL");
-				DEBUG_MESSAGE(Game::GameManager::GetTurnFailReason(result));
-				DEBUG_MESSAGE(turn.doubleTicket);
-				DEBUG_MESSAGE(turn.position);
-				DEBUG_MESSAGE((int)turn.ticket);
-
 				Device::FaultHandler::Handle(
 					{
 						Device::FaultModule::WebInterface,
@@ -583,12 +560,6 @@ button {
 					},
 					false);
 			}
-			else
-			{
-				DEBUG_MESSAGE("SUCCESS");
-			}
-
-			request->redirect(WEB_DIR_RUNNING);
 
 			/*
 				Serial.println("Args:");
