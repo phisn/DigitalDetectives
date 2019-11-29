@@ -1,8 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Main"
+    "\\Main",
+    "\\Main\\Common",
+    "\\Main\\Communication",
+    "\\Main\\Communication\\WebInterface",
+    "\\Main\\Communication\\WebInterface\\Website",
+    "\\Main\\Device",
+    "\\Main\\Game",
+    "\\Main\\Game\\Data",
+    "\\Main\\Web"
   ],
-  "SelectedNode": "\\Main\\Main.vcxproj",
+  "SelectedNode": "\\Main\\Communication\\WebInterface\\WebHandlerCollect.h",
   "PreviewInSolutionExplorer": false
 }
