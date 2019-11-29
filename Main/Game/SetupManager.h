@@ -17,7 +17,7 @@ namespace Game
 
 		void Create();
 		bool Process();
-		void Restore();
+		bool Restore();
 
 		void AdjustCommonDetectiveTickets(const CommonTickets);
 		void AdjustCommonVillianTickets(const CommonTickets);

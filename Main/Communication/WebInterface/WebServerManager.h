@@ -9,7 +9,6 @@
 #define WEB_DIR_REQPID ("/requestpid")
 
 #define WEB_PARAM_PLAYERID ("playerid")
-
 #define WEB_RESPONSE_TYPE ("text/html")
 
 #define WEB_MAX_CONN 10
@@ -26,7 +25,8 @@ namespace Communication
 
 			WebSocketUnregister,
 			WebSocketInvalidParam,
-			WebSocketInvalidPid
+			WebSocketInvalidPid,
+			WebSocketPidInUsage
 		};
 	};
 
@@ -40,6 +40,8 @@ namespace Communication
 
 		void RegisterWebInterface(WebInterface* const interface);
 		void UnregisterWebInterface(WebInterface* const interface);
+
+		WebInterface* FindWebInterface(const Game::PlayerId playerId);
 
 		void SendWebSocketData(
 			WebsocketId wid,

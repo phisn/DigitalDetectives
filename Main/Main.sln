@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Main", "Main.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Script", "Script", "{61413925-C9AA-4965-89F4-289D5FF36956}"
-	ProjectSection(SolutionItems) = preProject
-		CommonConnectScript.js = CommonConnectScript.js
-	EndProjectSection
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "DependencyValidation1", "..\DependencyValidation1\DependencyValidation1.modelproj", "{9A2F0339-4029-4CCA-88ED-01344C6A83F2}"
 EndProject

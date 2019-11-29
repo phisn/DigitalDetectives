@@ -88,8 +88,10 @@ namespace Game
 			return false;
 		}
 
-		void Restore()
+		bool Restore()
 		{
+			// TODO: Implement check
+			return true;
 		}
 
 		void AdjustCommonDetectiveTickets(const CommonTickets ticketCount)

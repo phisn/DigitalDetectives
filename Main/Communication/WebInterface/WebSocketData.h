@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Game/Data/PlayerData.h"
+
 namespace Communication
 {
 	namespace WebSocketData
@@ -10,11 +12,13 @@ namespace Communication
 			{
 				Invalid,
 				
-				Collect = 1,
-				Setup = 2,
-				Running = 3,
+				Collect,
+				Setup,
+				Running,
 
-				Redirect = 4,
+				Redirect,
+				InvalidPid,
+				Error
 
 			} type;
 		};
@@ -34,12 +38,14 @@ namespace Communication
 		{
 			Type type{ Type::Running }; // 1 byte
 
+			int8_t playerCount;
+			Game::PlayerId currentPlayer;
+
 			/*	Villian		= 0,
 				Detective	= 1
 			*/
 			Game::PlayerData::Type playerType; // 1 byte
 
-			int8_t playerCount;
 			uint8_t position;
 
 			int8_t yellowTicketCount;
@@ -99,8 +105,19 @@ namespace Communication
 			uint8_t turnRed[4];
 		}; // max is 46
 
+		struct RawData
+		{
+			RawData(const int type)
+				:
+				type(type)
+			{
+			}
+
+			int type;
+		};
+
 		// ensure size to prevent breaking js
-		static_assert(sizeof(RunningData) == 46, "Invalid RunningData size");
+		static_assert(sizeof(RunningData) == 47, "Invalid RunningData size");
 		static_assert(sizeof(CollectData) == 2, "Invalid CollectData size");
 	}
 }

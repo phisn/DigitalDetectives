@@ -2,11 +2,12 @@
 
 // internal
 #include <Arduino.h>
-#include <Esp.h>
 #include <EEPROM.h>
+#include <Esp.h>
+// #include <sys/lock>
 
 // wifi
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 
 // lcd
@@ -55,8 +56,5 @@ namespace Device
 #endif
 
 // ws2812b
-// #define FASTLED_ALLOW_INTERRUPTS 0
-#define FASTLED_INTERNAL
-#define FASTLED_ESP8266_RAW_PIN_ORDER
-
-#include <FastLED.h>
+#define FASTLED_ALLOW_INTERRUPTS 0
+#include "FastLED.h"

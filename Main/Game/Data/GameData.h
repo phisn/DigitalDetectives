@@ -6,7 +6,7 @@ namespace Game
 {
 	struct GameData
 	{
-		PlayerState player[6];
+		PlayerState player[COMMON_MAX_PLAYERCOUNT];
 
 		struct GameState
 		{

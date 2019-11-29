@@ -23,8 +23,8 @@ namespace Game
 	// created in gamem
 	struct PlayerState
 	{
-		MapPosition path[24]; // : 8
-		MapPosition position; // : 8
+		MapPosition path[24];
+		MapPosition position;
 
 		CommonTickets ticket;
 
@@ -48,7 +48,7 @@ namespace Game
 		{
 			Villian,
 			Detective
-		} type : 1;
+		} type;
 
 		Color color;
 	};

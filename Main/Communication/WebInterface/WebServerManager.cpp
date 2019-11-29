@@ -1,6 +1,8 @@
 #include "WebServerManager.h"
 
 #include "../../Communication/WebInterface/WebHandlerCollect.h"
+#include "../../Communication/WebInterface/WebHandlerRequestPid.h"
+#include "../../Communication/WebInterface/WebHandlerRunning.h"
 
 namespace
 {
@@ -24,7 +26,7 @@ namespace Communication
 		}
 
 		void HandleCommonRequest(AsyncWebServerRequest* const request);
-		
+
 		void HandleWebSocketEvent(
 			AsyncWebSocket* const socket,
 			AsyncWebSocketClient* const client,
@@ -39,15 +41,17 @@ namespace Communication
 			AsyncWebSocket* const socket = _GetSocket();
 
 			server->on(WEB_DIR_COMMON, HTTP_GET, HandleCommonRequest);
+
 			server->on(WEB_DIR_COLLECT, HTTP_GET, WebHandler::HandleCollectRequest);
+			server->on(WEB_DIR_RUNNING, HTTP_GET, WebHandler::HandleRunningRequest);
+			server->on(WEB_DIR_REQPID, HTTP_GET, WebHandler::HandleReqPidRequest);
 
-			server->onNotFound([](AsyncWebServerRequest* const request) 
-			{
-			//	DEBUG_MESSAGE("Request not found");
-			//	DEBUG_MESSAGE(request->url());
+			server->on(WEB_DIR_RUNNING, HTTP_POST, WebHandler::HandleRunningPost);
 
-				request->redirect(WEB_DIR_COMMON);
-			});
+			server->onNotFound([](AsyncWebServerRequest* const request)
+				{
+					request->redirect(WEB_DIR_COMMON);
+				});
 
 			socket->onEvent(HandleWebSocketEvent);
 			server->addHandler(socket);
@@ -147,7 +151,7 @@ namespace Communication
 			{
 				DEBUG_MESSAGE("CONNECT");
 
-				AsyncWebParameter* const pidParam = ((AsyncWebServerRequest*) arg)->getParam("pid");
+				AsyncWebParameter* const pidParam = ((AsyncWebServerRequest*)arg)->getParam("pid");
 
 				if (pidParam == NULL)
 				{
@@ -170,26 +174,43 @@ namespace Communication
 				DEBUG_MESSAGE("CORRECT PID CONNECT");
 
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
+				{
+					DEBUG_MESSAGE("CHECKING");
+					DEBUG_MESSAGE(i);
+					DEBUG_MESSAGE((int)interfaces[i]);
+
 					if (interfaces[i] && interfaces[i]->getPlayerId() == pid)
 					{
-						DEBUG_MESSAGE("Found interface -> register");
+						if (interfaces[i]->getWebSocketId() == NULL)
+						{
+							DEBUG_MESSAGE(F("Found interface -> register"));
 
-						interfaces[i]->registerWebSocket(client->id());
-						interfaces[i]->update();
+							interfaces[i]->registerWebSocket(client->id());
+							interfaces[i]->update();
+						}
+						else
+						{
+							DEBUG_MESSAGE(F("PID already in usage, redirecting websocket"));
+
+							WebSocketData::RawData data{ WebSocketData::Type::InvalidPid };
+							client->binary((const char*) &data, sizeof(data));
+							client->close();
+						}
 
 						break;
 					}
+				}
+
 				DEBUG_MESSAGE("Searching end!");
 
 			}
-				break;
+			break;
 			case WS_EVT_DISCONNECT:
 				// arg: NULL
 				// data: NULL
 				// length: 0
 
 				DEBUG_MESSAGE("DISCONNECT");
-
 
 				for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
 					if (interfaces[i] && interfaces[i]->getWebSocketId() == client->id())
@@ -221,14 +242,6 @@ namespace Communication
 				// data: data (uint8_t*)
 				// length: datalen
 
-				// reserved for later use. maybe to
-				// ensure connection to a user, but
-				// with current webinterface system
-				// there is no need for this (websocks
-				// are always bound to webinterfaces
-				// and webints do kick inactive 
-				// websockets)
-
 				break;
 			}
 		}
@@ -259,6 +272,17 @@ namespace Communication
 					interfaces[i] = NULL;
 					return;
 				}
+		}
+
+		WebInterface* FindWebInterface(const Game::PlayerId playerId)
+		{
+			for (int i = 0; i < COMMON_MAX_PLAYERCOUNT; ++i)
+				if (interfaces[i] && interfaces[i]->getPlayerId() == playerId)
+				{
+					return interfaces[i];
+				}
+
+			return NULL;
 		}
 
 		void SendWebSocketData(

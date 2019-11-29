@@ -45,6 +45,10 @@ namespace Game
 		void UpdateRunning();
 		void UpdateSetup();
 
+		void UpdateCollectLcd();
+		void UpdateRunningLcd();
+		void UpdateSetupLcd();
+
 		void Process()
 		{
 			const unsigned long time = millis();
@@ -94,6 +98,9 @@ namespace Game
 
 		void Update()
 		{
+			DEBUG_MESSAGE("Update boardmanager");
+			DEBUG_MESSAGE((int) Controller::GetState());
+
 			switch (Controller::GetState())
 			{
 			case GameState::Collect:
@@ -113,30 +120,15 @@ namespace Game
 
 		void UpdateCollect()
 		{
-			Device::OutputManager::Lcd::Clear();
-			Device::OutputManager::Lcd::DisplayLineType(
-				0,
-				message_collect_0
-			);
-
-			char lcdBuffer[DEVICE_LCD_WIDTH];
-
-			sprintf_P(
-				lcdBuffer, 
-				(char*) message_collect_1,
-				Collector::GetData()->playerCount
-			);
-
-			Device::OutputManager::Lcd::DisplayLineType(
-				1,
-				lcdBuffer
-			);
+			UpdateCollectLcd();
 		}
 
 		void UpdateRunning()
 		{
+			DEBUG_MESSAGE("FLED Clear");
 			Device::OutputManager::FastLed::Clear();
 
+			DEBUG_MESSAGE("FLED Show1");
 			// villian is shown as white
 			if (Game::GameManager::GetData()->state.round >= 3)
 			{
@@ -147,6 +139,7 @@ namespace Game
 					CRGB::White);
 			}
 
+			DEBUG_MESSAGE("FLED Show2");
 			// skip villian (= 0)
 			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
@@ -158,8 +151,41 @@ namespace Game
 				);
 			}
 
+			DEBUG_MESSAGE("FLED Update");
 			Device::OutputManager::FastLed::Update();
 
+			UpdateRunningLcd();
+		}
+
+		void UpdateSetup()
+		{
+		}
+
+		void UpdateCollectLcd()
+		{
+			Device::OutputManager::Lcd::Clear();
+			Device::OutputManager::Lcd::DisplayLineType(
+				0,
+				message_collect_0
+			);
+
+			char lcdBuffer[DEVICE_LCD_WIDTH];
+
+			sprintf_P(
+				lcdBuffer,
+				(char*)message_collect_1,
+				Collector::GetData()->playerCount
+			);
+
+			Device::OutputManager::Lcd::DisplayLineType(
+				1,
+				lcdBuffer
+			);
+		}
+
+		void UpdateRunningLcd()
+		{
+			DEBUG_MESSAGE("Lcd Update");
 			Device::OutputManager::Lcd::Clear();
 			Device::OutputManager::Lcd::DisplayLineType(
 				0,
@@ -170,7 +196,7 @@ namespace Game
 
 			sprintf_P(
 				lcdBuffer,
-				(char*) message_running_1,
+				(char*)message_running_1,
 				Game::GameManager::GetData()->state.round + 1
 			);
 
@@ -181,7 +207,7 @@ namespace Game
 
 			sprintf_P(
 				lcdBuffer,
-				(char*) message_running_2,
+				(char*)message_running_2,
 				Game::GameManager::GetData()->state.activePlayer
 			);
 
@@ -191,7 +217,7 @@ namespace Game
 			);
 		}
 
-		void UpdateSetup()
+		void UpdateSetupLcd()
 		{
 		}
 
@@ -211,6 +237,21 @@ namespace Game
 				break;
 			default:
 				memset(&dynamicStateData, 0, sizeof(dynamicStateData));
+
+				break;
+			}
+		}
+		
+		void ReloadLcd()
+		{
+			switch (Controller::GetState())
+			{
+			case GameState::Collect:
+				UpdateCollectLcd();
+
+				break;
+			case GameState::Running:
+				UpdateRunningLcd();
 
 				break;
 			}

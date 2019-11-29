@@ -31,5 +31,6 @@ namespace Game
 		bool Process();
 
 		void RequestFinish(); // think about finish (state)
+		bool IsRestored();
 	}
 }
