@@ -78,10 +78,7 @@ namespace Communication
 				}
 			}
 
-			if (Game::Controller::GetState() == Game::GameState::Running)
-			{
-				LcdAccess::Process();
-			}
+			LcdAccess::Process();
 		}
 
 		// not all interfaces are collectable 

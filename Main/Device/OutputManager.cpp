@@ -248,6 +248,12 @@ namespace Device
 
 				return choice;
 			}
+
+			void AwaitEnter()
+			{
+				delay(500);
+				while (ForceGetChoice() != Choice::Enter);
+			}
 		}
 
 		namespace Lcd

@@ -52,6 +52,8 @@ namespace Device
 
 			Choice GetChoice();
 			Choice ForceGetChoice();
+
+			void AwaitEnter();
 		}
 
 		namespace Lcd
