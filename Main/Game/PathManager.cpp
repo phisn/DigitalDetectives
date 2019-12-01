@@ -3,7 +3,7 @@
 namespace Game
 {
 #pragma region Data
-	Station stations[199] PROGMEM =
+	Station stations[] PROGMEM =
 	{
 		Station {Station::Type::Underground, 0},
 		Station {Station::Type::Taxi, 0},
@@ -206,7 +206,7 @@ namespace Game
 		Station {Station::Type::Bus, 0}
 	};
 
-	Connection connections[472] PROGMEM =
+	Connection connections[] PROGMEM =
 	{
 		Connection { 1, 8, Station::Type::Taxi },
 		Connection { 1, 9, Station::Type::Taxi },
@@ -518,8 +518,6 @@ namespace Game
 		Connection { 124, 138, Station::Type::Taxi },
 		Connection { 124, 153, Station::Type::Bus },
 		Connection { 124, 130, Station::Type::Taxi },
-		Connection { 124, 138, Station::Type::Taxi },
-		Connection { 124, 153, Station::Type::Bus },
 		Connection { 125, 131, Station::Type::Taxi },
 		Connection { 126, 127, Station::Type::Taxi },
 		Connection { 126, 140, Station::Type::Taxi },
@@ -527,9 +525,17 @@ namespace Game
 		Connection { 127, 134, Station::Type::Taxi },
 		Connection { 127, 133, Station::Type::Bus },
 		Connection { 128, 188, Station::Type::Taxi },
+		Connection { 128, 172, Station::Type::Taxi },
+		Connection { 128, 160, Station::Type::Taxi },
+		Connection { 128, 143, Station::Type::Taxi },
+		Connection { 128, 142, Station::Type::Taxi },
 		Connection { 128, 185, Station::Type::Underground },
+		Connection { 128, 140, Station::Type::Underground },
 		Connection { 128, 199, Station::Type::Bus },
+		Connection { 128, 135, Station::Type::Bus },
 		Connection { 128, 187, Station::Type::Bus },
+		Connection { 128, 142, Station::Type::Bus },
+		Connection { 128, 161, Station::Type::Bus },
 		Connection { 129, 135, Station::Type::Taxi },
 		Connection { 129, 142, Station::Type::Taxi },
 		Connection { 129, 143, Station::Type::Taxi },
@@ -545,8 +551,6 @@ namespace Game
 		Connection { 135, 136, Station::Type::Taxi },
 		Connection { 135, 143, Station::Type::Taxi },
 		Connection { 135, 161, Station::Type::Taxi },
-		Connection { 135, 128, Station::Type::Bus },
-		Connection { 135, 161, Station::Type::Bus },
 		Connection { 136, 162, Station::Type::Taxi },
 		Connection { 137, 147, Station::Type::Taxi },
 		Connection { 138, 150, Station::Type::Taxi },
@@ -559,15 +563,11 @@ namespace Game
 		Connection { 140, 154, Station::Type::Bus },
 		Connection { 140, 156, Station::Type::Bus },
 		Connection { 140, 153, Station::Type::Underground },
-		Connection { 140, 128, Station::Type::Underground },
 		Connection { 141, 142, Station::Type::Taxi },
 		Connection { 141, 158, Station::Type::Taxi },
 		Connection { 142, 143, Station::Type::Taxi },
-		Connection { 142, 128, Station::Type::Taxi },
 		Connection { 142, 158, Station::Type::Taxi }, // dosent work 
 		Connection { 142, 157, Station::Type::Bus },
-		Connection { 142, 128, Station::Type::Bus },
-		Connection { 143, 128, Station::Type::Taxi },
 		Connection { 143, 160, Station::Type::Taxi },
 		Connection { 144, 145, Station::Type::Taxi },
 		Connection { 144, 177, Station::Type::Taxi },
@@ -613,9 +613,7 @@ namespace Game
 		Connection { 159, 198, Station::Type::Taxi },
 		Connection { 160, 161, Station::Type::Taxi },
 		Connection { 160, 173, Station::Type::Taxi },
-		Connection { 160, 128, Station::Type::Taxi },
 		Connection { 161, 174, Station::Type::Taxi },
-		Connection { 161, 128, Station::Type::Bus },
 		Connection { 161, 199, Station::Type::Bus },
 		Connection { 162, 175, Station::Type::Taxi },
 		Connection { 163, 177, Station::Type::Taxi },
@@ -639,7 +637,6 @@ namespace Game
 		Connection { 171, 199, Station::Type::Taxi },
 		Connection { 172, 187, Station::Type::Taxi },
 		Connection { 173, 174, Station::Type::Taxi },
-		Connection { 172, 128, Station::Type::Taxi },
 		Connection { 173, 188, Station::Type::Taxi },
 		Connection { 174, 175, Station::Type::Taxi },
 		Connection { 176, 177, Station::Type::Taxi },
@@ -663,11 +660,9 @@ namespace Game
 		Connection { 184, 197, Station::Type::Taxi },
 		Connection { 185, 186, Station::Type::Taxi },
 		Connection { 185, 187, Station::Type::Bus },
-		Connection { 185, 199, Station::Type::Bus },
 		Connection { 186, 198, Station::Type::Taxi },
 		Connection { 187, 188, Station::Type::Taxi },
 		Connection { 187, 198, Station::Type::Taxi },
-		Connection { 187, 199, Station::Type::Bus },
 		Connection { 188, 199, Station::Type::Taxi },
 		Connection { 189, 190, Station::Type::Taxi },
 		Connection { 190, 191, Station::Type::Taxi },
@@ -681,6 +676,12 @@ namespace Game
 		Connection { 196, 197, Station::Type::Taxi },
 		Connection { 198, 199, Station::Type::Taxi }
 	};
+
+	static_assert(sizeof(connections) / sizeof(*connections) == 467,
+		"Connections size has changed, adjustment to pathfinder algorithm needed");
+	static_assert(sizeof(stations) / sizeof(*stations) == 199,
+		"Stations size has changed, adjustment to pathfinder algorithm needed");
+
 
 	MapPosition starts[GAME_START_POSITION_COUNT] PROGMEM =
 	{
@@ -721,7 +722,10 @@ namespace Game
 	{
 		FindOptionsSpecificResult result{ };
 
-		for (int i = 0; i < 472; ++i)
+		// speedup possible: only search until stationId,
+		// because stations always only contain higher connections
+		// -> higher connection can not have stationId
+		for (int i = 0; i < 467; ++i)
 			if (connections[i].type == type)
 			{
 				const bool isStation1 = connections[i].station1 == stationId;
@@ -775,6 +779,6 @@ namespace Game
 	const Station& Game::PathManager::GetStationType(
 		const unsigned char stationId)
 	{
-		return stations[stationId];
+		return stations[stationId - 1];
 	}
 }

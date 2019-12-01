@@ -19,7 +19,7 @@ void Communication::SerialInterface::UpdateCollect()
 	{
 	case Join:
 		Serial.println("Creating interface");
-		::Communication::InterfaceManager::CreateInterface<SerialInterfaceType>();
+		::Communication::InterfaceManager::CreatePushedInterface<SerialInterface>();
 
 		break;
 	case Start:

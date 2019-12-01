@@ -27,8 +27,6 @@ namespace Game
 {
 	namespace GameManager
 	{
-		// can fail (-1)
-		int FindPlayerIndex(const PlayerId id);
 		int FindVillianIndex();
 
 		bool ValidateTurn(
@@ -37,6 +35,10 @@ namespace Game
 		bool ValidateTurnBlack(
 			const MapPosition source,
 			const MapPosition target);
+		bool ValidateTurnSpecific(
+			const MapPosition source,
+			const MapPosition target,
+			const Station::Type station);
 		bool RemovePlayerTicket(
 			const PlayerData::Type type,
 			PlayerState* const player, 
@@ -88,9 +90,6 @@ namespace Game
 
 		bool Process()
 		{
-			Serial.print("cgm");
-			Serial.println(needsUpdate);
-
 			if (needsUpdate)
 			{
 				needsUpdate = false;
@@ -102,8 +101,15 @@ namespace Game
 			return false;
 		}
 
-		void Restore()
+		bool Restore()
 		{
+			for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+			{
+				dynamicPlayer[i].state = &Extern::gameData->player[i];
+				dynamicPlayer[i].data = &SetupManager::GetData()->playerContext.data[i];
+			}
+
+			return true;
 		}
 
 		TurnResult SelectNextPlayer();
@@ -130,6 +136,12 @@ namespace Game
 			{
 				return TurnResult::TicketNotAvailable;
 			}
+
+			DEBUG_MESSAGE("LOG");
+			DEBUG_MESSAGE(playerState->position);
+			DEBUG_MESSAGE(turn.doubleTicket);
+			DEBUG_MESSAGE(turn.position);
+			DEBUG_MESSAGE((int) turn.ticket);
 
 			if (!ValidateTurn(playerState->position, turn))
 			{
@@ -246,22 +258,19 @@ namespace Game
 			const MapPosition source,
 			const Turn turn)
 		{
+			DEBUG_MESSAGE("IN");
 			if (turn.ticket == Ticket::Black)
 			{
+				DEBUG_MESSAGE("BLACK");
 				return ValidateTurnBlack(source, turn.position);
 			}
-
-			PathManager::FindOptionsSpecificResult result = PathManager::FindOptionsSpecific(
-				source,
-				(Station::Type) turn.ticket);
-
-			for (int i = 0; i < result.stationCount; ++i)
-				if (result.station[i] == turn.position)
-				{
-					return true;
-				}
-
-			return false;
+			else
+			{
+				return ValidateTurnSpecific(
+					source,
+					turn.position,
+					(Station::Type) turn.ticket);
+			}
 		}
 
 		bool ValidateTurnBlack(
@@ -269,41 +278,77 @@ namespace Game
 			const MapPosition target)
 		{
 			Station sourceStation = PathManager::GetStationType(source);
-			PathManager::FindOptionsResult result = PathManager::FindOptions(source);
+			PathManager::FindOptionsSpecificResult result;
+
+			DEBUG_MESSAGE(source);
+			DEBUG_MESSAGE(target);
+			DEBUG_MESSAGE((int) sourceStation.type);
 
 			switch (sourceStation.type)
 			{ // fall though all
 			case Station::Underground:
-				for (int i = 0; result.undergroundStations[i]; ++i)
-					if (result.undergroundStations[i] == target)
-					{
-						return true;
-					}
-
+				DEBUG_MESSAGE("UG");
+				if (ValidateTurnSpecific(
+						source,
+						target,
+						Station::Type::Underground))
+				{
+					DEBUG_MESSAGE("SCUG");
+					return true;
+				}
 
 			case Station::Bus:
-				for (int i = 0; result.busStations[i]; ++i)
-					if (result.busStations[i] == target)
-					{
-						return true;
-					}
+				DEBUG_MESSAGE("BS");
+				if (ValidateTurnSpecific(
+						source,
+						target,
+						Station::Type::Bus))
+				{
+					DEBUG_MESSAGE("SCBS");
+					return true;
+				}
 
 			case Station::Taxi:
-				for (int i = 0; result.taxiStations[i]; ++i)
-					if (result.taxiStations[i] == target)
-					{
-						return true;
-					}
-
-				if (sourceStation.isFerry && ( // optimized forloop
-						result.ferryStations[0] == target ||
-						result.ferryStations[1] == target))
+				DEBUG_MESSAGE("TX");
+				if (ValidateTurnSpecific(
+						source,
+						target,
+						Station::Type::Taxi))
 				{
+					DEBUG_MESSAGE("SCTX");
+					return true;
+				}
+
+				if (ValidateTurnSpecific(
+						source,
+						target,
+						Station::Type::Ferry))
+				{
+					DEBUG_MESSAGE("SCFR");
 					return true;
 				}
 
 				break;
 			}
+			DEBUG_MESSAGE("FAIL");
+
+			return false;
+		}
+
+		bool ValidateTurnSpecific(
+			const MapPosition source,
+			const MapPosition target,
+			const Station::Type station)
+		{
+			const PathManager::FindOptionsSpecificResult result = PathManager::FindOptionsSpecific(
+				source,
+				station);
+
+			for (int i = 0; i < result.stationCount; ++i)
+				if (result.station[i] == target)
+				{
+					return true;
+				}
 
 			return false;
 		}
@@ -519,13 +564,7 @@ namespace Game
 		const Player* ReadPlayer(const PlayerId id)
 		{
 			const int index = FindPlayerIndex(id);
-
-			if (index == -1)
-			{
-				return NULL;
-			}
-
-			return ReadPlayerByIndex(index);
+			return index == -1 ? NULL : ReadPlayerByIndex(index);
 		}
 
 		const Player* ReadPlayerByIndex(const int index)

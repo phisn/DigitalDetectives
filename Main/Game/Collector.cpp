@@ -7,7 +7,6 @@ namespace Extern
 
 namespace
 {
-	bool isRestore = false;
 	bool needsUpdate = true;
 
 	// interface has the responsibility to ensure playercount
@@ -20,14 +19,7 @@ namespace Game
 	{
 		void Create()
 		{
-			if (isRestore)
-			{
-
-			}
-			else
-			{
-				Extern::collectData->playerCount = 0;
-			}
+			Extern::collectData->playerCount = 0;
 		}
 
 		bool Process()
@@ -41,9 +33,10 @@ namespace Game
 			return false;
 		}
 
-		void Restore()
+		bool Restore()
 		{
-			isRestore = true;
+			// TODO: Implement check
+			return true;
 		}
 
 		PlayerId CreatePlayer()
@@ -127,6 +120,23 @@ namespace Game
 				}
 
 			return false;
+		}
+
+		int FindPlayerIndex(const PlayerId playerId)
+		{
+			DEBUG_MESSAGE("FIND_PINDEX");
+			for (int i = 0; i < Extern::collectData->playerCount; ++i)
+				if (Extern::collectData->playerIds[i] == playerId)
+				{
+					DEBUG_MESSAGE("PINDEX");
+					DEBUG_MESSAGE(i);
+
+					return i;
+				}
+
+			DEBUG_MESSAGE("NO PINDEX");
+
+			return -1;
 		}
 
 		const CollectData* GetData()

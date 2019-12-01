@@ -36,6 +36,8 @@ namespace Device
 			FailureHandler::Initialize();
 			MemoryManager::Initialize();
 			OutputManager::Initialize();
+			ExecutionManager::Initialize();
+			
 
 			DEBUG_MESSAGE("Device Init (high)");
 
@@ -55,6 +57,7 @@ namespace Device
 		{
 			Communication::InterfaceManager::Initialize();
 			Communication::WebServerManager::Initialize();
+			Communication::LcdAccess::Initialize();
 		}
 
 		void Process()

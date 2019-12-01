@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <Esp.h>
+// #include <sys/lock>
 
 // wifi
 #include <WiFi.h>
@@ -55,7 +56,5 @@ namespace Device
 #endif
 
 // ws2812b
-// #define FASTLED_ALLOW_INTERRUPTS 0
-#define FASTLED_INTERNAL
-
-#include <FastLED.h>
+#define FASTLED_ALLOW_INTERRUPTS 0
+#include "FastLED.h"

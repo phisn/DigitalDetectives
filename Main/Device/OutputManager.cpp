@@ -8,7 +8,10 @@ namespace EOBJ
 
 namespace
 {
-	CRGB mapLeds[DEVICE_FASTLED_MAP_LEDCOUNT];
+	CRGB data[DEVICE_FASTLED_MAP_LEDCOUNT];
+
+	FlashString common_yesno = DEVICE_LCD_MESSAGE(" Yes             NO ");
+	FlashString common_pressexit = DEVICE_LCD_MESSAGE("Enter to continue   ");
 }
 
 namespace Device
@@ -16,14 +19,20 @@ namespace Device
 	namespace OutputManager
 	{
 		void InitializeLcd();
-		void InitializeFastLed();
+		void InitializeInteract()
+		{
+			pinMode(DEVICE_PIN_BUTTON_LEFT, INPUT_PULLDOWN);
+			pinMode(DEVICE_PIN_BUTTON_ENTER, INPUT_PULLDOWN);
+			pinMode(DEVICE_PIN_BUTTON_RIGHT, INPUT_PULLDOWN);
+		}
 
 		void Initialize()
 		{
 			DEBUG_MESSAGE("Output Init");
 
 			InitializeLcd();
-			InitializeFastLed();
+			InitializeInteract();
+			_InitializeFastLed();
 		}
 
 		void InitializeLcd()
@@ -38,23 +47,184 @@ namespace Device
 			Lcd::Clear();
 		}
 
-		void InitializeFastLed()
-		{
-			DEBUG_MESSAGE("FastLED Init");
-			
-			EOBJ::FastLED->addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED>(
-				mapLeds, DEVICE_FASTLED_MAP_LEDCOUNT
-			);
-		}
-
 		void Uninitialize()
 		{
 		}
 
 		namespace Interact
 		{
+			void LazyMemoryCopy(
+				char* const destination,
+				const char* const source,
+				const int length);
+
+			FlashString GetCommonYesNo()
+			{
+				return common_yesno;
+			}
+
+			FlashString GetCommonPressExit()
+			{
+				return common_pressexit;
+			}
+
+			int Select(FlashString* const selection, const int size)
+			{
+				int index = 0, cursor = 0;
+				char lcdBuffer[DEVICE_LCD_WIDTH + 1] = { };
+				
+				// init buffer
+				memset(lcdBuffer, ' ', DEVICE_LCD_WIDTH);
+				lcdBuffer[DEVICE_LCD_WIDTH] = '\0';
+
+				bool needsUpdate = true;
+
+				while (true)
+				{
+					if (needsUpdate)
+					{
+						needsUpdate = false;
+
+						for (int i = 0; i < 4; ++i)
+						{
+							for (int i = 0; i < DEVICE_LCD_WIDTH; ++i)
+							{
+								lcdBuffer[i] = ' ';
+							}
+
+							if (cursor == i)
+							{
+								lcdBuffer[0] = '>';
+								LazyMemoryCopy(lcdBuffer + 1, (char*)selection[index + i], DEVICE_SELECTION_SIZE);
+							}
+							else
+							{
+								LazyMemoryCopy(lcdBuffer, (char*)selection[index + i], DEVICE_SELECTION_SIZE);
+							}
+
+							if (size > 4)
+							{
+								switch (i)
+								{
+								case 0:
+									if (index > 0)
+									{
+										lcdBuffer[DEVICE_LCD_WIDTH - 1] = '^';
+									}
+									else
+									{
+										lcdBuffer[DEVICE_LCD_WIDTH - 1] = '-';
+									}
+
+									break;
+								case 3:
+									if (index < size - 4)
+									{
+										lcdBuffer[DEVICE_LCD_WIDTH - 1] = 'v';
+									}
+									else
+									{
+										lcdBuffer[DEVICE_LCD_WIDTH - 1] = '-';
+									}
+
+									break;
+								default:
+									lcdBuffer[DEVICE_LCD_WIDTH - 1] = '|';
+
+									break;
+								}
+							}
+
+							Lcd::DisplayLineType(i, lcdBuffer);
+						}
+
+						delay(300);
+					}
+
+					delay(50);
+					
+					const Choice choice = ForceGetChoice();
+
+					switch (choice)
+					{
+					case Left:
+						if (cursor > 0)
+						{
+							--cursor;
+
+							needsUpdate = true;
+						}
+						else if (index > 0)
+						{
+							--index;
+
+							needsUpdate = true;
+						}
+
+						break;
+					case Enter:
+						return index + cursor;
+
+					case Right:
+						if (index + cursor < size - 1)
+						{
+							if (cursor < DEVICE_LCD_HEIGHT - 1)
+							{
+								++cursor;
+							}
+							else
+							{
+								++index;
+							}
+
+							needsUpdate = true;
+						}
+
+						break;
+					default:
+						break;
+					}
+				}
+
+				return index;
+			}
+
+			void LazyMemoryCopy(
+				char* const destination,
+				const char* const source,
+				const int length)
+			{
+				for (int i = 0; i < length; ++i)
+					if (source[i])
+					{
+						destination[i] = source[i];
+					}
+					else
+					{
+						break;
+					}
+			}
+
 			Choice GetChoice()
 			{
+				Choice result = Empty;
+
+				if (digitalRead(DEVICE_PIN_BUTTON_LEFT) == HIGH)
+				{
+					(int&) result |= Left;
+				}
+
+				if (digitalRead(DEVICE_PIN_BUTTON_ENTER) == HIGH)
+				{
+					(int&) result |= Enter;
+				}
+
+				if (digitalRead(DEVICE_PIN_BUTTON_RIGHT) == HIGH)
+				{
+					(int&) result |= Right;
+				}
+
+				return result;
 			}
 
 			Choice ForceGetChoice()
@@ -65,15 +235,24 @@ namespace Device
 				{
 					choice = GetChoice();
 
-					if (choice != Choice::Empty)
+					if (choice != Choice::Empty 
+						&& (choice == Left ||
+							choice == Right ||
+							choice == Enter))
 					{
 						break;
 					}
 
-					delay(500);
+					delay(50);
 				}
 
 				return choice;
+			}
+
+			void AwaitEnter()
+			{
+				delay(500);
+				while (ForceGetChoice() != Choice::Enter);
 			}
 		}
 
@@ -106,27 +285,33 @@ namespace Device
 					DEVICE_LCD_WIDTH, 4);
 				return lcdi2c;
 			}
+			FlashString GetCommonYesNo()
+			{
+				return FlashString();
+			}
+		}
+
+		namespace FastLed
+		{
+			void Clear()
+			{
+				EOBJ::FastLED->clearData();
+			}
+
+			void Show(const int pin, CRGB color)
+			{
+				data[pin] = color;
+			}
+
+			void Update()
+			{
+				FastLED.show();
+			}
+
+			CRGB* _GetData()
+			{
+				return data;
+			}
 		}
 	}
-}
-
-void Device::OutputManager::FastLed::Clear()
-{
-	EOBJ::FastLED->clearData();
-}
-
-void Device::OutputManager::FastLed::Show(const int pin, CRGB color)
-{
-	if (pin - 5 < 0)
-	{
-		Serial.println("Invalid pin");
-		return;
-	}
-
-	mapLeds[pin - 5] = color;
-}
-
-void Device::OutputManager::FastLed::Update()
-{
-	EOBJ::FastLED->show();
 }

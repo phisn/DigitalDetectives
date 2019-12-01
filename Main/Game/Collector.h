@@ -21,12 +21,15 @@ namespace Game
 
 		void Create();
 		bool Process();
-		void Restore();
+		bool Restore();
 
 		PlayerId CreatePlayer();
 
 		bool RemovePlayer(const PlayerId playerId);
 		bool ExistsPlayer(const PlayerId playerId);
+
+		// can fail (-1)
+		int FindPlayerIndex(const PlayerId id);
 		
 		bool Finish();
 	}

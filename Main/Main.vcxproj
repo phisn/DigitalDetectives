@@ -122,6 +122,7 @@
     <ClInclude Include="Common\EspInclude.h" />
     <ClInclude Include="Communication\Interface.h" />
     <ClInclude Include="Communication\InterfaceManager.h" />
+    <ClInclude Include="Communication\LcdAccess.h" />
     <ClInclude Include="Communication\SerialInterface.h" />
     <ClInclude Include="Communication\WebInterface\WebHandlerCollect.h" />
     <ClInclude Include="Communication\WebInterface\WebHandlerRequestPid.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Communication\WebInterface\WebSocketData.h" />
     <ClInclude Include="Device\DeviceManager.h" />
     <ClInclude Include="Device\DevicePins.h" />
+    <ClInclude Include="Device\ExecutionManager.h" />
     <ClInclude Include="Device\FailureHandler.h" />
     <ClInclude Include="Device\FaultHandler.h" />
     <ClInclude Include="Device\MapManager.h" />
@@ -168,10 +170,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communication\InterfaceManager.cpp" />
+    <ClCompile Include="Communication\LcdAccess.cpp" />
     <ClCompile Include="Communication\SerialInterface.cpp" />
     <ClCompile Include="Communication\WebInterface\WebInterface.cpp" />
     <ClCompile Include="Communication\WebInterface\WebServerManager.cpp" />
     <ClCompile Include="Device\DeviceManager.cpp" />
+    <ClCompile Include="Device\ExecutionManager.cpp" />
     <ClCompile Include="Device\FailureHandler.cpp" />
     <ClCompile Include="Device\FaultHandler.cpp" />
     <ClCompile Include="Device\MapManager.cpp" />

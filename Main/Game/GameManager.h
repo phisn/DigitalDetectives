@@ -31,7 +31,7 @@ namespace Game
 
 		void Create();
 		bool Process();
-		void Restore();
+		bool Restore();
 
 		enum class TurnResult
 		{
@@ -50,7 +50,7 @@ namespace Game
 		};
 		
 		TurnResult MakeTurn(
-			const PlayerId player,
+			const PlayerId playerId,
 			const Turn turn);
 
 		FlashString GetTurnFailReason(
@@ -59,6 +59,9 @@ namespace Game
 		// avoid multiple calls!
 		const Player* ReadPlayer(const PlayerId id);
 		const Player* ReadPlayerByIndex(const int index);
+
+		// can fail (-1)
+		int FindPlayerIndex(const PlayerId id);
 
 		MapPosition GetLastVillianPosition();
 	}

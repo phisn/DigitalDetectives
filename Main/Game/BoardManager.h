@@ -13,5 +13,6 @@ namespace Game
 		void Update();
 
 		void OnStateChanged(const Game::GameState newState);
+		void ReloadLcd();
 	}
 }
