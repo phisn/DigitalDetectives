@@ -5,12 +5,11 @@
     "\\Main\\Common",
     "\\Main\\Communication",
     "\\Main\\Communication\\WebInterface",
-    "\\Main\\Communication\\WebInterface\\Website",
     "\\Main\\Device",
     "\\Main\\Game",
     "\\Main\\Game\\Data",
     "\\Main\\Web"
   ],
-  "SelectedNode": "\\Main\\Web\\collecting_phase.html",
+  "SelectedNode": "\\Main\\Communication\\WebInterface\\WebSocketData.h",
   "PreviewInSolutionExplorer": false
 }
