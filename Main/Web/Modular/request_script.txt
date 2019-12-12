@@ -1,0 +1,1 @@
+<script language="javascript"> function setCookie(){var pidHex=document.getElementById('pid').value; document.cookie="pid=" + parseInt(pidHex, 16); window.location="/";}</script>

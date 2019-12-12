@@ -1,0 +1,9 @@
+<body>
+  <div class="container">
+    <div id="playerdata"></div>
+    <div id="doubleticket"></div>
+    <form class="taxi" id="taxi" action="" method="post"> </form>
+    <form class="bus" id="bus" action="" method="post"> </form>
+    <form class="underground" id="underground" action="" method="post"> </form>
+  </div>
+</body>

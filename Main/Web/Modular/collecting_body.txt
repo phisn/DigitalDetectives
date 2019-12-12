@@ -1,0 +1,1 @@
+ <body> <div class="container"> <p>Waiting for other players...</p><p>Currently <b>2</b> Online</p></div></body>

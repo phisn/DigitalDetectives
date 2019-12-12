@@ -1,0 +1,1 @@
+<script language="javascript"> var pidParts=document.cookie.split('='); var b='NULL'; if(pidParts[0]==='pid'){b=pidParts[1];}document.getElementById('pid').innerHTML=b;</script>
