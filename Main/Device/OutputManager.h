@@ -7,6 +7,7 @@
 #define DEVICE_LCD_WIDTH 20
 #define DEVICE_LCD_HEIGHT 4
 #define DEVICE_FASTLED_MAP_LEDCOUNT 199
+#define DEVICE_FASTLED_PATH_LEDCOUNT 24
 
 #define DEVICE_SELECTION_SIZE (DEVICE_LCD_WIDTH - 3)
 
@@ -77,7 +78,16 @@ namespace Device
 			void Clear();
 		}
 
-		namespace FastLed
+		namespace PlayerMapLed
+		{
+			void Clear();
+			void Show(const int pin, CRGB color);
+
+			void Update();
+			CRGB* _GetData();
+		}
+
+		namespace VillianPathLed
 		{
 			void Clear();
 			void Show(const int pin, CRGB color);

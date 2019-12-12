@@ -5,10 +5,10 @@
 
 namespace
 {
-	// collecting
 	FlashString selection_common_back = FPSTR("Back ---         ");
 	FlashString selection_common_close = FPSTR("Close ---        ");
 
+	// collecting
 	struct SelectionCollectingGeneral
 	{
 		enum
@@ -34,6 +34,37 @@ namespace
 	FlashString message_startgame_1 = DEVICE_LCD_MESSAGE("At least 4          ");
 	FlashString message_startgame_2 = DEVICE_LCD_MESSAGE("players needed      ");
 	
+	// setup
+	struct SelectionSetupGeneral
+	{
+		enum
+		{
+			Close,
+			StartGame,
+			Players,
+			Abort
+		};
+	};
+
+	FlashString selection_collecting_general[] =
+	{
+		selection_common_close,
+		FPSTR("Start Game       "),
+		FPSTR("Players          "),
+		FPSTR("Abort            ")
+	};
+
+
+	struct SelectionSetupSpecificPlayer
+	{
+		enum
+		{
+			Close,
+			SetColor,
+			SetVillian
+		};
+	};
+
 	// running
 	struct SelectionRunningGeneral
 	{
@@ -43,8 +74,8 @@ namespace
 			Settings,
 			Players,
 			Restart,
-			Resave,
 			Shutdown,
+			Resave,
 			PrintSector
 		};
 	};
@@ -95,6 +126,16 @@ namespace Communication
 
 			void PlayerSelect();
 			void PlayerSpecific(const Game::PlayerId playerId);
+		}
+
+		namespace MenuSetup
+		{
+			void General();
+
+			void StartGame();
+			void Restart();
+
+			void PlayerSpecific();
 		}
 
 		namespace MenuRunning

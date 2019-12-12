@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Common/Common.h"
+#include "../../Game/Data/TicketData.h"
 
 namespace Game
 {
@@ -20,4 +21,5 @@ namespace Game
 
 	FlashString ColorToFlash(const Color color);
 	CRGB ColorToCRGB(const Color color);
+	Game::Color TicketToColor(const Game::Ticket ticket);
 }

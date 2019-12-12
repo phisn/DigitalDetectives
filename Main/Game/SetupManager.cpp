@@ -1,6 +1,4 @@
 #include "SetupManager.h"
-
-// TODO remove (debug)
 #include "../Game/GameController.h"
 
 namespace Extern
@@ -11,12 +9,15 @@ namespace Extern
 namespace
 {
 	bool needsUpdate = true;
+	Game::PlayerId colorPreferences[COMMON_MAX_PLAYERCOUNT] = { };
 }
 
 namespace Game
 {
 	namespace SetupManager
 	{
+		int FindPlayerIndex(const PlayerId player);
+
 		void CreateTicketCount();
 		void CreatePlayerContext();
 
@@ -25,12 +26,7 @@ namespace Game
 			DEBUG_MESSAGE("SetupManager Create");
 
 			CreateTicketCount();
-
-			// playercontext is first created
-			// at request finish, to take player
-			// perferences into account
-
-			// CreatePlayerContext();
+			CreatePlayerContext();
 		}
 
 		void CreateTicketCount()
@@ -82,8 +78,8 @@ namespace Game
 		bool Process()
 		{
 			// TODO: change late, currently in debug
-			DEBUG_MESSAGE("Setup auto request finish");
-			Game::Controller::RequestFinish();
+			// DEBUG_MESSAGE("Setup auto request finish");
+			// Game::Controller::RequestFinish();
 
 			return false;
 		}
@@ -110,6 +106,73 @@ namespace Game
 		{
 			Extern::setupData->settings.beginSpecialVillian = ticketCount;
 			needsUpdate = true;
+		}
+
+		namespace Preference
+		{
+			void SetVillian(const PlayerId player)
+			{
+				const int index = FindPlayerIndex(player);
+
+				if (index != -1)
+				{
+					const PlayerId temp = Extern::setupData->playerContext.data[0].player;
+					Extern::setupData->playerContext.data[0].player = Extern::setupData->playerContext.data[index].player;
+					Extern::setupData->playerContext.data[index].player = temp;
+				}
+				else
+				{
+					// ...
+				}
+			}
+
+			void SetPlayerColor(
+				const PlayerId player,
+				const Color color)
+			{
+				const int sourceIndex = FindPlayerIndex(player);
+				const PlayerId targetPlayer = GetColorPreference(color);
+
+				if (sourceIndex == -1)
+				{
+					// ...
+				}
+
+				if (targetPlayer == NULL)
+				{
+					Extern::setupData->playerContext.data[sourceIndex].color = color;
+				}
+				else
+				{
+					const int targetIndex = FindPlayerIndex(player);
+
+					const PlayerId temp = Extern::setupData->playerContext.data[targetIndex].player;
+					Extern::setupData->playerContext.data[targetIndex].player = Extern::setupData->playerContext.data[sourceIndex].player;
+					Extern::setupData->playerContext.data[sourceIndex].player = temp;
+				}
+			}
+
+			PlayerId GetColorPreference(const Color color)
+			{
+				for (int i = 0; i < Game::Collector::GetData()->playerCount; ++i)
+					if (Extern::setupData->playerContext.data[i].color == color)
+					{
+						return Extern::setupData->playerContext.data[i].player;
+					}
+
+				return NULL;
+			}
+		}
+
+		int FindPlayerIndex(const PlayerId player)
+		{
+			for (int i = 0; i < Collector::GetData()->playerCount; ++i)
+				if (Extern::setupData->playerContext.data[i].player == player)
+				{
+					return i;
+				}
+
+			return -1;
 		}
 
 		const Game::SetupData* GetData()

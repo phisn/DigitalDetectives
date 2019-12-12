@@ -126,13 +126,13 @@ namespace Game
 		void UpdateRunning()
 		{
 			DEBUG_MESSAGE("FLED Clear");
-			Device::OutputManager::FastLed::Clear();
-
+			Device::OutputManager::PlayerMapLed::Clear();
+			
 			DEBUG_MESSAGE("FLED Show1");
 			// villian is shown as white
 			if (Game::GameManager::GetData()->state.round >= 3)
 			{
-				Device::OutputManager::FastLed::Show(
+				Device::OutputManager::PlayerMapLed::Show(
 					Device::MapManager::Translate(
 						Game::GameManager::GetLastVillianPosition()
 					),
@@ -143,7 +143,7 @@ namespace Game
 			// skip villian (= 0)
 			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
-				Device::OutputManager::FastLed::Show(
+				Device::OutputManager::PlayerMapLed::Show(
 					Device::MapManager::Translate(
 						GameManager::GetData()->player[i].position
 					),
@@ -151,8 +151,21 @@ namespace Game
 				);
 			}
 
+			
+
+			DEBUG_MESSAGE("FLED Show3");
+			for (int i = 0; i < Game::GameManager::GetData()->state.round + Game::GameManager::GetData()->state.activePlayerIndex != 0 ? 1 : 0; ++i)
+			{
+				Device::OutputManager::VillianPathLed::Show(
+					i,
+					ColorToCRGB(TicketToColor(
+						Game::GameManager::GetData()->state.villianTicketUse[i]
+					))
+				);
+			}
+
 			DEBUG_MESSAGE("FLED Update");
-			Device::OutputManager::FastLed::Update();
+			Device::OutputManager::PlayerMapLed::Update();
 
 			UpdateRunningLcd();
 		}

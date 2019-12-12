@@ -137,12 +137,6 @@ namespace Game
 				return TurnResult::TicketNotAvailable;
 			}
 
-			DEBUG_MESSAGE("LOG");
-			DEBUG_MESSAGE(playerState->position);
-			DEBUG_MESSAGE(turn.doubleTicket);
-			DEBUG_MESSAGE(turn.position);
-			DEBUG_MESSAGE((int) turn.ticket);
-
 			if (!ValidateTurn(playerState->position, turn))
 			{
 				return TurnResult::InvalidTurn;
@@ -172,7 +166,6 @@ namespace Game
 			
 			// needs update, data changed
 			needsUpdate = true;
-			DEBUG_MESSAGE("NEEDS UPDATE SET");
 
 			if (playerData->type == PlayerData::Type::Detective)
 			{
@@ -258,10 +251,8 @@ namespace Game
 			const MapPosition source,
 			const Turn turn)
 		{
-			DEBUG_MESSAGE("IN");
 			if (turn.ticket == Ticket::Black)
 			{
-				DEBUG_MESSAGE("BLACK");
 				return ValidateTurnBlack(source, turn.position);
 			}
 			else
@@ -280,42 +271,32 @@ namespace Game
 			Station sourceStation = PathManager::GetStationType(source);
 			PathManager::FindOptionsSpecificResult result;
 
-			DEBUG_MESSAGE(source);
-			DEBUG_MESSAGE(target);
-			DEBUG_MESSAGE((int) sourceStation.type);
-
 			switch (sourceStation.type)
 			{ // fall though all
 			case Station::Underground:
-				DEBUG_MESSAGE("UG");
 				if (ValidateTurnSpecific(
 						source,
 						target,
 						Station::Type::Underground))
 				{
-					DEBUG_MESSAGE("SCUG");
 					return true;
 				}
 
 			case Station::Bus:
-				DEBUG_MESSAGE("BS");
 				if (ValidateTurnSpecific(
 						source,
 						target,
 						Station::Type::Bus))
 				{
-					DEBUG_MESSAGE("SCBS");
 					return true;
 				}
 
 			case Station::Taxi:
-				DEBUG_MESSAGE("TX");
 				if (ValidateTurnSpecific(
 						source,
 						target,
 						Station::Type::Taxi))
 				{
-					DEBUG_MESSAGE("SCTX");
 					return true;
 				}
 
@@ -324,14 +305,12 @@ namespace Game
 						target,
 						Station::Type::Ferry))
 				{
-					DEBUG_MESSAGE("SCFR");
 					return true;
 				}
 
 				break;
 			}
-			DEBUG_MESSAGE("FAIL");
-
+			
 			return false;
 		}
 
