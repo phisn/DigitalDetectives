@@ -153,6 +153,12 @@
     <ClInclude Include="Communication\LcdAccess.h">
       <Filter>Communication</Filter>
     </ClInclude>
+    <ClInclude Include="Communication\BotInterface.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\WebsiteConstructor.h">
+      <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -244,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="Communication\LcdAccess.cpp">
       <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\BotInterface.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Communication\WebInterface\WebsiteConstructor.cpp">
+      <Filter>Communication\WebInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

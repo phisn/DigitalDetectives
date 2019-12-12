@@ -23,6 +23,15 @@ namespace Game
 		void AdjustCommonVillianTickets(const CommonTickets);
 		void AdjustSpecialVillianTickets(const VillianTickets);
 
+		namespace Preference
+		{
+			void SetVillian(const PlayerId player);
+			void SetPlayerColor(
+				const PlayerId player,
+				const Color color);
+			PlayerId GetColorPreference(const Color color);
+		}
+
 		bool Finish();
 	}
 }

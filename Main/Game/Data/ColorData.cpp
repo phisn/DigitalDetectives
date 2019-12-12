@@ -40,7 +40,7 @@ CRGB Game::ColorToCRGB(const Color color)
 	switch (color)
 	{
 	case Color::Black:
-		return CRGB::Black;
+		return CRGB::White;
 
 	case Color::Red:
 		return CRGB::Red;
@@ -56,5 +56,24 @@ CRGB Game::ColorToCRGB(const Color color)
 
 	case Color::Yellow:
 		return CRGB::Yellow;
+	}
+}
+
+Game::Color Game::TicketToColor(const Game::Ticket ticket)
+{
+	switch (ticket)
+	{
+	case Game::Ticket::Yellow:
+		return Game::Color::Yellow;
+
+	case Game::Ticket::Green:
+		return Game::Color::Green;
+
+	case Game::Ticket::Red:
+		return Game::Color::Red;
+
+	case Game::Ticket::Black:
+		return Game::Color::Black;
+
 	}
 }

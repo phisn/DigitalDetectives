@@ -173,17 +173,18 @@ namespace Device
 
 		void* AllocateDynamic(const unsigned long length)
 		{
-			/*if (ESP.getMaxFreeBlockSize() < length)
+			void* const memory = malloc(length);
+
+			if (memory == NULL)
 			{
 				DEBUG_MESSAGE("HEAP_OVERFLOW");
 
 				FailureHandler::Handle(
 					FailureModule::MemoryManager,
-					FID::HEAP_OVERFLOW
-				);
-			}*/
+					FID::HEAP_OVERFLOW);
+			}
 
-			return malloc(length);
+			return memory;
 		}
 
 		void DeallocateDynamic(void* memory)

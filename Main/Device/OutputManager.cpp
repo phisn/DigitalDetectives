@@ -8,7 +8,8 @@ namespace EOBJ
 
 namespace
 {
-	CRGB data[DEVICE_FASTLED_MAP_LEDCOUNT];
+	CRGB mapData[DEVICE_FASTLED_MAP_LEDCOUNT];
+	CRGB pathData[DEVICE_FASTLED_PATH_LEDCOUNT];
 
 	FlashString common_yesno = DEVICE_LCD_MESSAGE(" Yes             NO ");
 	FlashString common_pressexit = DEVICE_LCD_MESSAGE("Enter to continue   ");
@@ -40,7 +41,7 @@ namespace Device
 			DEBUG_MESSAGE("LCD Init");
 
 			Wire.begin(DEVICE_PIN_LCD_SDA, DEVICE_PIN_LCD_SCL);
-			
+
 			Lcd::_GetDisplay()->init();
 			Lcd::_GetDisplay()->backlight();
 
@@ -72,7 +73,7 @@ namespace Device
 			{
 				int index = 0, cursor = 0;
 				char lcdBuffer[DEVICE_LCD_WIDTH + 1] = { };
-				
+
 				// init buffer
 				memset(lcdBuffer, ' ', DEVICE_LCD_WIDTH);
 				lcdBuffer[DEVICE_LCD_WIDTH] = '\0';
@@ -142,7 +143,7 @@ namespace Device
 					}
 
 					delay(50);
-					
+
 					const Choice choice = ForceGetChoice();
 
 					switch (choice)
@@ -211,17 +212,17 @@ namespace Device
 
 				if (digitalRead(DEVICE_PIN_BUTTON_LEFT) == HIGH)
 				{
-					(int&) result |= Left;
+					(int&)result |= Left;
 				}
 
 				if (digitalRead(DEVICE_PIN_BUTTON_ENTER) == HIGH)
 				{
-					(int&) result |= Enter;
+					(int&)result |= Enter;
 				}
 
 				if (digitalRead(DEVICE_PIN_BUTTON_RIGHT) == HIGH)
 				{
-					(int&) result |= Right;
+					(int&)result |= Right;
 				}
 
 				return result;
@@ -235,7 +236,7 @@ namespace Device
 				{
 					choice = GetChoice();
 
-					if (choice != Choice::Empty 
+					if (choice != Choice::Empty
 						&& (choice == Left ||
 							choice == Right ||
 							choice == Enter))
@@ -259,8 +260,8 @@ namespace Device
 		namespace Lcd
 		{
 			void DisplayLineType(
-				const unsigned char row, 
-				const char* value, 
+				const unsigned char row,
+				const char* value,
 				const unsigned int size)
 			{
 				_GetDisplay()->setCursor(0, row);
@@ -285,13 +286,9 @@ namespace Device
 					DEVICE_LCD_WIDTH, 4);
 				return lcdi2c;
 			}
-			FlashString GetCommonYesNo()
-			{
-				return FlashString();
-			}
 		}
 
-		namespace FastLed
+		namespace PlayerMapLed
 		{
 			void Clear()
 			{
@@ -300,7 +297,7 @@ namespace Device
 
 			void Show(const int pin, CRGB color)
 			{
-				data[pin] = color;
+				mapData[pin] = color;
 			}
 
 			void Update()
@@ -310,7 +307,30 @@ namespace Device
 
 			CRGB* _GetData()
 			{
-				return data;
+				return mapData;
+			}
+		}
+
+		namespace VillianPathLed
+		{
+			void Clear()
+			{
+				EOBJ::FastLED->clearData();
+			}
+
+			void Show(const int pin, CRGB color)
+			{
+				pathData[pin] = color;
+			}
+
+			void Update()
+			{
+				FastLED.show();
+			}
+
+			CRGB* _GetData()
+			{
+				return pathData;
 			}
 		}
 	}
