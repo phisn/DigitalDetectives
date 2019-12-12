@@ -8,8 +8,9 @@
     "\\Main\\Device",
     "\\Main\\Game",
     "\\Main\\Game\\Data",
-    "\\Main\\Web"
+    "\\Main\\Web",
+    "\\Main\\Web\\Modular"
   ],
-  "SelectedNode": "\\Main\\Communication\\WebInterface\\WebSocketData.h",
+  "SelectedNode": "\\Main\\Device\\DevicePins.h",
   "PreviewInSolutionExplorer": false
 }
