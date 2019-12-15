@@ -2,7 +2,6 @@
 
 #define COMMUNICATION_WEBPART_CLOSE R"__(</html>)__"
 
-
 namespace Communication
 {
 	namespace Webpart

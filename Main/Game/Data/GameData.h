@@ -16,6 +16,7 @@ namespace Game
 			unsigned char activePlayerIndex;
 			PlayerId activePlayer;
 
+			MapPosition villianLastPosition;
 			Game::Ticket villianTicketUse[24];
 		} state;
 

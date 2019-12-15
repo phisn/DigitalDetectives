@@ -19,7 +19,6 @@ namespace
 	FlashString turn_fail_ticketnotfound = FPSTR("Ticket not found");
 	FlashString turn_fail_ticketnotavailable = FPSTR("Villian ticket not avaiable");
 
-	Game::MapPosition lastVillianPosition;
 	Game::Player dynamicPlayer[COMMON_MAX_PLAYERCOUNT];
 }
 
@@ -208,7 +207,7 @@ namespace Game
 
 				if (IsShowVillianPositionRound())
 				{
-					lastVillianPosition = playerState->position;
+					Extern::gameData->state.villianLastPosition = playerState->position;
 				}
 			}
 
@@ -559,7 +558,7 @@ namespace Game
 
 		MapPosition GetLastVillianPosition()
 		{
-			return lastVillianPosition;
+			return Extern::gameData->state.villianLastPosition;
 		}
 	}
 }

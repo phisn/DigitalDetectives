@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../../Common/Common.h"
+#include "../../Device/MemoryManager.h"
+
 namespace Communication
 {
 	enum class Webpart
@@ -36,12 +39,12 @@ namespace Communication
 
 	namespace WebsiteConstructor
 	{
-		Webpart * collect,
+		/*Webpart * collect,
 				* setup,
 				* requestpid,
 				* runningdetective,
 				* runningvillian,
-				* finish;
+				* finish;*/
 
 		char* Construct(Webpart* website, WebpartCustom* dynamic = NULL);
 	}

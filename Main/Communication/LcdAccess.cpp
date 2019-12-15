@@ -46,7 +46,7 @@ namespace
 		};
 	};
 
-	FlashString selection_collecting_general[] =
+	FlashString selection_setup_general[] =
 	{
 		selection_common_close,
 		FPSTR("Start Game       "),
