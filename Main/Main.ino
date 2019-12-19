@@ -103,5 +103,6 @@ void Device::OutputManager::_InitializeFastLed()
 	FastLED.addLeds<WS2812B, DEVICE_PIN_OUTPUT_FASTLED_1, GRB>(
 		Device::OutputManager::VillianPathLed::_GetData(), DEVICE_FASTLED_PATH_LEDCOUNT);
 
+	FastLED.setBrightness(50);
 	FastLED.show();
 }

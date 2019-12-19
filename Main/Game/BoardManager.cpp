@@ -21,6 +21,13 @@ namespace
 
 			struct
 			{
+				struct
+				{
+					unsigned long nextUpdate;
+					uint16_t powerCounter;
+
+				} led;
+
 			} running;
 		};
 
@@ -28,6 +35,14 @@ namespace
 		unsigned long timer = millis();
 
 	} dynamicStateData;
+
+	namespace Animation
+	{
+		unsigned long nextUpdate;
+		Game::BoardManager::AnimationSpeciality speciality;
+		Game::BoardManager::AnimationElement* current = NULL;
+		CRGB previousPositionColor; // restore
+	}
 
 	FlashString message_collect_0 = DEVICE_LCD_MESSAGE("Waiting for players ");
 	FlashString message_collect_1 = FPSTR("Currently: %d");
@@ -41,6 +56,25 @@ namespace Game
 {
 	namespace BoardManager
 	{
+		void SetPlayerMapLed(MapPosition position, CRGB color)
+		{
+			if (Animation::current && Animation::current->position == position)
+			{
+				Animation::previousPositionColor = color;
+			}
+			else
+			{
+				Device::OutputManager::PlayerMapLed::Show(
+					Device::MapManager::Translate(position),
+					color);
+			}
+		}
+
+		void ProcessAnimation();
+		void ProcessAnimationElement();
+		void ProcessCollect();
+		void ProcessRunning();
+
 		void UpdateCollect();
 		void UpdateRunning();
 		void UpdateSetup();
@@ -58,42 +92,127 @@ namespace Game
 			switch (Controller::GetState())
 			{
 			case GameState::Collect:
-				if (dynamicStateData.timer > dynamicStateData.collect.nextUpdate)
-				{
-					for (int i = DEVICE_LCD_WIDTH * 2 - 1; i > 0; --i)
-					{
-						if (i >= DEVICE_LCD_WIDTH)
-						{
-							const int source = i == DEVICE_LCD_WIDTH
-								? i - 1
-								: 20 + 40 - i;
+				ProcessCollect();
 
-							const int target = 20 + 39 - i;
-
-							dynamicStateData.collect.flowingText[target] = dynamicStateData.collect.flowingText[source];
-						}
-						else
-						{
-							dynamicStateData.collect.flowingText[i] = dynamicStateData.collect.flowingText[i - 1];
-						}
-					}
-
-					dynamicStateData.collect.flowingText[0] = (random(0xffff) % 2 == 0) ? '+' : '-';
-
-					Device::OutputManager::Lcd::DisplayLineType(
-						2,
-						dynamicStateData.collect.flowingText,
-						DEVICE_LCD_WIDTH);
-					Device::OutputManager::Lcd::DisplayLineType(
-						3,
-						dynamicStateData.collect.flowingText + DEVICE_LCD_WIDTH,
-						DEVICE_LCD_WIDTH);
-
-					dynamicStateData.collect.nextUpdate = dynamicStateData.timer + 500;
-				}
+				break;
+			case GameState::Running:
+				ProcessRunning();
 
 				break;
 			}
+
+			ProcessAnimation();
+		}
+
+		void ProcessAnimation()
+		{
+			if (Animation::current == NULL)
+			{
+				return;
+			}
+
+			if (dynamicStateData.timer > Animation::nextUpdate)
+			{
+				Device::OutputManager::PlayerMapLed::Show(
+					Device::MapManager::Translate(Animation::current->position),
+					Animation::previousPositionColor);
+				++Animation::current;
+
+				if (Animation::current->position == NULL)
+				{
+					switch (Animation::speciality)
+					{
+					case AnimationSpeciality::Running:
+						Device::OutputManager::PlayerMapLed::Show(
+							Device::MapManager::Translate(Game::GameManager::GetLastVillianPosition()),
+							CRGB::White);
+
+						break;
+					}
+				}
+
+				ProcessAnimationElement();
+			}
+		}
+
+		void ProcessAnimationElement()
+		{
+			Animation::previousPositionColor = Device::OutputManager::PlayerMapLed::_GetData()[Animation::current->position - 1];
+			Animation::nextUpdate = dynamicStateData.timer + Animation::current->time;
+
+			Device::OutputManager::PlayerMapLed::Show(
+				Device::MapManager::Translate(Animation::current->position),
+				Animation::current->color);
+		}
+
+		void ProcessCollect()
+		{
+			if (dynamicStateData.timer <= dynamicStateData.collect.nextUpdate)
+			{
+				return;
+			}
+
+			for (int i = DEVICE_LCD_WIDTH * 2 - 1; i > 0; --i)
+			{
+				if (i >= DEVICE_LCD_WIDTH)
+				{
+					const int source = i == DEVICE_LCD_WIDTH
+						? i - 1
+						: 20 + 40 - i;
+
+					const int target = 20 + 39 - i;
+
+					dynamicStateData.collect.flowingText[target] = dynamicStateData.collect.flowingText[source];
+				}
+				else
+				{
+					dynamicStateData.collect.flowingText[i] = dynamicStateData.collect.flowingText[i - 1];
+				}
+			}
+
+			dynamicStateData.collect.flowingText[0] = (random(0xffff) % 2 == 0) ? '+' : '-';
+
+			Device::OutputManager::Lcd::DisplayLineType(
+				2,
+				dynamicStateData.collect.flowingText,
+				DEVICE_LCD_WIDTH);
+			Device::OutputManager::Lcd::DisplayLineType(
+				3,
+				dynamicStateData.collect.flowingText + DEVICE_LCD_WIDTH,
+				DEVICE_LCD_WIDTH);
+
+			dynamicStateData.collect.nextUpdate = dynamicStateData.timer + 500;
+		}
+
+		void ProcessRunning()
+		{
+			if (dynamicStateData.timer <= dynamicStateData.running.led.nextUpdate)
+			{
+				return;
+			}
+
+			const int currentPlayerIndex = GameManager::GetData()->state.activePlayerIndex;
+			
+			// powercounter to power
+			// 255 - | counter - 255 |
+			// h   - | counter - h   |
+			const uint8_t power = dynamicStateData.running.led.powerCounter > 256
+				? 0 
+				: (128 - abs(dynamicStateData.running.led.powerCounter - 128));
+			
+			SetPlayerMapLed(currentPlayerIndex == 0
+				? GameManager::GetLastVillianPosition()
+				: GameManager::GetData()->player[currentPlayerIndex].position,
+				ColorToCRGB(SetupManager::GetData()->playerContext.data[currentPlayerIndex]
+					.color).subtractFromRGB(power)
+			);
+
+			Device::OutputManager::PlayerMapLed::Update();
+
+			dynamicStateData.running.led.powerCounter %= 256;
+			dynamicStateData.running.led.powerCounter += 256 * GAME_BOARDMANAGER_RUNNING_LEDSPEED / GAME_BOARDMANAGER_RUNNING_LEDSPEED_REP;
+
+			dynamicStateData.running.led.nextUpdate = dynamicStateData.timer + GAME_BOARDMANAGER_RUNNING_LEDSPEED;
 		}
 
 		void Update()
@@ -130,12 +249,12 @@ namespace Game
 			
 			DEBUG_MESSAGE("FLED Show1");
 			// villian is shown as white
-			if (Game::GameManager::GetData()->state.round >= 3)
+			if (Game::GameManager::GetData()->state.round >= 3 &&
+				Game::GameManager::GetData()->state.activePlayerIndex != 0 &&
+				!IsAnimationRunning())
 			{
-				Device::OutputManager::PlayerMapLed::Show(
-					Device::MapManager::Translate(
-						Game::GameManager::GetLastVillianPosition()
-					),
+				SetPlayerMapLed(
+					Game::GameManager::GetLastVillianPosition(),
 					CRGB::White);
 			}
 
@@ -143,18 +262,17 @@ namespace Game
 			// skip villian (= 0)
 			for (int i = 1; i < Collector::GetData()->playerCount; ++i)
 			{
-				Device::OutputManager::PlayerMapLed::Show(
-					Device::MapManager::Translate(
-						GameManager::GetData()->player[i].position
-					),
+				SetPlayerMapLed(
+					GameManager::GetData()->player[i].position,
 					ColorToCRGB(SetupManager::GetData()->playerContext.data[i].color)
 				);
 			}
 
 			
-
 			DEBUG_MESSAGE("FLED Show3");
-			for (int i = 0; i < Game::GameManager::GetData()->state.round + Game::GameManager::GetData()->state.activePlayerIndex != 0 ? 1 : 0; ++i)
+			for (int i = 0;
+				i < (Game::GameManager::GetData()->state.round)
+				  + (Game::GameManager::GetData()->state.activePlayerIndex != 0 ? 1 : 0); ++i)
 			{
 				Device::OutputManager::VillianPathLed::Show(
 					i,
@@ -234,10 +352,40 @@ namespace Game
 		{
 		}
 
+		void RunAnimation(AnimationElement* const animation,
+			AnimationSpeciality speciality)
+		{
+			Animation::speciality = speciality;
+
+			if (Animation::current != NULL)
+			{
+				Device::OutputManager::PlayerMapLed::Show(
+					Animation::current->position,
+					Animation::previousPositionColor);
+			}
+
+			Animation::current = animation;
+
+			if (Animation::current != NULL)
+			{
+				ProcessAnimationElement();
+			}
+		}
+
+		bool IsAnimationRunning()
+		{
+			return Animation::current != NULL;
+		}
+
 		void OnStateChanged(const Game::GameState newState)
 		{
-			DEBUG_MESSAGE("Boardmanager state changed");
+			// abort animation on state change
+			if (IsAnimationRunning())
+			{
+				RunAnimation(NULL);
+			}
 
+			DEBUG_MESSAGE("Boardmanager state changed");
 			switch (newState)
 			{
 			case GameState::Collect:
@@ -247,6 +395,11 @@ namespace Game
 					' ', 
 					sizeof(dynamicStateData.collect.flowingText));
 				
+				break;
+			case GameState::Running:
+				dynamicStateData.running.led.nextUpdate = 0;
+				dynamicStateData.running.led.powerCounter = 0;
+
 				break;
 			default:
 				memset(&dynamicStateData, 0, sizeof(dynamicStateData));

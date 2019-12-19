@@ -78,8 +78,8 @@ namespace Game
 		bool Process()
 		{
 			// TODO: change late, currently in debug
-			// DEBUG_MESSAGE("Setup auto request finish");
-			// Game::Controller::RequestFinish();
+			DEBUG_MESSAGE("Setup auto request finish");
+			Game::Controller::RequestFinish();
 
 			return false;
 		}

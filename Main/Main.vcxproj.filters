@@ -31,6 +31,9 @@
     <Filter Include="Communication\WebInterface\Handler">
       <UniqueIdentifier>{31df3f44-a037-4f1e-b7bf-8b018423c96a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Communication\WebInterface\Webpart">
+      <UniqueIdentifier>{f5127d51-836b-43d3-b371-df7a94597630}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Main.vsarduino.h">
@@ -158,6 +161,42 @@
     </ClInclude>
     <ClInclude Include="Communication\WebInterface\WebsiteConstructor.h">
       <Filter>Communication\WebInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\begin.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\close.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\collect.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\commonSocket.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\detectiveRunning.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\finish.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\request.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\setup.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\styleController.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\styleLib.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\styleMisc.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication\WebInterface\Webpart\villianRunning.h">
+      <Filter>Communication\WebInterface\Webpart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
