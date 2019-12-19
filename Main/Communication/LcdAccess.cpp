@@ -24,7 +24,7 @@ namespace
 	FlashString selection_collecting_general[] =
 	{
 		selection_common_close,
-		FPSTR("Start Game       "),
+		FPSTR("Continue         "),
 		FPSTR("Restart          "),
 		FPSTR("Players          "),
 		FPSTR("Add Bot          "),
