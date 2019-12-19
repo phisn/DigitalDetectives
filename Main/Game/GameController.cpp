@@ -153,7 +153,7 @@ namespace Game
 				Device::FaultHandler::Handle(
 					{
 						Device::FaultModule::GameController,
-						(int)sector.state,
+						(int) FID::INVALID_STATE_RUNNING + (int) sector.state,
 						fault_invalid_running_state
 					}, true);
 

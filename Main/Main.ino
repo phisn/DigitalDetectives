@@ -5,6 +5,8 @@
 #include "Game/GameController.h"
 #include "Device/DevicePins.h"
 
+#include <esp_core_dump.h>
+
 namespace EOBJ
 {
 	EEPROMClass* EEPROM = &::EEPROM;

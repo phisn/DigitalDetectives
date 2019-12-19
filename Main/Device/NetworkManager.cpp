@@ -41,7 +41,7 @@ namespace Device
 				FaultHandler::Handle(
 					{
 						FaultModule::NetworkManager,
-						(FailureId)FID::SOFT_AP_CONFIG,
+						(FailureId)FID::SOFT_AP_MODE,
 						fault_soft_ap_mode
 					}, true);
 

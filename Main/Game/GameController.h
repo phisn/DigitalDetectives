@@ -17,8 +17,8 @@ namespace Game
 		{
 			enum
 			{
-				SECTOR_CORRUPTED = 2,
-				INVALID_FINISH,
+				INVALID_FINISH = 2,
+				INVALID_STATE_RUNNING,
 				INVALID_STATE = 0xB0,
 				// fids for invalid state, 0xB0 prefix and
 				// state suffix -> 0xB0 - 0xB6
