@@ -58,5 +58,3 @@ namespace Device
 // ws2812b
 #define FASTLED_ALLOW_INTERRUPTS 0
 #include "FastLED.h"
-
-#define String static_assert(false, "Strings should not be used");
