@@ -24,36 +24,48 @@ namespace Communication
 			if (Game::Controller::GetState() == Game::GameState::Running && 
 				Game::GameManager::GetData()->state.activePlayer == playerId)
 			{
-				const Game::MapPosition position = Game::GameManager::ReadPlayer(playerId)->state->position;
+				unsigned char path[6][8][200];
 
-				const Game::Station::Type type = (Game::Station::Type) random(
-					(int) Game::PathManager::GetStationType(position).type
-				);
-				
-				const Game::PathManager::FindOptionsSpecificResult options = Game::PathManager::FindOptionsSpecific(
-					position,
-					type
-				);
-
-				Game::Turn turn;
-
-				turn.position = options.station[random(options.stationCount)];
-				turn.ticket = (Game::Ticket) type;
-				turn.doubleTicket = false;
-
-				Game::GameManager::TurnResult result = Game::GameManager::MakeTurn(playerId, turn);
-				if (result != Game::GameManager::TurnResult::Success)
+				for (int i = 0; i < 6; ++i)
 				{
-					Device::Fault fault;
+					path[i][0][Game::GameManager::GetData()->player[i].position] = 1;
+				}
 
-					fault.id = 0xbb;
-					fault.module = Device::FaultModule::InterfaceManager;
-					fault.text = Game::GameManager::GetTurnFailReason(result);
+				for (int turns = 1; turns < 8; ++turns)
+				{
+					for (int players = 0; players < 6; ++players)
+					{
+						for (int reachable = 0; reachable < 200; ++reachable)
+						{
+							if (path[players][turns - 1][reachable])
+							{
+								for (int l = 0; l < 4; ++l)
+								{
+									const Game::PathManager::FindOptionsSpecificResult options = Game::PathManager::FindOptionsSpecific(
+										path[players][turns - 1][reachable],
+										(Game::Station::Type) l
+									);
 
-					Device::FaultHandler::Handle(
-						fault,
-						true
-					);
+									for (int m = 0; m < options.stationCount; ++m)
+									{
+										path[players][turns][options.station[m]] = 1;
+									}
+								}
+							}
+						}
+					}
+
+					// mrx
+					for (int i = 0; i < 200; i++) {
+						for (int players = 1; players < 6; ++players)
+						{
+							if (path[players][turns][i]) {
+								path[0][turns][i] = 0;
+								break;
+							}
+						}
+					}
+
 				}
 			}
 
