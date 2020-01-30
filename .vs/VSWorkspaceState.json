@@ -11,6 +11,6 @@
     "\\Main\\Web",
     "\\Main\\Web\\Modular"
   ],
-  "SelectedNode": "\\Main\\Communication\\LcdAccess.cpp",
+  "SelectedNode": "\\Main\\Device\\DevicePins.h",
   "PreviewInSolutionExplorer": false
 }

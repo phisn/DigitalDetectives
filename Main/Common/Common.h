@@ -59,4 +59,4 @@ namespace Device
 #define FASTLED_ALLOW_INTERRUPTS 0
 #include "FastLED.h"
 
-#define String static_assert(false, "Strings should not be used");
+//#define String static_assert(false, "Strings should not be used");
