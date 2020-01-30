@@ -208,7 +208,7 @@ namespace Game
 
 				Device::OutputManager::Lcd::DisplayLineType(3, Device::OutputManager::Interact::GetCommonYesNo());
 
-				// important delay to prevent accidental press
+				// important delay to prevent accidental press3
 				delay(1000);
 
 				return Device::OutputManager::Interact::ForceGetChoice()
