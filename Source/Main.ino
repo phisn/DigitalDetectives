@@ -53,40 +53,9 @@ void setup()
 	DEBUG_MESSAGE("ESP8266 Boot");
 	Device::GameManager::Initialize();
 }
-int i = 0;
 
 void loop()
 {
-	/*
-	if (Device::OutputManager::Interact::GetChoice() ==
-		Device::OutputManager::Interact::Choice::Enter)
-	{
-		++i;
-
-		Serial.println("Next");
-		Device::OutputManager::PlayerMapLed::Clear();
-		for (int j = 0; j < 10; ++j)
-			if (Game::PathManager::GetStationType(i * 10 + j).type == Game::Station::Bus)
-			{
-				Device::OutputManager::PlayerMapLed::Show(
-					Device::MapManager::Translate(i * 10 + j),
-					CRGB::White
-				);
-
-				Serial.print(i * 10 + j);
-				Serial.print(" : ");
-				Serial.print(Device::MapManager::Translate(i * 10 + j));
-				Serial.print(" : ");
-				Serial.println(Game::PathManager::GetStationType(i * 10 + j).isFerry);
-			}
-
-		Device::OutputManager::PlayerMapLed::Update();
-
-		if (i > 19) i = 0;
-	}
-	*/
-	//}
-
 	Device::GameManager::Process();
 }
 
