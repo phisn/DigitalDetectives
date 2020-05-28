@@ -6,6 +6,12 @@ Digital boardgame of 'ScotlandYard' using ESP32 and Arduino environment. This pr
  
 The popular boardgame 'ScotlandYard' can be played automated with a website and a digital board. The website is used for input only, all informations can and have to be aquired from the board. This project was build using Visual Studio, Visual Micro extension and the Arduino Environment. It is not completly finished but fully playable. C++, Javascript and HTML were used.
 
+## Features
+
+* Interaction via website
+* Interrupted or crahsed games can be restored
+* Playable from 4 to 6 players
+
 ## More
 
 For more information see the german documentation
