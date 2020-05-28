@@ -337,7 +337,3 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-
-# BeatPulse healthcheck temp database
-healthchecksdb
-/Main/Communication/WebInterface/Website/WebsiteRunningDetective.h

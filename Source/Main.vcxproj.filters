@@ -198,13 +198,11 @@
     <ClInclude Include="Communication\WebInterface\Webpart\villianRunning.h">
       <Filter>Communication\WebInterface\Webpart</Filter>
     </ClInclude>
+    <ClInclude Include="__vm\.Source.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
     <None Include="..\Docs\SY_Rules.pdf">
-      <Filter>Docs</Filter>
-    </None>
-    <None Include="..\Docs\Dokumentation.docx">
       <Filter>Docs</Filter>
     </None>
     <None Include="Web\collecting_phase.html">
